@@ -1,0 +1,22 @@
+@import './base.css';
+
+#app {
+  width: 100%;
+  margin: 0 auto;
+  font-weight: normal;
+  min-height: 100vh;
+}
+
+/* 移除可能導致排版問題的默認樣式 */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 確保暗黑模式優先 */
+html.dark, body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
