@@ -32,8 +32,8 @@ const routes = [
 
 // 創建路由實例
 const router = createRouter({
-  // 使用 hash 模式避免 GitHub Pages 上的路由問題
-  history: createWebHashHistory(),
+  // 使用 history 模式實現乾淨的 URL
+  history: createWebHistory(),
   routes
 })
 

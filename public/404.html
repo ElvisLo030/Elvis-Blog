@@ -6,11 +6,13 @@
   <title>頁面未找到 - 小羅の窩</title>
   <script>
     // 用於 SPA 路由的單頁面應用重定向
-    const path = window.location.pathname.replace(/^\/elvis-blog\/?/, '/');
+    const path = window.location.pathname;
     if (path !== '/') {
+      // 保存請求的 URL 路徑到 sessionStorage
       sessionStorage.setItem('redirectPath', path);
     }
-    window.location.href = '/elvis-blog/';
+    // 重定向到首頁
+    window.location.href = '/';
   </script>
   <style>
     body {
