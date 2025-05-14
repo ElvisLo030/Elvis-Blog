@@ -39,7 +39,7 @@ const toggleMenu = () => {
     </main>
 
     <footer class="app-footer">
-      <p>&copy; {{ new Date().getFullYear() }} 小羅の窩 - 以 ❤️ 打造</p>
+      <p>&copy; {{ new Date().getFullYear() }} elvislo All Rights Reserved</p>
     </footer>
   </div>
 </template>
