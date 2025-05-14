@@ -15,6 +15,6 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-  // GitHub Pages 部署設置
-  base: '/elvis-blog/',
+  // 自訂域名部署設置
+  base: '/',
 })
