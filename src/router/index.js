@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 
 // 路由配置
 const routes = [
@@ -32,7 +32,8 @@ const routes = [
 
 // 創建路由實例
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // 使用 hash 模式避免 GitHub Pages 上的路由問題
+  history: createWebHashHistory(),
   routes
 })
 
