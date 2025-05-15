@@ -1,8 +1,7 @@
 <template>
   <div class="projects-container">
     <div class="projects-header">
-      <h1 class="page-title">My Projects</h1>
-      <p class="page-subtitle">我在 GitHub 上的開源專案</p>
+      <h1 class="page-title">GitHub Repositories</h1>
       <div class="github-info">
         <a :href="`https://github.com/${githubUsername}`" target="_blank" class="github-link">
           <i class="fa-brands fa-github github-icon"></i> {{ githubUsername }}
@@ -61,7 +60,6 @@
             :href="project.codeUrl"
             target="_blank"
             class="project-card"
-            :class="{ featured: project.featured }"
           >
             <div class="project-image">
               <img 
@@ -79,30 +77,8 @@
               </div>
             </div>
             <div class="project-content">
-              <div class="project-tags">
-                <span 
-                  v-for="tag in project.tags" 
-                  :key="tag"
-                  class="project-tag"
-                >
-                  {{ tag }}
-                </span>
-              </div>
               <h2 class="project-title">{{ project.title }}</h2>
               <p class="project-description">{{ project.description }}</p>
-              
-              <!-- 專案統計信息 -->
-              <div class="project-stats">
-                <span class="stat-item" v-if="project.stars > 0">
-                  <span class="stat-icon"><font-awesome-icon :icon="['fas', 'star']" /></span> {{ project.stars }}
-                </span>
-                <span class="stat-item" v-if="project.forks > 0">
-                  <span class="stat-icon"><font-awesome-icon :icon="['fas', 'code-branch']" /></span> {{ project.forks }}
-                </span>
-                <span class="stat-item">
-                  <span class="stat-icon"><font-awesome-icon :icon="['far', 'clock']" /></span> {{ formatDate(project.updatedAt) }}
-                </span>
-              </div>
               
               <div class="project-tech">
                 <span 
@@ -162,7 +138,8 @@ async function loadGitHubProjects() {
       loadingError.value = '未找到公開專案，或者獲取專案時發生錯誤。';
     } else {
       projects.value = repos;
-      console.log(`從 GitHub 載入了 ${repos.length} 個專案`);
+      const notForkedCount = repos.filter(repo => !repo.fork).length;
+      console.log(`從 GitHub 載入了 ${repos.length} 個專案，其中 ${notForkedCount} 個非 fork 專案將被顯示`);
     }
   } catch (error) {
     console.error('載入 GitHub 專案失敗:', error);
@@ -179,10 +156,14 @@ onMounted(() => {
 
 // 根據程式語言過濾專案
 const filteredProjects = computed(() => {
+  // 先過濾掉 fork 的項目
+  const notForkedProjects = projects.value.filter(project => !project.fork);
+  
+  // 再根據當前選中的類別進行過濾
   if (currentCategory.value === '全部') {
-    return projects.value;
+    return notForkedProjects;
   }
-  return projects.value.filter(project => project.language === currentCategory.value);
+  return notForkedProjects.filter(project => project.language === currentCategory.value);
 });
 
 // 重新載入專案
@@ -230,57 +211,7 @@ function handleImageError(event, project) {
   container.appendChild(placeholder);
 }
 
-// 格式化日期函數
-function formatDate(date) {
-  if (!date) return '未知日期';
-  
-  // 檢查是否是有效的日期對象
-  if (!(date instanceof Date) || isNaN(date)) {
-    return '未知日期';
-  }
-  
-  const now = new Date();
-  const diff = Math.floor((now - date) / 1000); // 差距（秒）
-  
-  // 不到一分鐘
-  if (diff < 60) {
-    return '剛剛更新';
-  }
-  
-  // 不到一小時
-  if (diff < 3600) {
-    const minutes = Math.floor(diff / 60);
-    return `${minutes} 分鐘前更新`;
-  }
-  
-  // 不到一天
-  if (diff < 86400) {
-    const hours = Math.floor(diff / 3600);
-    return `${hours} 小時前更新`;
-  }
-  
-  // 不到一週
-  if (diff < 604800) {
-    const days = Math.floor(diff / 86400);
-    return `${days} 天前更新`;
-  }
-  
-  // 不到一個月
-  if (diff < 2592000) {
-    const weeks = Math.floor(diff / 604800);
-    return `${weeks} 週前更新`;
-  }
-  
-  // 不到一年
-  if (diff < 31536000) {
-    const months = Math.floor(diff / 2592000);
-    return `${months} 個月前更新`;
-  }
-  
-  // 超過一年
-  const years = Math.floor(diff / 31536000);
-  return `${years} 年前更新`;
-}
+// 日期格式化功能已移除
 </script>
 
 <style scoped>
@@ -362,33 +293,6 @@ function formatDate(date) {
   box-shadow: 0 8px 15px var(--shadow-color);
 }
 
-.project-card.featured {
-  border: 2px solid var(--primary-color);
-  position: relative;
-}
-
-.project-card.featured:before {
-  content: '';
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: var(--primary-color);
-  color: white;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.project-card.featured:before {
-  font-family: 'Font Awesome 6 Free';
-  font-weight: 900;
-  content: '\f005';  /* 星星圖標的 Unicode */
-}
-
 .project-image {
   width: 100%;
   height: 180px;
@@ -453,20 +357,7 @@ function formatDate(date) {
   flex-grow: 1;
 }
 
-.project-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.project-tag {
-  background-color: rgba(var(--primary-rgb), 0.1);
-  color: var(--primary-color);
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-}
+/* 已移除標籤相關樣式 */
 
 .project-title {
   font-size: 1.4rem;
@@ -606,24 +497,7 @@ function formatDate(date) {
   margin-top: 1rem;
 }
 
-/* 專案統計信息 */
-.project-stats {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.stat-item {
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-  color: var(--text-color-secondary);
-}
-
-.stat-icon {
-  margin-right: 0.3rem;
-}
+/* 專案統計信息已移除 */
 
 @media (max-width: 768px) {
   .projects-grid {

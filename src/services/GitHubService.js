@@ -28,19 +28,15 @@ export async function fetchRepositories(username = DEFAULT_USERNAME) {
       fullName: repo.full_name,
       title: repo.name,
       description: repo.description || '未提供描述',
-      tags: getTagsFromRepo(repo),
+      tags: [], // 標籤功能已移除，返回空陣列
       technologies: getLanguagesFromRepo(repo),
       // 嘗試獲取圖片，但允許回退到文字顯示
       image: `https://opengraph.githubassets.com/1/${repo.full_name}`,
       demoUrl: repo.homepage || null,
       codeUrl: repo.html_url,
       language: repo.language,
-      watchers: repo.watchers_count,
-      featured: repo.stargazers_count > 0 || repo.watchers_count > 3,
-      createdAt: new Date(repo.created_at),
-      updatedAt: new Date(repo.updated_at),
-      stars: repo.stargazers_count,
-      forks: repo.forks_count
+      // stars 和 最後更新時間顯示已移除
+      fork: repo.fork
     }));
     
     return repos;
@@ -70,49 +66,7 @@ export async function fetchRepoLanguages(repo) {
   }
 }
 
-/**
- * 從存儲庫特性獲取標籤
- * @param {Object} repo - 存儲庫物件
- * @returns {Array} 標籤陣列
- */
-
-/**
- * 從存儲庫特性獲取標籤
- * @param {Object} repo - 存儲庫物件
- * @returns {Array} 標籤陣列
- */
-function getTagsFromRepo(repo) {
-  const tags = [];
-  const name = repo.name.toLowerCase();
-  const description = (repo.description || '').toLowerCase();
-  
-  // 根據存儲庫特性添加標籤
-  if (repo.fork) {
-    tags.push('Fork');
-  } else {
-    tags.push('Original');
-  }
-  
-  if (repo.stargazers_count > 0) {
-    tags.push('⭐️');
-  }
-  
-  // 基於名稱和描述添加標籤
-  if (name.includes('portfolio') || description.includes('portfolio')) {
-    tags.push('個人作品集');
-  }
-  
-  if (name.includes('demo') || description.includes('demo')) {
-    tags.push('示例');
-  }
-  
-  if (name.includes('learn') || description.includes('learn') || 
-      name.includes('study') || description.includes('study')) {
-    tags.push('學習專案');
-  }
-  
-  return tags;
-}
+// 標籤功能已移除
 
 /**
  * 從存儲庫獲取預設技術標籤

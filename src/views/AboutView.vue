@@ -11,6 +11,7 @@
           <li><font-awesome-icon :icon="['fas', 'map-marker-alt']" /> 居住地：高雄</li>
           <li><font-awesome-icon :icon="['fas', 'brain']" /> MBTI：INFJ-T</li>
           <li><font-awesome-icon :icon="['fas', 'graduation-cap']" /> 學校：CSU-MIS</li>
+          <li><font-awesome-icon :icon="['fas', 'tags']" /> 擔任：23屆資管系學會活動長、準24屆資管系學會會長</li>
         </ul>
       </div>
     </section>
@@ -52,6 +53,20 @@
       <div class="section-content">
         <div class="skills-container">
           <div class="skill-category">
+            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'heart']" /> 喜歡的東西</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">橘貓</span>
+              <span class="skill-tag">虎斑貓</span>
+              <span class="skill-tag">咖波</span>
+              <span class="skill-tag">貓貓怪</span>
+              <span class="skill-tag">小八</span>
+              <span class="skill-tag">電腦程式相關</span>
+              <span class="skill-tag">手作的東東</span>
+              <span class="skill-tag">日式料理 拉麵！！！</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
             <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'gamepad']" /> 遊戲</h3>
             <div class="skill-tags">
               <span class="skill-tag">崩壞：星穹鐵道</span>
@@ -75,12 +90,29 @@
               <span class="skill-tag">Vue</span>
               <span class="skill-tag">Swift</span>
             </div>
-            <p class="skill-note">以上努力學習中...<br>希望能好好學會這些</p>
+            <p class="skill-note">以上努力學習中...<br>希望能學會並精通這些</p>
           </div>
           
           <div class="skill-category">
             <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'music']" /> 音樂</h3>
-            <p class="skill-desc">主要以日文歌、電音為主，或者V家/動漫/音遊相關類型</p>
+            <div class="skill-tags">
+              <span class="skill-tag">J POP</span>
+              <span class="skill-tag">電音</span>
+              <span class="skill-tag">ACG</span>
+              <span class="skill-tag">Vocaloid</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'film']" /> 動漫</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">MyGo!!!!!</span>
+              <span class="skill-tag">Ave Mujica</span>
+              <span class="skill-tag">Grils Band Cry</span>
+              <span class="skill-tag">魔法少女小圓</span>
+              <span class="skill-tag">我推的孩子</span>
+              <span class="skill-tag">明日方舟</span>
+              <span class="skill-tag">Re:Zero</span>
+            </div>
           </div>
         </div>
       </div>
