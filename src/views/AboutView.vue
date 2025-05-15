@@ -11,8 +11,6 @@
           <li><font-awesome-icon :icon="['fas', 'map-marker-alt']" /> 居住地：高雄</li>
           <li><font-awesome-icon :icon="['fas', 'brain']" /> MBTI：INFJ-T</li>
           <li><font-awesome-icon :icon="['fas', 'graduation-cap']" /> 學校：CSU-MIS</li>
-          <li><font-awesome-icon :icon="['fas', 'briefcase']" /> 工作：N</li>
-          <li><font-awesome-icon :icon="['fas', 'tags']" /> KPWC負責人</li>
         </ul>
       </div>
     </section>

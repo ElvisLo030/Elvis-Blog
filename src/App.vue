@@ -1,37 +1,82 @@
 <script setup>
 import { RouterView } from 'vue-router';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 // 控制行動裝置導航選單
 const isMenuOpen = ref(false);
+// 設置深色模式狀態（預設為深色模式）
+const isDarkMode = ref(true);
+
+// 在組件掛載時初始化主題
+onMounted(() => {
+  // 從本地存儲讀取主題設置（如果有）
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    isDarkMode.value = false;
+    document.documentElement.classList.remove('dark');
+    document.body.classList.remove('dark-mode');
+  } else {
+    // 預設使用深色模式
+    isDarkMode.value = true;
+    document.documentElement.classList.add('dark');
+    document.body.classList.add('dark-mode');
+    localStorage.setItem('theme', 'dark');
+  }
+});
 
 // 切換選單顯示狀態
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+
+// 切換主題模式
+const toggleTheme = () => {
+  isDarkMode.value = !isDarkMode.value;
+  
+  if (isDarkMode.value) {
+    document.documentElement.classList.add('dark');
+    document.body.classList.add('dark-mode');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+    document.body.classList.remove('dark-mode');
+    localStorage.setItem('theme', 'light');
+  }
+};
 </script>
 
 <template>
-  <div class="app-container dark-mode">
+  <div class="app-container" :class="{ 'dark-mode': isDarkMode }">
     <header class="app-header">
       <div class="logo-container">
-        <h1 class="site-title">小羅の窩</h1>
+        <router-link to="/" class="logo-link">
+          <img src="/assets/meow.png" alt="Logo" class="logo-image">
+          <h1 class="site-title">小羅の窩</h1>
+        </router-link>
       </div>
       
-      <div class="mobile-menu-button" @click="toggleMenu">
-        <span></span>
-        <span></span>
-        <span></span>
+      <div class="right-section">
+        <nav class="main-nav" :class="{ 'open': isMenuOpen }">
+          <ul>
+            <li><router-link to="/" @click="isMenuOpen = false">首頁</router-link></li>
+            <li><router-link to="/posts" @click="isMenuOpen = false">文章</router-link></li>
+            <li><router-link to="/projects" @click="isMenuOpen = false">專案</router-link></li>
+            <li><router-link to="/about" @click="isMenuOpen = false">關於我</router-link></li>
+          </ul>
+        </nav>
+        
+        <div class="header-controls">
+          <button class="theme-toggle" @click="toggleTheme" aria-label="切換主題模式">
+            <font-awesome-icon :icon="isDarkMode ? ['fas', 'sun'] : ['fas', 'moon']" />
+          </button>
+          
+          <div class="mobile-menu-button" @click="toggleMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
       </div>
-      
-      <nav class="main-nav" :class="{ 'open': isMenuOpen }">
-        <ul>
-          <li><router-link to="/" @click="isMenuOpen = false">首頁</router-link></li>
-          <li><router-link to="/posts" @click="isMenuOpen = false">文章</router-link></li>
-          <li><router-link to="/projects" @click="isMenuOpen = false">專案</router-link></li>
-          <li><router-link to="/about" @click="isMenuOpen = false">關於我</router-link></li>
-        </ul>
-      </nav>
     </header>
 
     <main class="app-content">
@@ -104,10 +149,55 @@ body {
   height: 60px; /* 固定高度確保一致性 */
 }
 
+.right-section {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary-color);
+}
+
 .logo-container {
   display: flex;
   align-items: center;
   height: 100%;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 10px;
+}
+
+.logo-image {
+  height: 36px;
+  width: auto;
+  border-radius: 50%;
 }
 
 .site-title {
@@ -122,6 +212,7 @@ body {
   height: 100%;
   display: flex;
   align-items: center;
+  margin-right: 1rem;
 }
 
 .main-nav ul {
@@ -233,9 +324,31 @@ body {
     padding: 0.8rem 1.5rem;
   }
   
+  .logo-image {
+    height: 28px;
+  }
+  
+  .site-title {
+    font-size: 1.3rem;
+  }
+  
+  .theme-toggle {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+  
+  .header-controls {
+    gap: 1rem;
+  }
+  
   .mobile-menu-button {
     display: flex;
     z-index: 200;
+  }
+  
+  .right-section {
+    order: 3;
   }
   
   .main-nav {
@@ -244,6 +357,7 @@ body {
     right: -100%;
     width: 70%;
     height: 100vh;
+    margin-right: 0;
     background-color: var(--card-bg);
     box-shadow: -2px 0 5px var(--shadow-color);
     transition: right 0.3s ease-in-out;

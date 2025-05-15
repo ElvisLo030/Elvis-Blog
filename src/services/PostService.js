@@ -11,7 +11,7 @@ export class PostService {
   async loadPosts() {
     // 在實際應用中，這裡會從文件系統或API讀取文章
     // 由於GitHub Pages是靜態網站，我們需要預先構建文章列表
-    const modules = import.meta.glob('../content/posts/*.md', { as: 'raw', eager: true });
+    const modules = import.meta.glob('../content/posts/*.md', { query: '?raw', import: 'default', eager: true });
     
     this.posts = Object.entries(modules).map(([path, content]) => {
       // 從文件路徑獲取文章slug

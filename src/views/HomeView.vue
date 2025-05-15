@@ -2,7 +2,8 @@
   <div class="home-container">
     <section class="profile-section">
       <div class="profile-image">
-        <!-- 這裡可以加入頭像 -->
+        <!-- 插入大頭照 -->
+        <img src="/assets/profile.jpeg" alt="小羅的大頭照" class="profile-img" />
       </div>
       <h1 class="profile-title">小羅の窩</h1>
       <p class="profile-subtitle">喵喵喵喵！</p>
@@ -63,6 +64,13 @@ import { ref } from 'vue';
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  border: 3px solid var(--primary-color);
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .profile-title {
