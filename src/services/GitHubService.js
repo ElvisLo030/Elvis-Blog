@@ -28,7 +28,6 @@ export async function fetchRepositories(username = DEFAULT_USERNAME) {
       fullName: repo.full_name,
       title: repo.name,
       description: repo.description || '未提供描述',
-      category: getCategoryFromRepo(repo),
       tags: getTagsFromRepo(repo),
       technologies: getLanguagesFromRepo(repo),
       // 嘗試獲取圖片，但允許回退到文字顯示
@@ -71,51 +70,11 @@ export async function fetchRepoLanguages(repo) {
   }
 }
 
-// README 相關功能已移除
-
 /**
- * 根據存儲庫特性判斷分類
+ * 從存儲庫特性獲取標籤
  * @param {Object} repo - 存儲庫物件
- * @returns {string} 分類名稱
+ * @returns {Array} 標籤陣列
  */
-function getCategoryFromRepo(repo) {
-  const name = repo.name.toLowerCase();
-  const description = (repo.description || '').toLowerCase();
-  
-  if (name.includes('web') || description.includes('web') || 
-      name.includes('website') || description.includes('website') || 
-      name.includes('app') || description.includes('app') ||
-      name.includes('site') || description.includes('site') ||
-      name.includes('vue') || description.includes('vue') ||
-      name.includes('react') || description.includes('react')) {
-    return '網頁開發';
-  }
-  
-  if (name.includes('mobile') || description.includes('mobile') ||
-      name.includes('android') || description.includes('android') ||
-      name.includes('ios') || description.includes('ios') ||
-      name.includes('swift') || description.includes('swift') ||
-      name.includes('react-native') || description.includes('react-native')) {
-    return '移動應用';
-  }
-  
-  // 檢查其他可能的類別
-  if (name.includes('api') || description.includes('api') ||
-      name.includes('server') || description.includes('server') ||
-      name.includes('backend') || description.includes('backend')) {
-    return '後端開發';
-  }
-  
-  if (name.includes('data') || description.includes('data') ||
-      name.includes('analysis') || description.includes('analysis') ||
-      name.includes('ml') || description.includes('ml') ||
-      name.includes('ai') || description.includes('ai')) {
-    return '數據科學';
-  }
-  
-  // 默認類別
-  return '其他專案';
-}
 
 /**
  * 從存儲庫特性獲取標籤
@@ -129,13 +88,13 @@ function getTagsFromRepo(repo) {
   
   // 根據存儲庫特性添加標籤
   if (repo.fork) {
-    tags.push('分支項目');
+    tags.push('Fork');
   } else {
-    tags.push('個人專案');
+    tags.push('Original');
   }
   
   if (repo.stargazers_count > 0) {
-    tags.push('受歡迎');
+    tags.push('⭐️');
   }
   
   // 基於名稱和描述添加標籤
@@ -186,7 +145,7 @@ function getLanguagesFromRepo(repo) {
   
   // 確保至少有一個技術標籤
   if (technologies.length === 0) {
-    technologies.push('其他技術');
+    technologies.push('Another');
   }
   
   return technologies;

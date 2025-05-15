@@ -32,7 +32,6 @@ const routes = [
 
 // 創建路由實例
 const router = createRouter({
-  // 使用 history 模式實現乾淨的 URL
   history: createWebHistory(),
   routes
 })

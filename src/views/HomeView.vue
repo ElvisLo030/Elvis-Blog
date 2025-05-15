@@ -1,228 +1,161 @@
 <template>
   <div class="home-container">
-    <section class="hero">
-      <h1 class="hero-title">歡迎來到 <span class="highlight">小羅の窩</span></h1>
-      <p class="hero-subtitle">分享技術、生活和創意的個人空間</p>
-    </section>
-
-    <section class="featured-posts">
-      <h2 class="section-title">最新文章</h2>
-      <div class="posts-grid" v-if="recentPosts.length > 0">
-        <router-link
-          v-for="post in recentPosts"
-          :key="post.slug"
-          :to="`/post/${post.slug}`"
-          class="post-card"
-        >
-          <div class="post-date">{{ formatDate(post.date) }}</div>
-          <h3 class="post-title">{{ post.title }}</h3>
-          <p class="post-summary">{{ post.summary || truncateContent(post.content) }}</p>
-          <div class="post-tags">
-            <span v-for="tag in post.tags" :key="tag" class="tag">{{ tag }}</span>
-          </div>
-        </router-link>
+    <section class="profile-section">
+      <div class="profile-image">
+        <!-- 這裡可以加入頭像 -->
       </div>
-      <div v-else class="no-posts">
-        <p>還沒有文章發布，敬請期待！</p>
-      </div>
-      <div class="view-all" v-if="recentPosts.length > 0">
-        <router-link to="/posts" class="view-all-button">檢視所有文章</router-link>
-      </div>
-    </section>
-
-    <section class="featured-projects">
-      <h2 class="section-title">精選專案</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3 class="project-title">個人部落格</h3>
-          <p class="project-description">基於 Vue.js 的個人部落格網站，採用 SOLID 原則開發，支持 Markdown 文章。</p>
-          <div class="project-tech">
-            <span class="tech-tag">Vue.js</span>
-            <span class="tech-tag">Markdown</span>
-            <span class="tech-tag">SOLID</span>
-          </div>
-        </div>
-        <!-- 你可以在這裡添加更多專案卡片 -->
-      </div>
-      <div class="view-all">
-        <router-link to="/projects" class="view-all-button">檢視所有專案</router-link>
+      <h1 class="profile-title">小羅の窩</h1>
+      <p class="profile-subtitle">喵喵喵喵！</p>
+      
+      <div class="social-links">
+        <a href="mailto:elvislo.work@gmail.com" class="social-link" aria-label="Email">
+          <font-awesome-icon :icon="['fas', 'envelope']" />
+        </a>
+        <a href="https://www.facebook.com/ElvisLo030/" class="social-link" aria-label="Facebook">
+          <font-awesome-icon :icon="['fab', 'facebook-f']" />
+        </a>
+        <a href="https://www.instagram.com/elvis._.lo/" class="social-link" aria-label="Instagram">
+          <font-awesome-icon :icon="['fab', 'instagram']" />
+        </a>
+        <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub">
+          <font-awesome-icon :icon="['fab', 'github']" />
+        </a>
+        <a href="https://x.com/ElvisLo030" class="social-link" aria-label="Twitter">
+          <font-awesome-icon :icon="['fab', 'twitter']" />
+        </a>
       </div>
     </section>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import postService from '../services/PostService';
-
-// 獲取最新文章
-const recentPosts = ref([]);
-
-onMounted(async () => {
-  const allPosts = postService.getAllPosts();
-  recentPosts.value = allPosts.slice(0, 3); // 只顯示最新的3篇文章
-});
-
-// 格式化日期
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('zh-TW', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-};
-
-// 截斷內容
-const truncateContent = (content) => {
-  const plainText = content.replace(/<[^>]*>?/gm, '');
-  return plainText.length > 150 ? plainText.substring(0, 150) + '...' : plainText;
-};
+// 不需要之前的文章相關代碼
+// 保留基本的 Vue 引入
+import { ref } from 'vue';
 </script>
 
 <style scoped>
 .home-container {
-  max-width: 1100px;
+  max-width: 900px;
+  min-height: 75vh; /* 稍微縮減高度 */
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 1rem; /* 縮減上下間距 */
 }
 
-.hero {
+.profile-section {
   text-align: center;
-  padding: 4rem 1rem;
-  margin-bottom: 2rem;
-  background: linear-gradient(rgba(var(--primary-rgb), 0.05), rgba(var(--primary-rgb), 0.02));
-  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem; /* 縮減整體間距 */
 }
 
-.hero-title {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  font-weight: 800;
+.profile-image {
+  width: 120px; /* 縮小頭像尺寸 */
+  height: 120px; /* 縮小頭像尺寸 */
+  border-radius: 50%;
+  background-color: var(--card-bg);
+  margin-bottom: 0.5rem; /* 縮小間距 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-.highlight {
-  color: var(--primary-color);
+.profile-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem; /* 縮小間距 */
 }
 
-.hero-subtitle {
+.profile-subtitle {
   font-size: 1.2rem;
   color: var(--text-color-secondary);
   max-width: 600px;
-  margin: 0 auto;
+  margin-bottom: 0.8rem; /* 縮小間距 */
 }
 
-.section-title {
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
+.social-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem; /* 縮減下方間距 */
+  margin-top: 0.3rem; /* 縮減上方間距 */
+}
+
+.social-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px; /* 縮小圖標尺寸 */
+  height: 50px; /* 縮小圖標尺寸 */
+  border-radius: 50%;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  font-size: 1.1rem; /* 稍微縮小圖標 */
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 6px; /* 縮減橫向間距 */
   position: relative;
-  display: inline-block;
+  overflow: hidden;
+  z-index: 1;
+  border: 2px solid transparent;
 }
 
-.section-title:after {
+.social-link::before {
   content: '';
   position: absolute;
-  bottom: -8px;
+  top: 0;
   left: 0;
-  width: 60%;
-  height: 3px;
-  background-color: var(--primary-color);
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
 }
 
-.featured-posts, .featured-projects {
-  margin-bottom: 4rem;
-}
-
-.posts-grid, .projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.post-card, .project-card {
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px var(--shadow-color);
-  transition: transform 0.3s, box-shadow 0.3s;
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: var(--text-color);
-}
-
-.post-card:hover, .project-card:hover {
+.social-link:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 15px var(--shadow-color);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-.post-date {
-  font-size: 0.85rem;
-  color: var(--text-color-secondary);
-  margin-bottom: 0.5rem;
+.social-link:hover::before {
+  opacity: 1;
 }
 
-.post-title, .project-title {
-  font-size: 1.4rem;
-  margin: 0.5rem 0;
-  color: var(--primary-color);
+.tags-section {
+  margin-top: 0.5rem; /* 縮減上方間距 */
 }
 
-.post-summary, .project-description {
-  flex-grow: 1;
-  margin-bottom: 1rem;
-  line-height: 1.6;
-}
-
-.post-tags, .project-tech {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tag, .tech-tag {
+.tag {
   background-color: rgba(var(--primary-rgb), 0.1);
   color: var(--primary-color);
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-}
-
-.view-all {
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.view-all-button {
-  display: inline-block;
-  background-color: var(--primary-color);
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.view-all-button:hover {
-  background-color: var(--primary-color-dark);
-}
-
-.no-posts {
-  text-align: center;
-  padding: 2rem;
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  box-shadow: 0 4px 6px var(--shadow-color);
+  padding: 0.4rem 0.8rem; /* 縮減內部間距 */
+  border-radius: 20px;
+  font-size: 0.9rem; /* 稍微縮小字體 */
 }
 
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
+  .profile-title {
+    font-size: 2rem;
   }
   
-  .posts-grid, .projects-grid {
-    grid-template-columns: 1fr;
+  .social-links {
+    margin-bottom: 1rem; /* 縮減間距 */
+  }
+  
+  .social-link {
+    width: 38px; /* 在手機上更小 */
+    height: 38px; /* 在手機上更小 */
+    font-size: 0.9rem; /* 縮小字體 */
+    margin: 0 5px;
+    margin-bottom: 8px; /* 縮減下方間距 */
   }
 }
 
@@ -232,17 +165,23 @@ const truncateContent = (content) => {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.home-container > * {
+.profile-section > * {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
-.featured-posts {
+.profile-title {
+  animation-delay: 0.1s;
+}
+
+.profile-subtitle {
   animation-delay: 0.2s;
 }
 
-.featured-projects {
-  animation-delay: 0.4s;
+.social-links {
+  animation-delay: 0.3s;
 }
 
-/* 使用全局定義的 CSS 變量，移除重複定義 */
+.tags-section {
+  animation-delay: 0.4s;
+}
 </style>

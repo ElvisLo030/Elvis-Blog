@@ -1,15 +1,15 @@
 <template>
   <div class="projects-container">
     <div class="projects-header">
-      <h1 class="page-title">我的專案</h1>
-      <p class="page-subtitle">探索我在 GitHub 上的開源專案</p>
+      <h1 class="page-title">My Projects</h1>
+      <p class="page-subtitle">我在 GitHub 上的開源專案</p>
       <div class="github-info">
         <a :href="`https://github.com/${githubUsername}`" target="_blank" class="github-link">
-          <span class="github-icon">💻</span> {{ githubUsername }}
+          <i class="fa-brands fa-github github-icon"></i> {{ githubUsername }}
         </a>
         <button @click="refreshProjects" class="refresh-btn" :disabled="isLoading">
-          <span v-if="!isLoading">🔄</span>
-          <span v-else class="loading-spinner">⌛</span>
+          <span v-if="!isLoading"><font-awesome-icon :icon="['fas', 'rotate']" /></span>
+          <span v-else><font-awesome-icon :icon="['fas', 'spinner']" spin /></span>
           重新整理
         </button>
       </div>
@@ -17,15 +17,17 @@
     
     <!-- 載入狀態 -->
     <div v-if="isLoading" class="loading-container">
-      <div class="loading-spinner"></div>
+      <div class="loading-spinner">
+        <font-awesome-icon :icon="['fas', 'spinner']" spin size="2x" />
+      </div>
       <p>正在從 GitHub 載入專案...</p>
     </div>
     
     <!-- 載入錯誤 -->
     <div v-else-if="loadingError" class="error-container">
       <p>{{ loadingError }}</p>
-      <button @click="refreshProjects" class="refresh-btn">
-        <span>🔄</span> 重試
+      <button @click="refreshProjects" class="refresh-btn" style="font: inherit;">
+        <span><font-awesome-icon :icon="['fas', 'rotate']" /></span> 重試
       </button>
     </div>
     
@@ -53,9 +55,11 @@
         </div>
         
         <div class="projects-grid">
-          <div 
+          <a 
             v-for="project in filteredProjects" 
             :key="project.id"
+            :href="project.codeUrl"
+            target="_blank"
             class="project-card"
             :class="{ featured: project.featured }"
           >
@@ -67,8 +71,11 @@
                 @error="handleImageError($event, project)"
               >
               <div v-else class="project-image-placeholder">
-                <div class="project-icon">{{ project.language || '📁' }}</div>
-                <div class="project-type">{{ project.category }}</div>
+                <div class="project-icon">
+                  <font-awesome-icon :icon="['fas', 'folder']" v-if="!project.language" />
+                  <span v-else>{{ project.language }}</span>
+                </div>
+                <div class="project-type">{{ project.language || '其他' }}</div>
               </div>
             </div>
             <div class="project-content">
@@ -87,13 +94,13 @@
               <!-- 專案統計信息 -->
               <div class="project-stats">
                 <span class="stat-item" v-if="project.stars > 0">
-                  <span class="stat-icon">⭐</span> {{ project.stars }}
+                  <span class="stat-icon"><font-awesome-icon :icon="['fas', 'star']" /></span> {{ project.stars }}
                 </span>
                 <span class="stat-item" v-if="project.forks > 0">
-                  <span class="stat-icon">🍴</span> {{ project.forks }}
+                  <span class="stat-icon"><font-awesome-icon :icon="['fas', 'code-branch']" /></span> {{ project.forks }}
                 </span>
                 <span class="stat-item">
-                  <span class="stat-icon">🕒</span> {{ formatDate(project.updatedAt) }}
+                  <span class="stat-icon"><font-awesome-icon :icon="['far', 'clock']" /></span> {{ formatDate(project.updatedAt) }}
                 </span>
               </div>
               
@@ -106,25 +113,8 @@
                   {{ tech }}
                 </span>
               </div>
-              <div class="project-links">
-                <a 
-                  v-if="project.demoUrl" 
-                  :href="project.demoUrl" 
-                  target="_blank" 
-                  class="project-link demo-link"
-                >
-                  查看演示
-                </a>
-                <a 
-                  :href="project.codeUrl" 
-                  target="_blank" 
-                  class="project-link code-link"
-                >
-                  查看代碼
-                </a>
-              </div>
             </div>
-          </div>
+          </a>
         </div>
       </template>
     </template>
@@ -197,10 +187,10 @@ const filteredProjects = computed(() => {
 
 // 重新載入專案
 function refreshProjects() {
-  loadGitHubProjects();
+  if (!isLoading.value) {
+    loadGitHubProjects();
+  }
 }
-
-// README 相關功能已移除
 
 // 處理圖片載入錯誤
 function handleImageError(event, project) {
@@ -217,13 +207,23 @@ function handleImageError(event, project) {
   // 添加專案圖標
   const icon = document.createElement('div');
   icon.className = 'project-icon';
-  icon.textContent = project.language || '📁';
+  
+  // 如果有語言，顯示語言；否則顯示資料夾圖標
+  if (project.language) {
+    icon.textContent = project.language;
+  } else {
+    // 創建 Font Awesome 圖標元素
+    const folderIcon = document.createElement('i');
+    folderIcon.className = 'fas fa-folder';
+    icon.appendChild(folderIcon);
+  }
+  
   placeholder.appendChild(icon);
   
   // 添加專案類型
   const type = document.createElement('div');
   type.className = 'project-type';
-  type.textContent = project.category;
+  type.textContent = project.language || '其他';
   placeholder.appendChild(type);
   
   // 將替代內容添加到圖片容器中
@@ -352,6 +352,9 @@ function formatDate(date) {
   flex-direction: column;
   height: 100%;
   animation: fadeIn 0.5s ease-out forwards;
+  text-decoration: none;
+  color: var(--text-color);
+  cursor: pointer;
 }
 
 .project-card:hover {
@@ -365,7 +368,7 @@ function formatDate(date) {
 }
 
 .project-card.featured:before {
-  content: '精選';
+  content: '';
   position: absolute;
   top: 10px;
   right: 10px;
@@ -375,6 +378,15 @@ function formatDate(date) {
   border-radius: 4px;
   font-size: 0.8rem;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-card.featured:before {
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  content: '\f005';  /* 星星圖標的 Unicode */
 }
 
 .project-image {
@@ -421,13 +433,14 @@ function formatDate(date) {
   font-weight: 500;
 }
 
-.project-image::before {
-  content: '🚀';
+/* 這裡的樣式是為了讓圖片載入錯誤時顯示預設圖標和類型 */
+/*.project-image::before {
+  content: '';
   position: absolute;
   font-size: 2rem;
   opacity: 0.2;
   z-index: 0;
-}
+}*/
 
 .project-card:hover .project-image img {
   transform: scale(1.05);
@@ -482,41 +495,7 @@ function formatDate(date) {
   font-size: 0.8rem;
 }
 
-.project-links {
-  display: flex;
-  gap: 1rem;
-}
-
-.project-link {
-  flex: 1;
-  text-align: center;
-  padding: 0.6rem 1rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.2s;
-  border: none;
-  cursor: pointer;
-}
-
-.demo-link {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-.demo-link:hover {
-  background-color: var(--primary-color-dark);
-}
-
-.code-link {
-  background-color: var(--border-color);
-  color: var(--text-color);
-}
-
-.code-link:hover {
-  background-color: var(--text-color);
-  color: var(--card-bg);
-}
+/* 已移除不需要的 project-links 和 相關樣式 */
 
 /* README 相關樣式已移除 */
 
@@ -534,16 +513,24 @@ function formatDate(date) {
   gap: 1rem;
 }
 
-.github-link {
+.github-link, .refresh-btn {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: var(--primary-color);
   font-weight: 500;
   padding: 0.5rem 1rem;
   border-radius: 4px;
-  border: 1px solid var(--primary-color);
   transition: all 0.3s;
+  cursor: pointer;
+  height: 40px;
+  box-sizing: border-box;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.github-link {
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 
 .github-link:hover {
@@ -553,32 +540,26 @@ function formatDate(date) {
 
 .github-icon {
   margin-right: 0.5rem;
+  font-size: 1.2rem;
 }
 
 .refresh-btn {
-  display: flex;
-  align-items: center;
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   color: var(--text-color);
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s;
 }
 
-.refresh-btn:hover:not(:disabled) {
+.refresh-btn:hover:not(.disabled) {
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
 
-.refresh-btn:disabled {
+.refresh-btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.refresh-btn span {
+.github-link i, .refresh-btn span {
   margin-right: 0.5rem;
 }
 
@@ -592,19 +573,13 @@ function formatDate(date) {
 }
 
 .loading-spinner {
-  border: 4px solid var(--border-color);
-  border-top: 4px solid var(--primary-color);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
+  font-size: 2rem;
+  color: var(--primary-color);
   margin-bottom: 1rem;
+  text-align: center;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+/* Font Awesome 已經有 fa-spin 動畫，所以我們不需要定義 spin 動畫 */
 
 /* 錯誤容器 */
 .error-container {
@@ -666,5 +641,4 @@ function formatDate(date) {
   }
 }
 
-/* 使用全局定義的 CSS 變量，移除重複定義 */
 </style>
