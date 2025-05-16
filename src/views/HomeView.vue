@@ -12,20 +12,28 @@
         <a href="mailto:elvislo.work@gmail.com" class="social-link" aria-label="Email">
           <font-awesome-icon :icon="['fas', 'envelope']" />
         </a>
-        <a href="https://www.facebook.com/ElvisLo030/" class="social-link" aria-label="Facebook">
-          <font-awesome-icon :icon="['fab', 'facebook-f']" />
-        </a>
         <a href="https://www.instagram.com/elvis._.lo/" class="social-link" aria-label="Instagram">
           <font-awesome-icon :icon="['fab', 'instagram']" />
-        </a>
-        <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub">
-          <font-awesome-icon :icon="['fab', 'github']" />
         </a>
         <a href="https://x.com/ElvisLo030" class="social-link" aria-label="Twitter">
           <font-awesome-icon :icon="['fab', 'twitter']" />
         </a>
+        <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub">
+          <font-awesome-icon :icon="['fab', 'github']" />
+        </a>
+        <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord">
+          <font-awesome-icon :icon="['fab', 'discord']" />
+        </a>
+        <a href="https://t.me/elvislo030" class="social-link" aria-label="Telegram">
+          <font-awesome-icon :icon="['fab', 'telegram']" />
+        </a>
       </div>
     </section>
+  </div>
+  
+  <!-- 複製成功提示 -->
+  <div class="copy-toast" :class="{ 'show': isCopyToastVisible }">
+    <font-awesome-icon :icon="['fas', 'check-circle']" /> Discord ID 已複製到剪貼簿
   </div>
 </template>
 
@@ -33,6 +41,30 @@
 // 不需要之前的文章相關代碼
 // 保留基本的 Vue 引入
 import { ref } from 'vue';
+
+// Discord ID複製功能
+const copyDiscordId = () => {
+  const discordId = 'elvislo_030';
+  
+  // 複製到剪貼簿
+  navigator.clipboard.writeText(discordId)
+    .then(() => {
+      // 顯示複製成功訊息
+      showCopyToast();
+    })
+    .catch(err => {
+      console.error('複製失敗：', err);
+    });
+};
+
+// 顯示複製成功的提示
+const isCopyToastVisible = ref(false);
+const showCopyToast = () => {
+  isCopyToastVisible.value = true;
+  setTimeout(() => {
+    isCopyToastVisible.value = false;
+  }, 2000); // 2秒後隱藏提示
+};
 </script>
 
 <style scoped>
@@ -191,5 +223,39 @@ import { ref } from 'vue';
 
 .tags-section {
   animation-delay: 0.4s;
+}
+
+/* Discord 相關樣式 */
+.discord-link {
+  cursor: pointer;
+}
+
+/* 複製成功提示樣式 */
+.copy-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: rgba(47, 47, 47, 0.9);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  z-index: 1000;
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.copy-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.copy-toast .svg-inline--fa {
+  color: #4ade80;
 }
 </style>

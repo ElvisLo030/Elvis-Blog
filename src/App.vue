@@ -61,6 +61,7 @@ const toggleTheme = () => {
             <li><router-link to="/" @click="isMenuOpen = false">首頁</router-link></li>
             <li><router-link to="/posts" @click="isMenuOpen = false">文章</router-link></li>
             <li><router-link to="/projects" @click="isMenuOpen = false">專案</router-link></li>
+            <li><a href="https://myship.7-11.com.tw/general/detail/GM2503255103525" target="_blank" @click="isMenuOpen = false" class="shop-link">賣場</a></li>
             <li><router-link to="/about" @click="isMenuOpen = false">關於我</router-link></li>
           </ul>
         </nav>
@@ -242,7 +243,8 @@ body {
   height: 100%;
 }
 
-.main-nav a:after {
+.main-nav a:after,
+.shop-link:after {
   content: '';
   position: absolute;
   width: 0;
@@ -254,12 +256,14 @@ body {
 }
 
 .main-nav a:hover:after,
-.main-nav a.router-link-active:after {
+.main-nav a.router-link-active:after,
+.shop-link:hover:after {
   width: 100%;
 }
 
 .main-nav a:hover,
-.main-nav a.router-link-active {
+.main-nav a.router-link-active,
+.shop-link:hover {
   color: var(--primary-color);
 }
 
@@ -278,6 +282,17 @@ body {
 
 .theme-button:hover {
   background-color: rgba(128, 128, 128, 0.2);
+}
+
+.shop-link {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .app-content {
@@ -379,7 +394,8 @@ body {
     height: auto;
   }
   
-  .main-nav a {
+  .main-nav a,
+  .shop-link {
     height: auto;
     padding: 0.5rem 0;
   }

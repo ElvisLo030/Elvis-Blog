@@ -2,16 +2,6 @@
   <div class="projects-container">
     <div class="projects-header">
       <h1 class="page-title">GitHub Repositories</h1>
-      <div class="github-info">
-        <a :href="`https://github.com/${githubUsername}`" target="_blank" class="github-link">
-          <i class="fa-brands fa-github github-icon"></i> {{ githubUsername }}
-        </a>
-        <button @click="refreshProjects" class="refresh-btn" :disabled="isLoading">
-          <span v-if="!isLoading"><font-awesome-icon :icon="['fas', 'rotate']" /></span>
-          <span v-else><font-awesome-icon :icon="['fas', 'spinner']" spin /></span>
-          重新整理
-        </button>
-      </div>
     </div>
     
     <!-- 載入狀態 -->
@@ -25,7 +15,7 @@
     <!-- 載入錯誤 -->
     <div v-else-if="loadingError" class="error-container">
       <p>{{ loadingError }}</p>
-      <button @click="refreshProjects" class="refresh-btn" style="font: inherit;">
+      <button @click="loadGitHubProjects" class="refresh-btn" style="font: inherit;">
         <span><font-awesome-icon :icon="['fas', 'rotate']" /></span> 重試
       </button>
     </div>
@@ -166,34 +156,24 @@ const filteredProjects = computed(() => {
   return notForkedProjects.filter(project => project.language === currentCategory.value);
 });
 
-// 重新載入專案
-function refreshProjects() {
-  if (!isLoading.value) {
-    loadGitHubProjects();
-  }
-}
-
-// 處理圖片載入錯誤
 function handleImageError(event, project) {
   // 隱藏圖片元素
   event.target.style.display = 'none';
   
-  // 在圖片容器中插入文字替代內容
+  // 獲取圖片容器
   const container = event.target.parentNode;
   
-  // 創建一個文字替代容器
+  // 創建替代容器
   const placeholder = document.createElement('div');
   placeholder.className = 'project-image-placeholder';
   
-  // 添加專案圖標
+  // 添加語言或資料夾圖標
   const icon = document.createElement('div');
   icon.className = 'project-icon';
   
-  // 如果有語言，顯示語言；否則顯示資料夾圖標
   if (project.language) {
     icon.textContent = project.language;
   } else {
-    // 創建 Font Awesome 圖標元素
     const folderIcon = document.createElement('i');
     folderIcon.className = 'fas fa-folder';
     icon.appendChild(folderIcon);
@@ -207,7 +187,7 @@ function handleImageError(event, project) {
   type.textContent = project.language || '其他';
   placeholder.appendChild(type);
   
-  // 將替代內容添加到圖片容器中
+  // 將替代內容添加到圖片容器
   container.appendChild(placeholder);
 }
 
@@ -337,15 +317,6 @@ function handleImageError(event, project) {
   font-weight: 500;
 }
 
-/* 這裡的樣式是為了讓圖片載入錯誤時顯示預設圖標和類型 */
-/*.project-image::before {
-  content: '';
-  position: absolute;
-  font-size: 2rem;
-  opacity: 0.2;
-  z-index: 0;
-}*/
-
 .project-card:hover .project-image img {
   transform: scale(1.05);
 }
@@ -385,10 +356,6 @@ function handleImageError(event, project) {
   border-radius: 4px;
   font-size: 0.8rem;
 }
-
-/* 已移除不需要的 project-links 和 相關樣式 */
-
-/* README 相關樣式已移除 */
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -470,8 +437,6 @@ function handleImageError(event, project) {
   text-align: center;
 }
 
-/* Font Awesome 已經有 fa-spin 動畫，所以我們不需要定義 spin 動畫 */
-
 /* 錯誤容器 */
 .error-container {
   background-color: rgba(255, 0, 0, 0.1);
@@ -496,8 +461,6 @@ function handleImageError(event, project) {
   color: var(--text-color-secondary);
   margin-top: 1rem;
 }
-
-/* 專案統計信息已移除 */
 
 @media (max-width: 768px) {
   .projects-grid {

@@ -24,18 +24,12 @@ export async function fetchRepositories(username = DEFAULT_USERNAME) {
     // 轉換成我們需要的格式
     const repos = reposData.map(repo => ({
       id: repo.id,
-      name: repo.name,
-      fullName: repo.full_name,
       title: repo.name,
       description: repo.description || '未提供描述',
-      tags: [], // 標籤功能已移除，返回空陣列
       technologies: getLanguagesFromRepo(repo),
-      // 嘗試獲取圖片，但允許回退到文字顯示
       image: `https://opengraph.githubassets.com/1/${repo.full_name}`,
-      demoUrl: repo.homepage || null,
       codeUrl: repo.html_url,
       language: repo.language,
-      // stars 和 最後更新時間顯示已移除
       fork: repo.fork
     }));
     
@@ -45,28 +39,6 @@ export async function fetchRepositories(username = DEFAULT_USERNAME) {
     return [];
   }
 }
-
-/**
- * 從存儲庫獲取主要語言資料
- * @param {Object} repo - 存儲庫物件
- * @returns {Promise} 包含語言資料的 Promise
- */
-export async function fetchRepoLanguages(repo) {
-  try {
-    const response = await fetch(repo.languages_url);
-    
-    if (!response.ok) {
-      throw new Error(`GitHub API 回應錯誤: ${response.status}`);
-    }
-    
-    return await response.json();
-  } catch (error) {
-    console.error(`獲取存儲庫 ${repo.name} 的語言資料失敗:`, error);
-    return {};
-  }
-}
-
-// 標籤功能已移除
 
 /**
  * 從存儲庫獲取預設技術標籤
@@ -95,11 +67,9 @@ function getLanguagesFromRepo(repo) {
     if (nameAndDesc.toLowerCase().includes(tech.toLowerCase()) && !technologies.includes(tech)) {
       technologies.push(tech);
     }
-  });
-  
-  // 確保至少有一個技術標籤
+  });    // 確保至少有一個技術標籤
   if (technologies.length === 0) {
-    technologies.push('Another');
+    technologies.push('Other');
   }
   
   return technologies;
