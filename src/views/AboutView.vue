@@ -55,42 +55,45 @@
           <div class="skill-category">
             <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'heart']" /> 喜歡的東西</h3>
             <div class="skill-tags">
-              <span class="skill-tag">橘貓</span>
+              <span class="skill-tag" @click="OrangeCatClick">橘貓</span>
               <span class="skill-tag">虎斑貓</span>
               <span class="skill-tag">咖波</span>
               <span class="skill-tag">貓貓怪</span>
               <span class="skill-tag">小八</span>
+              <span class="skill-tag" @click="AnotherProfileClick">狗勾</span>
+              <span class="skill-tag">鮭魚</span>
+              <span class="skill-tag">日式料理</span>
+              <span class="skill-tag">拉麵！</span>
               <span class="skill-tag">電腦程式相關</span>
               <span class="skill-tag">手作的東東</span>
-              <span class="skill-tag">日式料理 拉麵！！！</span>
             </div>
           </div>
 
           <div class="skill-category">
             <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'gamepad']" /> 遊戲</h3>
             <div class="skill-tags">
-              <span class="skill-tag">崩壞：星穹鐵道</span>
-              <span class="skill-tag">原神</span>
-              <span class="skill-tag">TCGP</span>
-              <span class="skill-tag">MaiMai</span>
-              <span class="skill-tag">Chunithm</span>
-              <span class="skill-tag">Cytus 2</span>
-              <span class="skill-tag">Arcaea</span>
-              <span class="skill-tag">Project Sekai</span>
+              <span class="skill-tag" @click="GameidClick">崩壞：星穹鐵道</span>
+              <span class="skill-tag" @click="GameidClick">原神</span>
+              <span class="skill-tag" @click="GameidClick">TCGP</span>
+              <span class="skill-tag" @click="GameidClick">MaiMai</span>
+              <span class="skill-tag" @click="GameidClick">Chunithm</span>
+              <span class="skill-tag" @click="GameidClick">Cytus 2</span>
+              <span class="skill-tag" @click="GameidClick">Arcaea</span>
+              <span class="skill-tag" @click="GameidClick">Project Sekai</span>
             </div>
           </div>
           
           <div class="skill-category">
             <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'code']" /> 程式</h3>
             <div class="skill-tags">
-              <span class="skill-tag">C++</span>
+              <span class="skill-tag" >C++</span>
               <span class="skill-tag">Java</span>
               <span class="skill-tag">JavaScript</span>
               <span class="skill-tag">Python</span>
               <span class="skill-tag">Vue</span>
               <span class="skill-tag">Swift</span>
             </div>
-            <p class="skill-note">以上努力學習中...<br>希望能學會並精通這些</p>
+            <p class="skill-note">以上努力學習中...</p>
           </div>
           
           <div class="skill-category">
@@ -100,6 +103,15 @@
               <span class="skill-tag">電音</span>
               <span class="skill-tag">ACG</span>
               <span class="skill-tag">Vocaloid</span>
+              <span class="skill-tag">DECO*27</span>
+              <span class="skill-tag">YOASOBI</span>
+              <span class="skill-tag">Ado</span>
+              <span class="skill-tag">ReoNa</span>
+              <span class="skill-tag">USAO</span>
+              <span class="skill-tag">Xi</span>
+              <span class="skill-tag">*Luna</span>
+              <span class="skill-tag">打打だいず</span>
+              <span class="skill-tag">初音ミク</span>
             </div>
           </div>
           <div class="skill-category">
@@ -108,10 +120,20 @@
               <span class="skill-tag">MyGo!!!!!</span>
               <span class="skill-tag">Ave Mujica</span>
               <span class="skill-tag">Grils Band Cry</span>
+              <span class="skill-tag">Re:Zero</span>
               <span class="skill-tag">魔法少女小圓</span>
               <span class="skill-tag">我推的孩子</span>
               <span class="skill-tag">明日方舟</span>
-              <span class="skill-tag">Re:Zero</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'bars']" /> 其他</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">輕微社恐👉👈</span>
+              <span class="skill-tag">歡迎揪吃飯！</span>
+              <span class="skill-tag">不挑食的乖小孩</span>
+              <span class="skill-tag" style="background-color: #ff0000;"><font-awesome-icon :icon="['fas', 'triangle-exclamation']"/>超嚴重訊息拖延症！</span>
+              <span class="skill-tag" style="background-color: #ff0000;"><font-awesome-icon :icon="['fas', 'triangle-exclamation']"/>超嚴重臉盲！</span>             
             </div>
           </div>
         </div>
@@ -151,6 +173,27 @@ const showCopyToast = () => {
     isCopyToastVisible.value = false;
   }, 2000); // 2秒後隱藏提示
 };
+
+const OrangeCatClick = () => {
+  setTimeout(() => {
+    window.open('https://purr.tw/', '_blank');
+    toast.remove();
+  }, ); 
+}
+
+const AnotherProfileClick = () => {
+  setTimeout(() => {
+    window.open('https://elvislo030.notion.site/meow?pvs=4', '_blank');
+    toast.remove();
+  }, ); 
+}
+
+const GameidClick = () => {
+  setTimeout(() => {
+    window.open('https://elvislo.tw/post/game-id');
+    toast.remove();
+  }, ); 
+}
 </script>
 
 <style scoped>
@@ -385,16 +428,25 @@ const showCopyToast = () => {
 }
 
 /* 自訂各項技能的圖標顏色 */
+
+.skill-title .fa-heart {
+  color: #ff4757;
+}
+
 .skill-title .fa-gamepad {
-  color: #ff6b6b;
+  color: #0077ff;
 }
 
 .skill-title .fa-code {
-  color: #1c9cea;
+  color: #00ffee;
 }
 
 .skill-title .fa-music {
   color: #ae3ec9;
+}
+
+.skill-title .fa-film {
+  color: #ff8d1b;
 }
 
 /* 動畫 */
