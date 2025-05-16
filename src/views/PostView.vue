@@ -20,20 +20,22 @@
     <div class="post-content" v-html="renderedContent"></div>
     
     <div class="post-navigation">
-      <div v-if="prevPost" class="prev-post">
-        <router-link :to="`/post/${prevPost.slug}`">
+      <div class="prev-post">
+        <router-link v-if="prevPost" :to="`/post/${prevPost.slug}`">
           ← {{ prevPost.title }}
         </router-link>
+        <span v-else class="nav-placeholder"></span>
       </div>
       <div class="back-to-posts">
         <router-link to="/posts">
           所有文章
         </router-link>
       </div>
-      <div v-if="nextPost" class="next-post">
-        <router-link :to="`/post/${nextPost.slug}`">
+      <div class="next-post">
+        <router-link v-if="nextPost" :to="`/post/${nextPost.slug}`">
           {{ nextPost.title }} →
         </router-link>
+        <span v-else class="nav-placeholder"></span>
       </div>
     </div>
   </div>
@@ -312,6 +314,10 @@ const navigateToTag = (tag) => {
 
 .post-navigation a:hover {
   color: var(--primary-color-dark);
+}
+
+.nav-placeholder {
+  visibility: hidden;
 }
 
 /* 文章未找到樣式 */

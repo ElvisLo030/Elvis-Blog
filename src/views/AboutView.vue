@@ -9,9 +9,10 @@
         <ul class="info-list">
           <li><font-awesome-icon :icon="['fas', 'user']" />你可以叫我：小羅</li>
           <li><font-awesome-icon :icon="['fas', 'map-marker-alt']" /> 居住地：高雄</li>
-          <li><font-awesome-icon :icon="['fas', 'brain']" /> MBTI：INFJ-T</li>
+          <li><font-awesome-icon :icon="['fas', 'book']" /> MBTI：INFJ-T</li>
           <li><font-awesome-icon :icon="['fas', 'graduation-cap']" /> 學校：CSU-MIS</li>
-          <li><font-awesome-icon :icon="['fas', 'tags']" /> 擔任：23屆資管系學會活動長、準24屆資管系學會會長</li>
+          <li><font-awesome-icon :icon="['fas', 'scroll']" /> 23屆資管系學會活動長、準24屆資管系學會會長</li>
+          <li><font-awesome-icon :icon="['fas', 'tags']" /> KPWC 高屏聯賽負責人、草衙B1傳閱本／機況管理人</li>
         </ul>
       </div>
     </section>
@@ -72,14 +73,14 @@
           <div class="skill-category">
             <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'gamepad']" /> 遊戲</h3>
             <div class="skill-tags">
-              <span class="skill-tag" @click="GameidClick">崩壞：星穹鐵道</span>
-              <span class="skill-tag" @click="GameidClick">原神</span>
-              <span class="skill-tag" @click="GameidClick">TCGP</span>
-              <span class="skill-tag" @click="GameidClick">MaiMai</span>
-              <span class="skill-tag" @click="GameidClick">Chunithm</span>
-              <span class="skill-tag" @click="GameidClick">Cytus 2</span>
-              <span class="skill-tag" @click="GameidClick">Arcaea</span>
-              <span class="skill-tag" @click="GameidClick">Project Sekai</span>
+              <span class="skill-tag" >崩壞：星穹鐵道</span>
+              <span class="skill-tag" >原神</span>
+              <span class="skill-tag" >TCGP</span>
+              <span class="skill-tag" >MaiMai</span>
+              <span class="skill-tag" >Chunithm</span>
+              <span class="skill-tag" >Cytus 2</span>
+              <span class="skill-tag" >Arcaea</span>
+              <span class="skill-tag" >Project Sekai</span>
             </div>
           </div>
           
@@ -93,7 +94,7 @@
               <span class="skill-tag">Vue</span>
               <span class="skill-tag">Swift</span>
             </div>
-            <p class="skill-note">以上努力學習中...</p>
+            <p class="skill-note">努力學習中...</p>
           </div>
           
           <div class="skill-category">
@@ -184,13 +185,6 @@ const OrangeCatClick = () => {
 const AnotherProfileClick = () => {
   setTimeout(() => {
     window.open('https://elvislo030.notion.site/meow?pvs=4', '_blank');
-    toast.remove();
-  }, ); 
-}
-
-const GameidClick = () => {
-  setTimeout(() => {
-    window.open('https://elvislo.tw/post/game-id', '_self');
     toast.remove();
   }, ); 
 }

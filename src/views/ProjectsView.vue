@@ -196,7 +196,7 @@ function handleImageError(event, project) {
 
 <style scoped>
 .projects-container {
-  max-width: 1100px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 1rem;
 }
@@ -208,7 +208,22 @@ function handleImageError(event, project) {
 
 .page-title {
   font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+.page-title:after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  background-color: var(--primary-color);
 }
 
 .page-subtitle {

@@ -1,6 +1,6 @@
 <template>
   <div class="posts-container">
-    <h1 class="page-title">文章列表</h1>
+    <h1 class="page-title">Blog</h1>
     
     <div class="posts-filter">
       <input 
@@ -133,14 +133,17 @@ const truncateContent = (content) => {
   font-size: 2.5rem;
   margin-bottom: 2rem;
   position: relative;
-  display: inline-block;
+  display: block;
+  text-align: center;
+  width: 100%;
 }
 
 .page-title:after {
   content: '';
   position: absolute;
   bottom: -8px;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 60%;
   height: 3px;
   background-color: var(--primary-color);
