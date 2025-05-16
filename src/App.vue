@@ -85,7 +85,7 @@ const toggleTheme = () => {
     </main>
 
     <footer class="app-footer">
-      <p>&copy; {{ new Date().getFullYear() }} elvislo All Rights Reserved</p>
+      <p>&copy; {{ new Date().getFullYear() }} ElvisLo All Rights Reserved</p>
     </footer>
   </div>
 </template>

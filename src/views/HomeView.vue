@@ -33,7 +33,7 @@
   
   <!-- 複製成功提示 -->
   <div class="copy-toast" :class="{ 'show': isCopyToastVisible }">
-    <font-awesome-icon :icon="['fas', 'check-circle']" /> Discord ID 已複製到剪貼簿
+    <font-awesome-icon :icon="['fas', 'check-circle']" /> Discord ID 已複製
   </div>
 </template>
 

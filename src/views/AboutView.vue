@@ -133,8 +133,8 @@
               <span class="skill-tag">輕微社恐👉👈</span>
               <span class="skill-tag">歡迎揪吃飯！</span>
               <span class="skill-tag">不挑食的乖小孩</span>
-              <span class="skill-tag" style="background-color: #ff0000;"><font-awesome-icon :icon="['fas', 'triangle-exclamation']"/>超嚴重訊息拖延症！</span>
-              <span class="skill-tag" style="background-color: #ff0000;"><font-awesome-icon :icon="['fas', 'triangle-exclamation']"/>超嚴重臉盲！</span>             
+              <span class="skill-tag" style="background-color: #ff0000;"><font-awesome-icon :icon="['fas', 'triangle-exclamation']"/> 超嚴重訊息拖延症！</span>
+              <span class="skill-tag" style="background-color: #ff0000;"><font-awesome-icon :icon="['fas', 'triangle-exclamation']"/> 超嚴重臉盲！</span>             
             </div>
           </div>
         </div>
@@ -144,7 +144,7 @@
   
   <!-- 複製成功提示 -->
   <div class="copy-toast" :class="{ 'show': isCopyToastVisible }">
-    <font-awesome-icon :icon="['fas', 'check-circle']" /> Discord ID 已複製到剪貼簿
+    <font-awesome-icon :icon="['fas', 'check-circle']" /> Discord ID 已複製
   </div>
 </template>
 
