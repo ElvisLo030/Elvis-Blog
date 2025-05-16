@@ -190,7 +190,7 @@ const AnotherProfileClick = () => {
 
 const GameidClick = () => {
   setTimeout(() => {
-    window.open('https://elvislo.tw/post/game-id');
+    window.open('https://elvislo.tw/post/game-id', '_self');
     toast.remove();
   }, ); 
 }

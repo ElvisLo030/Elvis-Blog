@@ -24,6 +24,11 @@ const routes = [
     props: true
   },
   {
+    path: '/post/game-id',
+    name: 'GameId',
+    component: () => import('../views/post/game-id.vue')
+  },
+  {
     path: '/projects',
     name: 'Projects',
     component: () => import('../views/ProjectsView.vue')
