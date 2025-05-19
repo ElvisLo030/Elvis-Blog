@@ -6,7 +6,7 @@
         <img src="/assets/profile.jpeg" alt="小羅的大頭照" class="profile-img" />
       </div>
       <h1 class="profile-title">小羅の窩</h1>
-      <p class="profile-subtitle">喵喵喵喵！</p>
+      <p class="profile-subtitle">喵喵喵！</p>
       
       <div class="social-links">
         <a href="mailto:elvislo.work@gmail.com" class="social-link" aria-label="Email">
@@ -24,8 +24,8 @@
         <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord">
           <font-awesome-icon :icon="['fab', 'discord']" />
         </a>
-        <a href="https://t.me/elvislo030" class="social-link" aria-label="Telegram">
-          <font-awesome-icon :icon="['fab', 'telegram']" />
+        <a href="https://bumpnewzenly.com/p/pCcghkwJAh0iI" class="social-link" aria-label="Bump">
+          <font-awesome-icon :icon="['fas', 'location-dot']" />
         </a>
       </div>
     </section>
