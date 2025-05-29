@@ -103,9 +103,12 @@ const projects = ref([]);
 
 // 使用程式語言作為分類標籤
 const categories = computed(() => {
-  // 從項目中提取所有實際使用的程式語言
+  // 先過濾掉 fork 的項目
+  const notForkedProjects = projects.value.filter(project => !project.fork);
+  
+  // 從非 fork 項目中提取所有實際使用的程式語言
   const usedLanguages = ['全部'];
-  projects.value.forEach(project => {
+  notForkedProjects.forEach(project => {
     if (project.language && !usedLanguages.includes(project.language)) {
       usedLanguages.push(project.language);
     }
@@ -129,7 +132,6 @@ async function loadGitHubProjects() {
     } else {
       projects.value = repos;
       const notForkedCount = repos.filter(repo => !repo.fork).length;
-      console.log(`從 GitHub 載入了 ${repos.length} 個專案，其中 ${notForkedCount} 個非 fork 專案將被顯示`);
     }
   } catch (error) {
     console.error('載入 GitHub 專案失敗:', error);
@@ -150,10 +152,22 @@ const filteredProjects = computed(() => {
   const notForkedProjects = projects.value.filter(project => !project.fork);
   
   // 再根據當前選中的類別進行過濾
+  let filtered;
   if (currentCategory.value === '全部') {
-    return notForkedProjects;
+    filtered = notForkedProjects;
+  } else {
+    filtered = notForkedProjects.filter(project => project.language === currentCategory.value);
   }
-  return notForkedProjects.filter(project => project.language === currentCategory.value);
+  
+  // 排序：starred 的專案永遠在最上面
+  return filtered.sort((a, b) => {
+    // 如果 a 是 starred 而 b 不是，a 排在前面
+    if (a.isStarred && !b.isStarred) return -1;
+    // 如果 b 是 starred 而 a 不是，b 排在前面
+    if (!a.isStarred && b.isStarred) return 1;
+    // 其他情況保持原有順序
+    return 0;
+  });
 });
 
 function handleImageError(event, project) {
@@ -290,7 +304,7 @@ function handleImageError(event, project) {
 
 .project-image {
   width: 100%;
-  height: 180px;
+  min-height: 120px;
   overflow: hidden;
   background-color: #f0f0f0;
   position: relative;
@@ -305,14 +319,14 @@ function handleImageError(event, project) {
 
 .project-image img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  display: block;
   transition: transform 0.5s;
 }
 
 .project-image-placeholder {
   width: 100%;
-  height: 100%;
+  height: 180px;
   display: flex;
   flex-direction: column;
   align-items: center;

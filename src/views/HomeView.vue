@@ -2,14 +2,13 @@
   <div class="home-container">
     <section class="profile-section">
       <div class="profile-image">
-        <!-- 插入大頭照 -->
         <img src="/assets/profile.jpeg" alt="小羅的大頭照" class="profile-img" />
       </div>
       <h1 class="profile-title">小羅の窩</h1>
-      <p class="profile-subtitle">喵喵喵！</p>
+      <p class="profile-subtitle">一隻可憐ㄉ大學生</p>
       
       <div class="social-links">
-        <a href="mailto:elvislo.work@gmail.com" class="social-link" aria-label="Email">
+        <a href="mailto:me@elvislo.tw" class="social-link" aria-label="Email">
           <font-awesome-icon :icon="['fas', 'envelope']" />
         </a>
         <a href="https://www.instagram.com/elvis._.lo/" class="social-link" aria-label="Instagram">

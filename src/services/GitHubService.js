@@ -12,14 +12,26 @@ const DEFAULT_USERNAME = 'ElvisLo030';
  */
 export async function fetchRepositories(username = DEFAULT_USERNAME) {
   try {
-    // 使用 GitHub REST API 獲取存儲庫列表
-    const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    // 同時獲取用戶的存儲庫和 starred 存儲庫
+    const [reposResponse, starredResponse] = await Promise.all([
+      fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`),
+      fetch(`https://api.github.com/users/${username}/starred?per_page=100`)
+    ]);
     
-    if (!response.ok) {
-      throw new Error(`GitHub API 回應錯誤: ${response.status}`);
+    if (!reposResponse.ok) {
+      throw new Error(`GitHub API 回應錯誤: ${reposResponse.status}`);
     }
     
-    const reposData = await response.json();
+    const reposData = await reposResponse.json();
+    let starredData = [];
+    
+    // 獲取 starred 存儲庫（如果 API 呼叫成功）
+    if (starredResponse.ok) {
+      starredData = await starredResponse.json();
+    }
+    
+    // 創建 starred 存儲庫的 ID 集合，用於快速查找
+    const starredIds = new Set(starredData.map(repo => repo.id));
     
     // 轉換成我們需要的格式
     const repos = reposData.map(repo => ({
@@ -30,7 +42,8 @@ export async function fetchRepositories(username = DEFAULT_USERNAME) {
       image: `https://opengraph.githubassets.com/1/${repo.full_name}`,
       codeUrl: repo.html_url,
       language: repo.language,
-      fork: repo.fork
+      fork: repo.fork,
+      isStarred: starredIds.has(repo.id)
     }));
     
     return repos;

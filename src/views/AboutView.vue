@@ -8,10 +8,10 @@
       <div class="section-content">
         <ul class="info-list">
           <li><font-awesome-icon :icon="['fas', 'user']" />你可以叫我：小羅</li>
-          <li><font-awesome-icon :icon="['fas', 'map-marker-alt']" /> 居住地：高雄</li>
+          <li><font-awesome-icon :icon="['fas', 'map-marker-alt']" /> 出沒地：高雄</li>
           <li><font-awesome-icon :icon="['fas', 'book']" /> MBTI：INFJ-T</li>
           <li><font-awesome-icon :icon="['fas', 'graduation-cap']" /> 學校：CSU-MIS</li>
-          <li><font-awesome-icon :icon="['fas', 'scroll']" /> 23屆資管系學會活動長、準24屆資管系學會會長</li>
+          <li><font-awesome-icon :icon="['fas', 'scroll']" /> 23屆資管系學會活動長、24屆資管系學會會長</li>
           <li><font-awesome-icon :icon="['fas', 'tags']" /> KPWC 高屏聯賽負責人、草衙B1傳閱本／機況管理人</li>
         </ul>
       </div>
@@ -21,9 +21,9 @@
       <h2 class="section-title"><font-awesome-icon :icon="['fas', 'share-alt']" class="section-icon" /> Soacial Media</h2>
       <div class="section-content">
         <div class="social-links">
-          <a href="mailto:elvislo.work@gmail.com" class="social-link" aria-label="Email">
+          <a href="mailto:me@elvislo.tw" class="social-link" aria-label="Email">
             <font-awesome-icon :icon="['fas', 'envelope']" />
-            <span>Email</span>
+            <span>me@elvislo.tw</span>
           </a>
           <a href="https://instagram.com/elvis._.lo" target="_blank" class="social-link" aria-label="Instagram">
             <font-awesome-icon :icon="['fab', 'instagram']" />
