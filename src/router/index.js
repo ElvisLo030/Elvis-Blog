@@ -30,10 +30,4 @@ const routes = [
   }
 ]
 
-// 創建路由實例
-const router = createRouter({
-  history: createWebHistory(),
-  routes
-})
-
-export default router
+export default routes

@@ -1,8 +1,8 @@
 import './assets/main.css'
 
-import { createApp } from 'vue'
+import { ViteSSG } from 'vite-ssg'
 import App from './App.vue'
-import router from './router'
+import routes from './router'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -28,17 +28,22 @@ const preloadImages = () => {
   })
 }
 
-// 在 DOM 內容載入完成後加載圖片
-document.addEventListener('DOMContentLoaded', preloadImages)
+// 創建 SSG 應用
+export const createApp = ViteSSG(
+  App,
+  { routes },
+  ({ app, router, isClient }) => {
+    // 在客戶端才執行的代碼
+    if (isClient) {
+      document.addEventListener('DOMContentLoaded', preloadImages)
+      
+      const redirectPath = sessionStorage.getItem('redirectPath');
+      if (redirectPath) {
+        sessionStorage.removeItem('redirectPath');
+        router.push(redirectPath);
+      }
+    }
 
-// 處理 GitHub Pages 路由重定向
-const redirectPath = sessionStorage.getItem('redirectPath');
-if (redirectPath) {
-  sessionStorage.removeItem('redirectPath');
-  router.push(redirectPath);
-}
-
-const app = createApp(App)
-app.component('font-awesome-icon', FontAwesomeIcon)
-app.use(router)
-app.mount('#app')
+    app.component('font-awesome-icon', FontAwesomeIcon)
+  }
+)
