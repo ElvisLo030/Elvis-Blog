@@ -35,15 +35,15 @@ export const createApp = ViteSSG(
   ({ app, router, isClient }) => {
     // 在客戶端才執行的代碼
     if (isClient) {
-      document.addEventListener('DOMContentLoaded', preloadImages)
-      
-      const redirectPath = sessionStorage.getItem('redirectPath');
-      if (redirectPath) {
-        sessionStorage.removeItem('redirectPath');
-        router.push(redirectPath);
-      }
-    }
+document.addEventListener('DOMContentLoaded', preloadImages)
 
-    app.component('font-awesome-icon', FontAwesomeIcon)
+const redirectPath = sessionStorage.getItem('redirectPath');
+if (redirectPath) {
+  sessionStorage.removeItem('redirectPath');
+  router.push(redirectPath);
+      }
+}
+
+app.component('font-awesome-icon', FontAwesomeIcon)
   }
 )

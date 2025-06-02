@@ -50,7 +50,7 @@
                 @click.stop
               >
                 <font-awesome-icon :icon="['fas', 'external-link-alt']" />
-                查看詳細說明
+                查看官方網站
               </a>
             </div>
           </div>
@@ -69,7 +69,7 @@
               複製邀請碼
             </button>
             <button v-else class="action-button" @click.stop="openLink(item.link)">
-              立即申請
+              立即申辦
             </button>
           </div>
         </div>
@@ -83,22 +83,25 @@
           <font-awesome-icon :icon="['fas', 'times']" />
         </button>
         <h2 class="modal-title">{{ selectedItem.title }}</h2>
+        <div class="modal-subtitle">{{ selectedItem.description }}</div>
         <div class="modal-info">
-          <div class="info-item">
+          <h3 class="info-section">
             <font-awesome-icon :icon="['fas', 'calendar']" />
-            <span>活動日期：{{ selectedItem.period }}</span>
-          </div>
-          <div class="info-item" v-if="selectedItem.type === 'code'">
+            活動日期：{{ selectedItem.period }}
+          </h3>
+          <h3 class="info-section" v-if="selectedItem.type === 'code'">
             <font-awesome-icon :icon="['fas', 'ticket']" />
-            <span>邀請碼：{{ selectedItem.code }}</span>
+            邀請碼：{{ selectedItem.code }}
             <button class="copy-button" @click="copyCode(selectedItem.code)">
               <font-awesome-icon :icon="['fas', 'copy']" />
             </button>
-          </div>
+          </h3>
         </div>
-        <div class="modal-description">{{ selectedItem.description }}</div>
         <div class="modal-benefits">
-          <h3>優惠內容：</h3>
+          <h3 class="info-section">
+            <font-awesome-icon :icon="['fas', 'tags']" />
+            優惠內容：
+          </h3>
           <div class="benefit-item" v-for="benefit in selectedItem.benefits" :key="benefit">
             <span v-if="!isUrl(benefit)" class="benefit-text">{{ benefit }}</span>
             <a 
@@ -109,7 +112,7 @@
               @click.stop
             >
               <font-awesome-icon :icon="['fas', 'external-link-alt']" />
-              說明網站
+              官方網站
             </a>
           </div>
         </div>
@@ -390,7 +393,7 @@ const getUrl = (text) => {
 
 <style scoped>
 .invite-container {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
@@ -600,24 +603,38 @@ const getUrl = (text) => {
   width: 90%;
   position: relative;
   animation: modalSlideIn 0.3s ease-out;
+  letter-spacing: 0.02em;
 }
 
 .modal-title {
   font-size: 1.8rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: var(--primary-color);
+  letter-spacing: 0.02em;
+}
+
+.modal-subtitle {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .modal-info {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.info-item {
+.info-section {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  color: var(--text-color-secondary);
+  margin: 1rem 0;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .modal-tags {
@@ -627,18 +644,12 @@ const getUrl = (text) => {
   margin-bottom: 1.5rem;
 }
 
-.modal-description {
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
 .modal-benefits {
   margin-bottom: 2rem;
 }
 
-.modal-benefits h3 {
+.modal-benefits .info-section {
   margin-bottom: 1rem;
-  color: var(--text-color);
 }
 
 .modal-action {
@@ -718,6 +729,8 @@ const getUrl = (text) => {
 
 .benefit-text {
   line-height: 1.4;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
 }
 
 .benefit-link {
@@ -727,6 +740,7 @@ const getUrl = (text) => {
   align-items: center;
   gap: 0.5rem;
   transition: color 0.2s;
+  letter-spacing: 0.02em;
 }
 
 .benefit-link:hover {

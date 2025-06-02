@@ -73,14 +73,14 @@
           <div class="skill-category">
             <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'gamepad']" /> 遊戲</h3>
             <div class="skill-tags">
-              <span class="skill-tag" >崩壞：星穹鐵道</span>
-              <span class="skill-tag" >原神</span>
-              <span class="skill-tag" >TCGP</span>
-              <span class="skill-tag" >MaiMai</span>
-              <span class="skill-tag" >Chunithm</span>
-              <span class="skill-tag" >Cytus 2</span>
-              <span class="skill-tag" >Arcaea</span>
-              <span class="skill-tag" >Project Sekai</span>
+              <span class="skill-tag" @click="gameClick">崩壞：星穹鐵道</span>
+              <span class="skill-tag" @click="gameClick">原神</span>
+              <span class="skill-tag" @click="gameClick">TCGP</span>
+              <span class="skill-tag" @click="gameClick">MaiMai</span>
+              <span class="skill-tag" @click="gameClick">Chunithm</span>
+              <span class="skill-tag" @click="gameClick">Cytus 2</span>
+              <span class="skill-tag" @click="gameClick">Arcaea</span>
+              <span class="skill-tag" @click="gameClick">Project Sekai</span>
             </div>
           </div>
           
@@ -187,6 +187,11 @@ const AnotherProfileClick = () => {
     window.open('https://elvislo030.notion.site/meow?pvs=4', '_blank');
     toast.remove();
   }, ); 
+}
+
+// 處理遊戲標籤點擊
+const gameClick = () => {
+  window.open(`https://elvislo.tw/posts`, '_blank');
 }
 </script>
 
@@ -375,6 +380,17 @@ const AnotherProfileClick = () => {
 
 .skill-tag:hover {
   transform: scale(1.05);
+}
+
+/* 遊戲標籤特殊樣式 */
+.skill-category .skill-tags .skill-tag {
+  cursor: pointer;
+}
+
+.skill-category:has(.skill-title .fa-gamepad) .skill-tag:hover {
+  background-color: var(--primary-color-dark);
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.4);
 }
 
 .skill-note {

@@ -34,6 +34,15 @@ const closeMenu = () => {
   isMenuOpen.value = false;
 };
 
+// 處理賣場連結點擊
+const handleShopClick = () => {
+  const confirmed = confirm('你即將跳轉到賣貨便，是否確認跳轉？');
+  if (confirmed) {
+    window.open('https://myship.7-11.com.tw/general/detail/GM2503255103525', '_blank');
+  }
+  closeMenu();
+};
+
 // 切換主題模式
 const toggleTheme = () => {
   isDarkMode.value = !isDarkMode.value;
@@ -81,7 +90,7 @@ const toggleTheme = () => {
               <font-awesome-icon :icon="['fas', 'paper-plane']" class="nav-icon" />
               邀請碼
             </router-link></li>
-            <li><a href="https://myship.7-11.com.tw/general/detail/GM2503255103525" target="_blank" @click="closeMenu" class="shop-link">
+            <li><a @click="handleShopClick" class="shop-link" style="cursor: pointer;">
               <font-awesome-icon :icon="['fas', 'shop']" class="nav-icon" />
               賣場
             </a></li>

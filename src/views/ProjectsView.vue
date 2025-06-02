@@ -1,6 +1,6 @@
 <template>
   <div class="projects-container">
-    <h1 class="page-title">GitHub Repositories</h1>
+    <h1 class="page-title">Projects</h1>
     
     <!-- 載入狀態 -->
     <div v-if="isLoading" class="loading-container">
@@ -169,38 +169,12 @@ const filteredProjects = computed(() => {
 });
 
 function handleImageError(event, project) {
-  // 隱藏圖片元素
-  event.target.style.display = 'none';
+  // 設定替代圖片
+  event.target.src = '/assets/default-repo.png';
+  event.target.style.display = 'block';
   
-  // 獲取圖片容器
-  const container = event.target.parentNode;
-  
-  // 創建替代容器
-  const placeholder = document.createElement('div');
-  placeholder.className = 'project-image-placeholder';
-  
-  // 添加語言或資料夾圖標
-  const icon = document.createElement('div');
-  icon.className = 'project-icon';
-  
-  if (project.language) {
-    icon.textContent = project.language;
-  } else {
-    const folderIcon = document.createElement('i');
-    folderIcon.className = 'fas fa-folder';
-    icon.appendChild(folderIcon);
-  }
-  
-  placeholder.appendChild(icon);
-  
-  // 添加專案類型
-  const type = document.createElement('div');
-  type.className = 'project-type';
-  type.textContent = project.language || '其他';
-  placeholder.appendChild(type);
-  
-  // 將替代內容添加到圖片容器
-  container.appendChild(placeholder);
+  // 移除錯誤事件監聽器，避免無限循環
+  event.target.onerror = null;
 }
 
 // 日期格式化功能已移除
