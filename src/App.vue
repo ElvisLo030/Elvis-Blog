@@ -61,7 +61,8 @@ const toggleTheme = () => {
             <li><router-link to="/" @click="isMenuOpen = false">首頁</router-link></li>
             <li><router-link to="/posts" @click="isMenuOpen = false">文章</router-link></li>
             <li><router-link to="/projects" @click="isMenuOpen = false">專案</router-link></li>
-            <li><a href="https://myship.7-11.com.tw/general/detail/GM2503255103525" target="_blank" @click="isMenuOpen = false" class="shop-link">賣場</a></li>
+            <li><router-link to="/invite" @click="isMenuOpen = false">邀請碼</router-link></li>
+            <li><a href="https://myship.7-11.com.tw/general/detail/GM2503255103525" target="_blank" @click="isMenuOpen = false" class="shop-link">賣場 <font-awesome-icon icon="fa-solid fa-arrow-up-right-from-square" size="sm" /></a></li>
             <li><router-link to="/about" @click="isMenuOpen = false">關於我</router-link></li>
           </ul>
         </nav>

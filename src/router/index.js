@@ -27,7 +27,12 @@ const routes = [
     path: '/projects',
     name: 'Projects',
     component: () => import('../views/ProjectsView.vue')
-  }
+  },
+  {
+    path: '/invite',
+    name: 'Invite',
+    component: () => import('../views/InviteView.vue')
+  },
 ]
 
 export default routes

@@ -2,19 +2,23 @@
   <div class="posts-container">
     <h1 class="page-title">Blog</h1>
     
-    <div class="posts-filter">
-      <input 
-        type="text" 
-        v-model="searchQuery" 
-        placeholder="搜尋文章..." 
-        class="search-input"
-      />
-      <div class="filter-tags" v-if="allTags.length > 0">
+    <div class="filter-section">
+      <div class="search-box">
+        <font-awesome-icon :icon="['fas', 'search']" class="search-icon" />
+        <input 
+          type="text" 
+          v-model="searchQuery" 
+          placeholder="搜尋文章..." 
+          class="search-input"
+        />
+      </div>
+      
+      <div class="tags-filter">
         <button 
           v-for="tag in allTags" 
           :key="tag"
           @click="toggleTagFilter(tag)"
-          class="tag-filter"
+          class="filter-tag"
           :class="{ active: selectedTags.includes(tag) }"
         >
           {{ tag }}
@@ -126,7 +130,7 @@ const truncateContent = (content) => {
 .posts-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 2rem 1rem;
 }
 
 .page-title {
@@ -149,54 +153,65 @@ const truncateContent = (content) => {
   background-color: var(--primary-color);
 }
 
-.posts-filter {
+.filter-section {
   margin-bottom: 2rem;
+}
+
+.search-box {
+  position: relative;
+  max-width: 500px;
+  margin: 0 auto 1.5rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-color-secondary);
 }
 
 .search-input {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1rem;
   background-color: var(--card-bg);
   color: var(--text-color);
-  margin-bottom: 1rem;
-  transition: all 0.3s;
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
 }
 
-.filter-tags {
+.tags-filter {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  justify-content: center;
 }
 
-.tag-filter {
-  background-color: var(--card-bg);
-  color: var(--text-color);
+.filter-tag {
+  background: none;
   border: 1px solid var(--border-color);
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s;
+  color: var(--text-color);
 }
 
-.tag-filter:hover {
+.filter-tag:hover {
   border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
-.tag-filter.active {
+.filter-tag.active {
   background-color: var(--primary-color);
-  color: white;
   border-color: var(--primary-color);
+  color: white;
 }
 
 .posts-list {

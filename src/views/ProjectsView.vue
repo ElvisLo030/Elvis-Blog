@@ -1,8 +1,6 @@
 <template>
   <div class="projects-container">
-    <div class="projects-header">
-      <h1 class="page-title">GitHub Repositories</h1>
-    </div>
+    <h1 class="page-title">GitHub Repositories</h1>
     
     <!-- 載入狀態 -->
     <div v-if="isLoading" class="loading-container">
@@ -29,14 +27,14 @@
       
       <!-- 有專案時顯示 -->
       <template v-else>
-        <div class="filter-container">
-          <div class="filter-tabs">
+        <div class="filter-section">
+          <div class="tags-filter">
             <button 
               v-for="category in categories" 
               :key="category"
               @click="currentCategory = category"
               :class="{ active: currentCategory === category }"
-              class="filter-tab"
+              class="filter-tag"
             >
               {{ category }}
             </button>
@@ -212,12 +210,7 @@ function handleImageError(event, project) {
 .projects-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.projects-header {
-  text-align: center;
-  margin-bottom: 3rem;
+  padding: 2rem 1rem;
 }
 
 .page-title {
@@ -245,32 +238,33 @@ function handleImageError(event, project) {
   color: var(--text-color-secondary);
 }
 
-.filter-container {
+.filter-section {
   margin-bottom: 2rem;
 }
 
-.filter-tabs {
+.tags-filter {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
-.filter-tab {
-  background-color: var(--card-bg);
+.filter-tag {
+  background: none;
   border: 1px solid var(--border-color);
   color: var(--text-color);
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
-.filter-tab:hover {
+.filter-tag:hover {
   border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
-.filter-tab.active {
+.filter-tag.active {
   background-color: var(--primary-color);
   color: white;
   border-color: var(--primary-color);
@@ -496,7 +490,7 @@ function handleImageError(event, project) {
     grid-template-columns: 1fr;
   }
   
-  .filter-tabs {
+  .filter-tags {
     flex-direction: row;
     overflow-x: auto;
     padding-bottom: 0.5rem;
