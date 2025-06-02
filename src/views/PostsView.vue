@@ -19,7 +19,7 @@
           :key="tag"
           @click="toggleTagFilter(tag)"
           class="filter-tag"
-          :class="{ active: selectedTags.includes(tag) }"
+          :class="{ active: currentTag === tag }"
         >
           {{ tag }}
         </button>
@@ -65,7 +65,7 @@ import postService from '../services/PostService';
 // 文章列表
 const posts = ref([]);
 const searchQuery = ref('');
-const selectedTags = ref([]);
+const currentTag = ref('全部'); // 改為單選模式
 
 // 獲取所有文章
 onMounted(async () => {
@@ -74,7 +74,7 @@ onMounted(async () => {
 
 // 獲取所有標籤
 const allTags = computed(() => {
-  const tags = new Set();
+  const tags = new Set(['全部']); // 添加"全部"選項
   posts.value.forEach(post => {
     post.tags.forEach(tag => tags.add(tag));
   });
@@ -90,23 +90,18 @@ const filteredPosts = computed(() => {
       post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       post.content.toLowerCase().includes(searchQuery.value.toLowerCase());
     
-    // 再檢查標籤
+    // 再檢查標籤 - 改為單選邏輯
     const matchesTags = 
-      selectedTags.value.length === 0 || 
-      selectedTags.value.every(tag => post.tags.includes(tag));
+      currentTag.value === '全部' || 
+      post.tags.includes(currentTag.value);
     
     return matchesSearch && matchesTags;
   });
 });
 
-// 切換標籤過濾
+// 切換標籤過濾 - 改為單選模式
 const toggleTagFilter = (tag) => {
-  const index = selectedTags.value.indexOf(tag);
-  if (index === -1) {
-    selectedTags.value.push(tag);
-  } else {
-    selectedTags.value.splice(index, 1);
-  }
+  currentTag.value = tag;
 };
 
 // 格式化日期

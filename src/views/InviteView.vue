@@ -19,7 +19,7 @@
           :key="tag"
           @click="toggleTag(tag)"
           class="filter-tag"
-          :class="{ active: selectedTags.includes(tag) }"
+          :class="{ active: currentTag === tag }"
         >
           {{ tag }}
         </button>
@@ -136,7 +136,7 @@ import { ref, computed } from 'vue';
 
 // 搜尋和篩選
 const searchQuery = ref('');
-const selectedTags = ref([]);
+const currentTag = ref('全部'); // 改為單選模式
 
 // 優惠資訊資料
 const inviteItems = ref([
@@ -165,28 +165,154 @@ const inviteItems = ref([
     benefits: [
       '受邀者：好像沒有🥲',
       '邀請者：500點玉山e point',
-      'https://www.esunbank.com.tw/zh-tw/personal/credit-card/intro/bank-card/unicard#5'
+      'https://www.esunbank.com.tw/zh-tw/personal/credit-card/intro/bank-card/unicard'
     ]
   },
   {
     id: 3,
+    type: 'link',
+    title: '玉山銀行 Pi錢包 信用卡',
+    period: '2025/03/01 ~ 2026/02/28',
+    link: 'https://card.esunbank.com.tw/EsunCreditweb/txnproc/selApplyCard?PRJCD=APYCRD0049&param=241747708001763',
+    description: '指定通路最高5%P幣回饋',
+    tags: ['信用卡'],
+    benefits: [
+      '受邀者：好像沒有🥲',
+      '邀請者：500點P幣',
+      'https://www.esunbank.com/zh-tw/personal/credit-card/intro/co-branded-card/pi-card'
+    ]
+  },
+  {
+    id: 4,
+    type: 'link',
+    title: '王道銀行',
+    period: '2025/04/01 ~ 2025/06/30',
+    link: 'https://obank.tw/e/FU6vRq',
+    description: '開戶指定行動支付6%現金回饋+10%高利率活儲',
+    tags: ['銀行開戶'],
+    benefits: [
+      '受邀者：100塊現金',
+      '邀請者：100塊現金',
+      'https://www.o-bank.com/web/Event/CM_108022801/index.html'
+    ]
+  }, 
+  {
+    id: 5,
+    type: 'link',
+    title: 'LINE Bank',
+    period: '2025/01/01 ~ 2025/12/31',
+    link: 'https://www.linebank.com.tw/R/mgm-portal?campaignId=2&uid=bfYj94',
+    description: 'LINE Point 即時回饋',
+    tags: ['銀行開戶'],
+    benefits: [
+      '受邀者：好像沒有🥲',
+      '邀請者：100塊現金',
+      'https://www.linebank.com.tw/'
+    ]
+  },
+  {
+    id: 6,
+    type: 'link',
+    title: 'Next Bank 將來銀行',
+    period: '2025/04/01 ~ 2025/06/30',
+    link: 'https://ebank.nextbank.com.tw/open-account?mgmcode=Y6JU5&channel=APPMGM&utm_source=app&utm_medium=link',
+    description: '可自定帳號',
+    tags: ['銀行開戶'],
+    benefits: [
+      '受邀者：10%優利活存',
+      '邀請者：200N點',
+      'https://www.nextbank.com.tw/'
+    ]
+  },
+  {
+    id: 7,
+    type: 'link',
+    title: '台新 Richart 數位帳戶',
+    period: '2025/05/01 ~ 2025/06/30',
+    link: 'https://richart.tw/TSDIB_RichartWeb/RC07/RC070100?sn=LUD3K&utm_source=richart&utm_medium=app&utm_campaign=richart_mgm_20230701',
+    description: '新戶海外消費最高5%現金回饋',
+    tags: ['銀行開戶'],
+    benefits: [
+      '受邀者：100塊現金',
+      '邀請者：200塊現金',
+      'https://www.nextbank.com.tw/'
+    ]
+  },
+  {
+    id: 30,
+    type: 'code',
+    title: '全支付',
+    period: '2025/01/01 ~ 2025/06/30',
+    code: '4958R23F',
+    description: '綁定指定帳戶享高回饋',
+    tags: ['行動支付'],
+    benefits: [
+      '受邀者：50全點',
+      '邀請者：50全點',
+      'https://pxpayplus.page.link/2n3T'
+    ]
+  },
+  {
+    id: 40,
+    type: 'code',
+    title: 'Klook',
+    period: '2025/01/01 ~ 2025/12/31',
+    code: '29JUFX',
+    description: '訂票、訂房網站',
+    tags: ['旅遊'],
+    benefits: [
+      '受邀者：100塊優惠回饋',
+      '邀請者：100塊優惠回饋',
+      'https://s.klook.com/c/mwYZae2QX2'
+    ]
+  },
+  {
+    id: 41,
     type: 'code',
     title: 'Airalo eSIM',
     period: '2025/01/01 ~ 2025/12/31',
     code: 'LUIFEJ6003',
     description: '首次申辦享免費試用eSIM',
-    tags: ['eSIM'],
+    tags: ['旅遊'],
     benefits: [
       '受邀者：首購享USD$3.00優惠',
       '邀請者：USD$3.00 Airmoney',
       'https://airalo.go.link/7P8MX'
+    ]
+  },
+  {
+    id: 51,
+    type: 'code',
+    title: 'ShopBack',
+    period: '2025/06/01 ~ 2025/06/30',
+    code: 'mzpihA',
+    description: '購物賺現金回饋',
+    tags: ['購物'],
+    benefits: [
+      '受邀者：400塊獎勵金',
+      '邀請者：400塊獎勵金',
+      'https://app.shopback.com/CR1q2RdDRTb'
+    ]
+  },
+  {
+    id: 52,
+    type: 'code',
+    title: 'HappyGo',
+    period: '2025/01/01 ~ 2025/12/31',
+    code: '25G3YU',
+    description: '購物賺點數回饋',
+    tags: ['購物'],
+    benefits: [
+      '受邀者：好像沒有🥲',
+      '邀請者：200點HappyGo點數',
+      'https://www.happygocard.com.tw/official/index.do'
     ]
   }
 ]);
 
 // 獲取所有標籤
 const allTags = computed(() => {
-  const tags = new Set();
+  const tags = new Set(['全部']); // 添加"全部"選項
   inviteItems.value.forEach(item => {
     item.tags.forEach(tag => tags.add(tag));
   });
@@ -201,22 +327,17 @@ const filteredItems = computed(() => {
       item.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       item.description.toLowerCase().includes(searchQuery.value.toLowerCase());
     
-    // 標籤條件
-    const matchTags = selectedTags.value.length === 0 || 
-      selectedTags.value.every(tag => item.tags.includes(tag));
+    // 標籤條件 - 改為單選邏輯
+    const matchTags = currentTag.value === '全部' || 
+      item.tags.includes(currentTag.value);
     
     return matchSearch && matchTags;
   });
 });
 
-// 切換標籤
+// 切換標籤 - 改為單選模式
 const toggleTag = (tag) => {
-  const index = selectedTags.value.indexOf(tag);
-  if (index === -1) {
-    selectedTags.value.push(tag);
-  } else {
-    selectedTags.value.splice(index, 1);
-  }
+  currentTag.value = tag;
 };
 
 // 選中的項目
