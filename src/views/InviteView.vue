@@ -410,7 +410,7 @@ const getUrl = (text) => {
   bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 47%;
+  width: 60%;
   height: 3px;
   background-color: var(--primary-color);
 }
@@ -454,6 +454,7 @@ const getUrl = (text) => {
   flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: center;
+  padding: 0.5rem 1rem;
 }
 
 .filter-tag {
@@ -778,9 +779,25 @@ const getUrl = (text) => {
   
   .tags-filter {
     justify-content: flex-start;
-    padding: 0.5rem;
+    flex-wrap: nowrap;
     overflow-x: auto;
+    padding: 0.5rem 0;
+    gap: 0.8rem;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .tags-filter::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .filter-tag {
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-width: auto;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
   }
 }
 </style>

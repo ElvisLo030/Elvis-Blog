@@ -29,6 +29,11 @@ const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
+// 關閉選單功能
+const closeMenu = () => {
+  isMenuOpen.value = false;
+};
+
 // 切換主題模式
 const toggleTheme = () => {
   isDarkMode.value = !isDarkMode.value;
@@ -57,13 +62,33 @@ const toggleTheme = () => {
       
       <div class="right-section">
         <nav class="main-nav" :class="{ 'open': isMenuOpen }">
+          <!-- 添加背景遮罩，點擊可關閉選單 -->
+          <div class="nav-overlay" @click="closeMenu" v-if="isMenuOpen"></div>
           <ul>
-            <li><router-link to="/" @click="isMenuOpen = false">首頁</router-link></li>
-            <li><router-link to="/posts" @click="isMenuOpen = false">文章</router-link></li>
-            <li><router-link to="/projects" @click="isMenuOpen = false">專案</router-link></li>
-            <li><router-link to="/invite" @click="isMenuOpen = false">邀請碼</router-link></li>
-            <li><a href="https://myship.7-11.com.tw/general/detail/GM2503255103525" target="_blank" @click="isMenuOpen = false" class="shop-link">賣場 <font-awesome-icon icon="fa-solid fa-arrow-up-right-from-square" size="sm" /></a></li>
-            <li><router-link to="/about" @click="isMenuOpen = false">關於我</router-link></li>
+            <li><router-link to="/" @click="closeMenu">
+              <font-awesome-icon :icon="['fas', 'home']" class="nav-icon" />
+              首頁
+            </router-link></li>
+            <li><router-link to="/posts" @click="closeMenu">
+              <font-awesome-icon :icon="['fas', 'list']" class="nav-icon" />
+              文章
+            </router-link></li>
+            <li><router-link to="/projects" @click="closeMenu">
+              <font-awesome-icon :icon="['fas', 'folder-open']" class="nav-icon" />
+              專案
+            </router-link></li>
+            <li><router-link to="/invite" @click="closeMenu">
+              <font-awesome-icon :icon="['fas', 'paper-plane']" class="nav-icon" />
+              邀請碼
+            </router-link></li>
+            <li><a href="https://myship.7-11.com.tw/general/detail/GM2503255103525" target="_blank" @click="closeMenu" class="shop-link">
+              <font-awesome-icon :icon="['fas', 'shop']" class="nav-icon" />
+              賣場
+            </a></li>
+            <li><router-link to="/about" @click="closeMenu">
+              <font-awesome-icon :icon="['fas', 'user-circle']" class="nav-icon" />
+              關於我
+            </router-link></li>
           </ul>
         </nav>
         
@@ -384,6 +409,17 @@ body {
     right: 0;
   }
   
+  /* 背景遮罩樣式 */
+  .nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    z-index: -1;
+  }
+  
   .main-nav ul {
     flex-direction: column;
     padding: 4rem 2rem 2rem;
@@ -399,6 +435,23 @@ body {
   .shop-link {
     height: auto;
     padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  /* 手機版顯示導航圖示 */
+  .nav-icon {
+    font-size: 1.1rem;
+    width: 1.2rem;
+    text-align: center;
+  }
+}
+
+/* 桌面版隱藏導航圖示 */
+@media (min-width: 769px) {
+  .nav-icon {
+    display: none;
   }
 }
 </style>

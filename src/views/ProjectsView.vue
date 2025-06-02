@@ -247,6 +247,7 @@ function handleImageError(event, project) {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 .filter-tag {
@@ -490,10 +491,27 @@ function handleImageError(event, project) {
     grid-template-columns: 1fr;
   }
   
-  .filter-tags {
-    flex-direction: row;
+  .tags-filter {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
     overflow-x: auto;
-    padding-bottom: 0.5rem;
+    padding: 0.5rem 0;
+    gap: 0.8rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .tags-filter::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .filter-tag {
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-width: auto;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
   }
   
   .github-info {
