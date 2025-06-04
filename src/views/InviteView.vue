@@ -518,7 +518,7 @@ const getUrl = (text) => {
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
-  color: var(--text-color-secondary);
+  color: var(--text-color);
   font-size: 0.9rem;
 }
 

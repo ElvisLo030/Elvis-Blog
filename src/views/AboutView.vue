@@ -54,7 +54,7 @@
       <div class="section-content">
         <div class="skills-container">
           <div class="skill-category">
-            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'heart']" /> 喜歡的東西</h3>
+            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'heart']" /> Favorite </h3>
             <div class="skill-tags">
               <span class="skill-tag" @click="OrangeCatClick">橘貓</span>
               <span class="skill-tag">虎斑貓</span>
@@ -71,7 +71,7 @@
           </div>
 
           <div class="skill-category">
-            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'gamepad']" /> 遊戲</h3>
+            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'gamepad']" /> Game </h3>
             <div class="skill-tags">
               <span class="skill-tag" @click="gameClick">崩壞：星穹鐵道</span>
               <span class="skill-tag" @click="gameClick">原神</span>
@@ -85,20 +85,22 @@
           </div>
           
           <div class="skill-category">
-            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'code']" /> 程式</h3>
+            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'code']" /> Skill </h3>
             <div class="skill-tags">
               <span class="skill-tag" >C++</span>
+              <span class="skill-tag">Python</span>
               <span class="skill-tag">Java</span>
               <span class="skill-tag">JavaScript</span>
-              <span class="skill-tag">Python</span>
+              <span class="skill-tag">HTML</span>
               <span class="skill-tag">Vue</span>
               <span class="skill-tag">Swift</span>
+              <span class="skill-tag">GCP</span>
             </div>
             <p class="skill-note">努力學習中...</p>
           </div>
           
           <div class="skill-category">
-            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'music']" /> 音樂</h3>
+            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'music']" /> Music </h3>
             <div class="skill-tags">
               <span class="skill-tag">J POP</span>
               <span class="skill-tag">電音</span>
@@ -116,7 +118,7 @@
             </div>
           </div>
           <div class="skill-category">
-            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'film']" /> 動漫</h3>
+            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'film']" /> Anime</h3>
             <div class="skill-tags">
               <span class="skill-tag">MyGo!!!!!</span>
               <span class="skill-tag">Ave Mujica</span>
@@ -128,7 +130,7 @@
             </div>
           </div>
           <div class="skill-category">
-            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'bars']" /> 其他</h3>
+            <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'bars']" /> Other</h3>
             <div class="skill-tags">
               <span class="skill-tag">輕微社恐👉👈</span>
               <span class="skill-tag">歡迎揪吃飯！</span>
@@ -190,8 +192,11 @@ const AnotherProfileClick = () => {
 }
 
 // 處理遊戲標籤點擊
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 const gameClick = () => {
-  window.open(`https://elvislo.tw/posts`, '_blank');
+  router.push('/posts');
 }
 </script>
 
