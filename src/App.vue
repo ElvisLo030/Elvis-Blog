@@ -74,7 +74,7 @@ const toggleTheme = () => {
           <!-- 添加背景遮罩，點擊可關閉選單 -->
           <div class="nav-overlay" @click="closeMenu" v-if="isMenuOpen"></div>
           <ul>
-            <li><router-link to="/" @click="closeMenu">
+            <li class="home-nav-item"><router-link to="/" @click="closeMenu">
               <font-awesome-icon :icon="['fas', 'home']" class="nav-icon" />
               首頁
             </router-link></li>
@@ -461,6 +461,22 @@ body {
 @media (min-width: 769px) {
   .nav-icon {
     display: none;
+  }
+  
+  /* 桌面版隱藏首頁導航項目 - 使用多種方法確保隱藏 */
+  .main-nav ul .home-nav-item {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* 額外確保使用 :first-child 選擇器 */
+  .main-nav ul li:first-child.home-nav-item {
+    display: none !important;
   }
 }
 </style>

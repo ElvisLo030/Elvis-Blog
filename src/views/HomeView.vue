@@ -11,22 +11,22 @@
       </p>
       
       <div class="social-links">
-        <a href="mailto:me@elvislo.tw" class="social-link" aria-label="Email">
+        <a href="mailto:me@elvislo.tw" class="social-link" aria-label="Email" data-tooltip="發送 Email 給我">
           <font-awesome-icon :icon="['fas', 'envelope']" />
         </a>
-        <a href="https://www.instagram.com/elvis._.lo/" class="social-link" aria-label="Instagram">
+        <a href="https://www.instagram.com/elvis._.lo/" class="social-link" aria-label="Instagram" data-tooltip="追蹤我的 Instagram">
           <font-awesome-icon :icon="['fab', 'instagram']" />
         </a>
-        <a href="https://x.com/ElvisLo030" class="social-link" aria-label="Twitter">
+        <a href="https://x.com/ElvisLo030" class="social-link" aria-label="Twitter" data-tooltip="追蹤我的 Twitter(X)">
           <font-awesome-icon :icon="['fab', 'twitter']" />
         </a>
-        <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub">
+        <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub" data-tooltip="查看我的 Github">
           <font-awesome-icon :icon="['fab', 'github']" />
         </a>
-        <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord">
+        <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord" data-tooltip="複製 Discord ID">
           <font-awesome-icon :icon="['fab', 'discord']" />
         </a>
-        <a href="https://bumpnewzenly.com/p/pCcghkwJAh0iI" class="social-link" aria-label="Bump">
+        <a href="https://bumpnewzenly.com/p/pCcghkwJAh0iI" class="social-link" aria-label="Bump" data-tooltip="Bump !">
           <font-awesome-icon :icon="['fas', 'location-dot']" />
         </a>
       </div>
@@ -243,7 +243,6 @@ const showCopyToast = () => {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   margin: 0 6px; /* 縮減橫向間距 */
   position: relative;
-  overflow: hidden;
   z-index: 1;
   border: 2px solid transparent;
 }
@@ -259,6 +258,7 @@ const showCopyToast = () => {
   opacity: 0;
   z-index: -1;
   transition: opacity 0.3s ease;
+  border-radius: 50%;
 }
 
 .social-link:hover {
@@ -269,6 +269,36 @@ const showCopyToast = () => {
 
 .social-link:hover::before {
   opacity: 1;
+}
+
+/* Tooltip 提示框樣式 */
+.social-link::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.95);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 懸停時顯示 tooltip */
+.social-link:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-8px);
 }
 
 .tags-section {
@@ -293,11 +323,18 @@ const showCopyToast = () => {
   }
   
   .social-link {
-    width: 38px; /* 在手機上更小 */
-    height: 38px; /* 在手機上更小 */
-    font-size: 0.9rem; /* 縮小字體 */
-    margin: 0 5px;
-    margin-bottom: 8px; /* 縮減下方間距 */
+    width: 40px; /* 增大手機版圖標尺寸 */
+    height: 40px; /* 增大手機版圖標尺寸 */
+    font-size: 1rem; /* 增大圖標字體 */
+    margin: 0 6px; /* 增加橫向間距 */
+    margin-bottom: 8px; /* 增加下方間距 */
+  }
+
+  /* 手機版 tooltip 調整 */
+  .social-link::after {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    bottom: 130%;
   }
 }
 
