@@ -323,10 +323,10 @@ const showCopyToast = () => {
   }
   
   .social-link {
-    width: 40px; /* 增大手機版圖標尺寸 */
-    height: 40px; /* 增大手機版圖標尺寸 */
+    width: 38px; /* 增大手機版圖標尺寸 */
+    height: 38px; /* 增大手機版圖標尺寸 */
     font-size: 1rem; /* 增大圖標字體 */
-    margin: 0 6px; /* 增加橫向間距 */
+    margin: 0 5px; /* 增加橫向間距 */
     margin-bottom: 8px; /* 增加下方間距 */
   }
 
