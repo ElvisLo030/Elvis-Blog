@@ -5,7 +5,10 @@
         <img src="/assets/profile.jpeg" alt="小羅的大頭照" class="profile-img" />
       </div>
       <h1 class="profile-title">小羅の窩</h1>
-      <p class="profile-subtitle">一隻可憐ㄉ大學生</p>
+      <p class="profile-subtitle">
+        <span class="typewriter-text">{{ displayText }}</span>
+        <span class="typing-cursor" :class="{ 'blink': showCursor }"></span>
+      </p>
       
       <div class="social-links">
         <a href="mailto:me@elvislo.tw" class="social-link" aria-label="Email">
@@ -37,9 +40,78 @@
 </template>
 
 <script setup>
-// 不需要之前的文章相關代碼
-// 保留基本的 Vue 引入
-import { ref } from 'vue';
+
+import { ref, onMounted, onUnmounted } from 'vue';
+
+// 打字機效果的文字陣列
+const typewriterTexts = [
+  '一隻爆肝ㄉ大學生',
+  '努力在這個世界留下足跡',
+  'Rhythm Gamer',
+  '喵喵喵喵貓',
+  '橘貓最可愛ㄌ'
+];
+
+// 打字機效果相關狀態
+const displayText = ref('');
+const currentTextIndex = ref(0);
+const currentCharIndex = ref(0);
+const isDeleting = ref(false);
+const showCursor = ref(true);
+const typewriterSpeed = ref(150); // 打字速度（毫秒）
+let typewriterTimer = null;
+
+// 打字機效果邏輯
+const typeWriter = () => {
+  const currentText = typewriterTexts[currentTextIndex.value];
+  
+  if (isDeleting.value) {
+    // 刪除字符
+    displayText.value = currentText.substring(0, currentCharIndex.value - 1);
+    currentCharIndex.value--;
+    typewriterSpeed.value = 75; // 刪除速度較快
+    
+    if (currentCharIndex.value === 0) {
+      isDeleting.value = false;
+      currentTextIndex.value = (currentTextIndex.value + 1) % typewriterTexts.length;
+      typewriterSpeed.value = 500; // 換文字前的暫停
+    }
+  } else {
+    // 添加字符
+    displayText.value = currentText.substring(0, currentCharIndex.value + 1);
+    currentCharIndex.value++;
+    typewriterSpeed.value = 150; // 正常打字速度
+    
+    if (currentCharIndex.value === currentText.length) {
+      isDeleting.value = true;
+      typewriterSpeed.value = 2000; // 完整顯示後的暫停時間
+    }
+  }
+  
+  typewriterTimer = setTimeout(typeWriter, typewriterSpeed.value);
+};
+
+// 游標閃爍效果
+const startCursorBlink = () => {
+  setInterval(() => {
+    showCursor.value = !showCursor.value;
+  }, 530);
+};
+
+// 組件掛載時啟動效果
+onMounted(() => {
+  setTimeout(() => {
+    typeWriter();
+    startCursorBlink();
+  }, 1000); // 延遲1秒開始打字效果
+});
+
+// 組件卸載時清理定時器
+onUnmounted(() => {
+  if (typewriterTimer) {
+    clearTimeout(typewriterTimer);
+  }
+});
 
 // Discord ID複製功能
 const copyDiscordId = () => {
@@ -112,9 +184,40 @@ const showCopyToast = () => {
 
 .profile-subtitle {
   font-size: 1.2rem;
-  color: var(--text-color-secondary);
+  color: var(--text-color);
   max-width: 600px;
   margin-bottom: 0.8rem; /* 縮小間距 */
+  min-height: 1.5em; /* 確保高度一致，避免跳動 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 打字機效果樣式 */
+.typewriter-text {
+  display: inline-block;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background-color: var(--primary-color);
+  margin-left: 3px;
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+  animation: typing-cursor-blink 1.2s infinite;
+  vertical-align: text-bottom;
+}
+
+.typing-cursor.blink {
+  opacity: 0;
+}
+
+/* 打字機游標閃爍動畫 */
+@keyframes typing-cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 .social-links {
