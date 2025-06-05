@@ -405,7 +405,7 @@ body {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 70%;
+    width: 45%;
     height: 100vh;
     margin-right: 0;
     background-color: var(--card-bg);
