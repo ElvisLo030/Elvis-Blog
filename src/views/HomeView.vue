@@ -11,19 +11,19 @@
       </p>
       
       <div class="social-links">
-        <a href="mailto:me@elvislo.tw" class="social-link" aria-label="Email" data-tooltip="發送 Email 給我">
+        <a href="mailto:me@elvislo.tw" class="social-link" aria-label="Email" data-tooltip="Email">
           <font-awesome-icon :icon="['fas', 'envelope']" />
         </a>
-        <a href="https://www.instagram.com/elvis._.lo/" class="social-link" aria-label="Instagram" data-tooltip="追蹤我的 Instagram">
+        <a href="https://www.instagram.com/elvis._.lo/" class="social-link" aria-label="Instagram" data-tooltip="Instagram">
           <font-awesome-icon :icon="['fab', 'instagram']" />
         </a>
-        <a href="https://x.com/ElvisLo030" class="social-link" aria-label="Twitter" data-tooltip="追蹤我的 Twitter(X)">
+        <a href="https://x.com/ElvisLo030" class="social-link" aria-label="Twitter" data-tooltip="Twitter(X)">
           <font-awesome-icon :icon="['fab', 'twitter']" />
         </a>
-        <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub" data-tooltip="查看我的 Github">
+        <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub" data-tooltip="Github">
           <font-awesome-icon :icon="['fab', 'github']" />
         </a>
-        <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord" data-tooltip="複製 Discord ID">
+        <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord" data-tooltip="Discord ID">
           <font-awesome-icon :icon="['fab', 'discord']" />
         </a>
         <a href="https://bumpnewzenly.com/p/pCcghkwJAh0iI" class="social-link" aria-label="Bump" data-tooltip="Bump !">
@@ -45,8 +45,8 @@ import { ref, onMounted, onUnmounted } from 'vue';
 
 // 打字機效果的文字陣列
 const typewriterTexts = [
-  '一隻爆肝ㄉ大學生',
   '努力在這個世界留下足跡',
+  '大學生一隻',
   'Rhythm Gamer',
   '喵喵喵喵貓',
   '橘貓最可愛ㄌ'
