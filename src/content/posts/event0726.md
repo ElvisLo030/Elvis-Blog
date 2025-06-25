@@ -1,7 +1,7 @@
 ---
 title: 20250726_草衙B1maimai趣味賽
 date: 2025-06-22
-tags: 舉辦中比賽,maimai,比賽
+tags: maimai,比賽
 summary: 草衙B1maimai趣味賽公告！
 ---
 ## 比賽資訊：
@@ -30,8 +30,6 @@ summary: 草衙B1maimai趣味賽公告！
 
 - [卡片對應功能](https://elvislo030.notion.site/0726-go)
 - [賽程表格(待更新...)]()
-
----
 
 ## 注意事項：
 

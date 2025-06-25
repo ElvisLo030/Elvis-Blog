@@ -36,10 +36,7 @@ const closeMenu = () => {
 
 // 處理賣場連結點擊
 const handleShopClick = () => {
-  const confirmed = confirm('你即將跳轉到賣貨便，是否確認跳轉？');
-  if (confirmed) {
-    window.open('https://myship.7-11.com.tw/general/detail/GM2503255103525', '_blank');
-  }
+  window.open('https://myship.7-11.com.tw/general/detail/GM2503255103525', '_blank');
   closeMenu();
 };
 
