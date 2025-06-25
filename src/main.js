@@ -3,6 +3,7 @@ import './assets/main.css'
 import { ViteSSG } from 'vite-ssg'
 import App from './App.vue'
 import routes from './router'
+import postService from './services/PostService'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -35,15 +36,19 @@ export const createApp = ViteSSG(
   ({ app, router, isClient }) => {
     // 在客戶端才執行的代碼
     if (isClient) {
-document.addEventListener('DOMContentLoaded', preloadImages)
+      document.addEventListener('DOMContentLoaded', preloadImages)
 
-const redirectPath = sessionStorage.getItem('redirectPath');
-if (redirectPath) {
-  sessionStorage.removeItem('redirectPath');
-  router.push(redirectPath);
+      // 檢查是否有重定向路徑
+      const redirectPath = sessionStorage.getItem('redirectPath');
+      if (redirectPath) {
+        sessionStorage.removeItem('redirectPath');
+        // 使用 nextTick 確保路由已經準備好
+        router.isReady().then(() => {
+          router.push(redirectPath);
+        });
       }
-}
+    }
 
-app.component('font-awesome-icon', FontAwesomeIcon)
+    app.component('font-awesome-icon', FontAwesomeIcon)
   }
 )

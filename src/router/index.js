@@ -13,13 +13,13 @@ const routes = [
     component: () => import('../views/AboutView.vue')
   },
   {
-    path: '/posts',
-    name: 'Posts',
+    path: '/post',
+    name: 'PostList',
     component: () => import('../views/PostsView.vue')
   },
   {
     path: '/post/:slug',
-    name: 'Post',
+    name: 'PostDetail',
     component: () => import('../views/PostView.vue'),
     props: true
   },

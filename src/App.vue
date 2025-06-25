@@ -78,7 +78,7 @@ const toggleTheme = () => {
               <font-awesome-icon :icon="['fas', 'home']" class="nav-icon" />
               首頁
             </router-link></li>
-            <li><router-link to="/posts" @click="closeMenu">
+            <li><router-link to="/post" @click="closeMenu">
               <font-awesome-icon :icon="['fas', 'list']" class="nav-icon" />
               文章
             </router-link></li>

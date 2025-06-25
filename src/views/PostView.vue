@@ -27,7 +27,7 @@
         <span v-else class="nav-placeholder"></span>
       </div>
       <div class="back-to-posts">
-        <router-link to="/posts">
+        <router-link to="/post">
           所有文章
         </router-link>
       </div>
@@ -43,7 +43,7 @@
   <div v-else class="post-not-found">
     <h2>找不到文章</h2>
     <p>抱歉，找不到您要的文章。</p>
-    <router-link to="/posts" class="back-button">返回文章列表</router-link>
+    <router-link to="/post" class="back-button">返回文章列表</router-link>
   </div>
 </template>
 
@@ -121,7 +121,7 @@ const formatDate = (dateString) => {
 // 點擊標籤導航到文章列表
 const navigateToTag = (tag) => {
   router.push({ 
-    path: '/posts',
+    path: '/post',
     query: { tag }
   });
 };
