@@ -2,7 +2,14 @@
   <div class="post-container" v-if="post">
     <div class="post-header">
       <div class="post-meta">
-        <span class="post-date">{{ formatDate(post.date) }}</span>
+        <div class="post-meta-left">
+          <span class="post-date">{{ formatDate(post.date) }}</span>
+          <span class="post-views">
+            <font-awesome-icon :icon="['fas', 'eye']" class="view-icon" />
+            <span v-if="viewCount > 0">{{ viewCount }} 次觀看</span>
+            <span v-else class="loading-text">載入中...</span>
+          </span>
+        </div>
         <div class="post-tags">
           <span 
             v-for="tag in post.tags" 
@@ -52,6 +59,7 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import postService from '../services/PostService';
 import markdownService from '../services/MarkdownService';
+import viewCountService from '../services/ViewCountService';
 import 'highlight.js/styles/atom-one-dark.css'; // 程式碼高亮樣式
 
 // 取得路由參數
@@ -62,6 +70,7 @@ const { slug } = route.params;
 // 文章資料
 const post = ref(null);
 const allPosts = ref([]);
+const viewCount = ref(0);
 
 // 載入文章
 onMounted(async () => {
@@ -75,8 +84,17 @@ watch(() => route.params.slug, (newSlug) => {
 });
 
 // 載入文章函數
-const loadPost = (slug) => {
+const loadPost = async (slug) => {
   post.value = postService.getPostBySlug(slug);
+  if (post.value) {
+    // 異步增加觀看次數
+    try {
+      viewCount.value = await viewCountService.incrementViewCount(slug);
+    } catch (error) {
+      console.error('Error updating view count:', error);
+      viewCount.value = 0;
+    }
+  }
   // 滾動到頁面頂部
   window.scrollTo(0, 0);
 };
@@ -149,9 +167,33 @@ const navigateToTag = (tag) => {
   margin-bottom: 1rem;
 }
 
+.post-meta-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
 .post-date {
   font-size: 0.9rem;
   color: var(--text-color-secondary);
+}
+
+.post-views {
+  font-size: 0.9rem;
+  color: var(--text-color-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.view-icon {
+  font-size: 0.8rem;
+}
+
+.loading-text {
+  opacity: 0.7;
+  font-style: italic;
 }
 
 .post-tags {
@@ -349,6 +391,12 @@ const navigateToTag = (tag) => {
   }
   
   .post-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+  
+  .post-meta-left {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
