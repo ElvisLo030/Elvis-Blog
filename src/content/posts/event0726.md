@@ -1,8 +1,8 @@
 ---
 title: 20250726_草衙B1maimai趣味賽
-date: 2025-06-22
+date: 2025-06-25
 tags: maimai,比賽
-summary: 草衙B1maimai趣味賽公告！
+summary: 比賽規則及說明！
 ---
 ## 比賽資訊：
 
@@ -45,4 +45,4 @@ summary: 草衙B1maimai趣味賽公告！
 ---
 
 **主辦方保留活動規則更動與最終解釋權。**<br>
-**任何活動相關問題請私訊[ElvisLo](https://www.facebook.com/ElvisLo030)。**<br>
+**任何活動相關問題請私訊FB:[ElvisLo](https://www.facebook.com/ElvisLo030)。**<br>

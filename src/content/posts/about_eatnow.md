@@ -20,7 +20,7 @@ summary: 關於開發EatNow的小故事
 ---
 
 後來花了快一天的時間，把整個大架構寫出來ㄌ <br>
-有興趣ㄉ可以到[這邊](https://github.com/ElvisLo030/EatNow)查看
+有興趣ㄉ可以到[這邊](https://github.com/ElvisLo030/EatNow)查看原始碼
 
 ---
 
