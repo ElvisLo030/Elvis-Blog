@@ -2,7 +2,7 @@
 export class ViewCountService {
   constructor() {
     // Firebase Realtime Database URL (公開讀寫，但有規則限制)
-    this.firebaseUrl = 'https://elvisiotw-default-rtdb.firebaseio.com/viewCounts';
+    this.firebaseUrl = 'https://elvislotw-default-rtdb.firebaseio.com';
     this.storageKey = 'blog_view_counts_cache';
     this.cache = this.loadCache();
     this.isOnline = navigator.onLine;
@@ -53,7 +53,7 @@ export class ViewCountService {
    */
   async loadFromFirebase() {
     try {
-      const response = await fetch(`${this.firebaseUrl}.json`);
+      const response = await fetch(`${this.firebaseUrl}/viewCounts.json`);
       if (response.ok) {
         const data = await response.json();
         if (data) {
@@ -64,6 +64,12 @@ export class ViewCountService {
           this.saveCache();
           return data;
         }
+      } else if (response.status === 404) {
+        // 404 表示 viewCounts 節點不存在，這是正常的初始狀態
+        console.log('ViewCounts node does not exist yet, will be created on first write');
+        return {};
+      } else {
+        console.error('Firebase response error:', response.status, response.statusText);
       }
     } catch (error) {
       console.error('Error loading from Firebase:', error);
@@ -76,7 +82,7 @@ export class ViewCountService {
    */
   async updateFirebaseCount(slug, count) {
     try {
-      const response = await fetch(`${this.firebaseUrl}/${slug}.json`, {
+      const response = await fetch(`${this.firebaseUrl}/viewCounts/${slug}.json`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -97,12 +103,17 @@ export class ViewCountService {
   async incrementFirebaseCount(slug) {
     try {
       // 先讀取當前值
-      const response = await fetch(`${this.firebaseUrl}/${slug}.json`);
+      const response = await fetch(`${this.firebaseUrl}/viewCounts/${slug}.json`);
       let currentCount = 0;
       
       if (response.ok) {
         const data = await response.json();
         currentCount = data || 0;
+      } else if (response.status === 404) {
+        // 404 表示節點不存在，從 0 開始
+        currentCount = 0;
+      } else {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       
       // 增加並更新
@@ -211,12 +222,15 @@ export class ViewCountService {
       if (pendingCount > 0) {
         try {
           // 讀取 Firebase 當前值
-          const response = await fetch(`${this.firebaseUrl}/${slug}.json`);
+          const response = await fetch(`${this.firebaseUrl}/viewCounts/${slug}.json`);
           let currentCount = 0;
           
           if (response.ok) {
             const data = await response.json();
             currentCount = data || 0;
+          } else if (response.status === 404) {
+            // 404 表示節點不存在，從 0 開始
+            currentCount = 0;
           }
           
           // 加上待同步的次數
