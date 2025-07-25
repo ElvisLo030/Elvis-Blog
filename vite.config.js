@@ -42,14 +42,6 @@ export default defineConfig({
   },
   // 自訂域名部署設置
   base: '/',
-  // 開發伺服器配置
-  server: {
-    fallback: false
-  },
-  // 預覽伺服器配置
-  preview: {
-    fallback: false
-  },
   ssg: {
     format: 'esm',
     entry: 'src/main.js',

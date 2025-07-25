@@ -1,0 +1,323 @@
+<template>
+  <div class="not-found">
+    <div class="scanlines"></div>
+    <div class="noise"></div>
+    
+    <div class="bsod-container">
+      <div class="header">
+        系統發生錯誤
+      </div>
+      
+      <div class="error-code">
+        ERROR 404
+      </div>
+      
+      <div class="error-message">
+        系統遇到了一個問題，需要重新啟動。我們正在收集一些錯誤資訊，<br>
+        然後為您重新啟動系統。
+      </div>
+      
+      <div class="technical-info">
+        技術資訊：<br>
+        STOP: 0x00000404 (meow,meow,meow,meow)<br>
+        PAGE_NOT_FOUND_IN_PAGED_AREA<br><br>
+        
+        錯誤位置：{{ errorPath }}<br>
+        系統版本：小羅の窩 v1.5<br>
+        錯誤時間：{{ errorTime }}
+      </div>
+      
+      <div class="countdown">
+        系統將在 <span class="countdown-number">{{ countdown }}</span> 秒後自動跳轉到 elvislo.tw...<br>
+        <small>正在收集錯誤資訊：{{ progress }}% 完成</small>
+      </div>
+      
+      <div class="actions">
+        <button class="restart-button" @click="goHome">立即重新啟動</button>
+        <button class="restart-button" @click="goBack">返回上一頁</button>
+      </div>
+    </div>
+    
+    <div class="footer">
+      如果問題持續發生，請聯繫小羅。
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+export default {
+  name: 'NotFoundView',
+  setup() {
+    const router = useRouter()
+    const countdown = ref(5)
+    const progress = ref(0)
+    const errorPath = ref('')
+    const errorTime = ref('')
+    
+    let countdownInterval = null
+    let progressInterval = null
+    
+    const updateCountdown = () => {
+      countdown.value--
+      if (countdown.value < 0) {
+        clearIntervals()
+        goHome()
+      }
+    }
+    
+    const updateProgress = () => {
+      progress.value += Math.random() * 20
+      if (progress.value > 100) progress.value = 100
+      progress.value = Math.floor(progress.value)
+    }
+    
+    const clearIntervals = () => {
+      if (countdownInterval) clearInterval(countdownInterval)
+      if (progressInterval) clearInterval(progressInterval)
+    }
+    
+    const goHome = () => {
+      clearIntervals()
+      window.location.href = 'https://elvislo.tw'
+    }
+    
+    const goBack = () => {
+      clearIntervals()
+      try {
+        if (window.history.length > 1) {
+          window.history.back()
+        } else {
+          window.location.href = 'https://elvislo.tw'
+        }
+      } catch (e) {
+        window.location.href = 'https://elvislo.tw'
+      }
+    }
+    
+    onMounted(() => {
+      errorPath.value = window.location.pathname
+      errorTime.value = new Date().toLocaleString('zh-TW')
+      
+      // 開始倒數計時
+      countdownInterval = setInterval(updateCountdown, 1000)
+      progressInterval = setInterval(updateProgress, 300)
+      
+      // 初始更新
+      updateProgress()
+      
+      // 添加鍵盤事件
+      const handleKeydown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          goHome()
+        }
+        if (e.key === 'Escape') {
+          e.preventDefault()
+          goBack()
+        }
+      }
+      
+      document.addEventListener('keydown', handleKeydown)
+      
+      // 清理函數
+      return () => {
+        document.removeEventListener('keydown', handleKeydown)
+      }
+    })
+    
+    onUnmounted(() => {
+      clearIntervals()
+    })
+    
+    return {
+      countdown,
+      progress,
+      errorPath,
+      errorTime,
+      goHome,
+      goBack
+    }
+  }
+}
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+.not-found {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  background: #0000ff;
+  color: #ffffff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: default;
+  user-select: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+.bsod-container {
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
+  text-align: left;
+  animation: flicker 0.15s infinite linear alternate;
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  98% { opacity: 1; }
+  100% { opacity: 0.98; }
+}
+
+.header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  border-bottom: 2px solid #ffffff;
+  padding-bottom: 1rem;
+}
+
+.error-code {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.error-message {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.technical-info {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #ffffff;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.countdown {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border: 1px dashed #ffffff;
+}
+
+.countdown-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffff00;
+  animation: countdown-blink 1s infinite;
+}
+
+@keyframes countdown-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+.actions {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.restart-button {
+  background: #ffffff;
+  color: #0000ff;
+  border: 2px solid #ffffff;
+  padding: 12px 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+  margin: 0 10px;
+}
+
+.restart-button:hover {
+  background: #ffff00;
+  color: #0000ff;
+  border-color: #ffff00;
+}
+
+.restart-button:active {
+  background: #0000ff;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.03) 2px,
+    rgba(255, 255, 255, 0.03) 4px
+  );
+  pointer-events: none;
+}
+
+.noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.02;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><defs><filter id="noise"><feTurbulence baseFrequency="0.9" numOctaves="1"/></filter></defs><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+  animation: noise 0.2s infinite;
+  pointer-events: none;
+}
+
+@keyframes noise {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -5%); }
+  20% { transform: translate(-10%, 5%); }
+  30% { transform: translate(5%, -10%); }
+  40% { transform: translate(-5%, 15%); }
+  50% { transform: translate(-10%, 5%); }
+  60% { transform: translate(15%, 0); }
+  70% { transform: translate(0, 10%); }
+  80% { transform: translate(-15%, 0); }
+  90% { transform: translate(10%, 5%); }
+  100% { transform: translate(5%, 0); }
+}
+
+.footer {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+</style>

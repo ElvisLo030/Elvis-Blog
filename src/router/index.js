@@ -37,14 +37,7 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    redirect: () => {
-      // 在客戶端重定向到 404.html
-      if (typeof window !== 'undefined') {
-        window.location.href = '/404.html'
-        return false
-      }
-      return '/404.html'
-    }
+    component: () => import('../views/NotFoundView.vue')
   }
 ]
 
