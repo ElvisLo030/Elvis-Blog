@@ -32,12 +32,6 @@ const routes = [
     path: '/invite',
     name: 'Invite',
     component: () => import('../views/InviteView.vue')
-  },
-  // 404 路由 - 必須放在最後
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
-    component: () => import('../views/NotFoundView.vue')
   }
 ]
 
