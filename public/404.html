@@ -3,68 +3,305 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>頁面未找到 - 小羅の窩</title>
-  <script>
-    // 用於 SPA 路由的單頁面應用重定向
-    const path = window.location.pathname;
-    if (path !== '/') {
-      // 保存請求的 URL 路徑到 sessionStorage
-      sessionStorage.setItem('redirectPath', path);
-    }
-    // 重定向到首頁
-    window.location.href = '/';
-  </script>
+  <title>系統錯誤 - 小羅の窩</title>
   <style>
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+    
+    * {
       margin: 0;
       padding: 0;
-      background-color: #f5f5f5;
-      color: #333;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      background: #0000ff;
+      color: #ffffff;
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
+      overflow: hidden;
+      cursor: default;
+      user-select: none;
     }
-    .container {
-      max-width: 500px;
+    
+    .bsod-container {
+      width: 100%;
+      max-width: 800px;
       padding: 2rem;
+      text-align: left;
+      animation: flicker 0.15s infinite linear alternate;
     }
-    h1 {
+    
+    @keyframes flicker {
+      0% { opacity: 1; }
+      98% { opacity: 1; }
+      100% { opacity: 0.98; }
+    }
+    
+    .header {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      text-align: center;
+      border-bottom: 2px solid #ffffff;
+      padding-bottom: 1rem;
+    }
+    
+    .error-code {
       font-size: 3rem;
+      font-weight: bold;
       margin-bottom: 1rem;
-      color: #4a9eff;
+      text-align: center;
+      animation: pulse 2s infinite;
     }
-    p {
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    
+    .error-message {
       font-size: 1.2rem;
       margin-bottom: 2rem;
+      line-height: 1.6;
     }
-    a {
-      color: #4a9eff;
+    
+    .technical-info {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #ffffff;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    
+    .countdown {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border: 1px dashed #ffffff;
+    }
+    
+    .countdown-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffff00;
+      animation: countdown-blink 1s infinite;
+    }
+    
+    @keyframes countdown-blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
+    
+    .actions {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    
+    .restart-button {
+      background: #ffffff;
+      color: #0000ff;
+      border: 2px solid #ffffff;
+      padding: 12px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
       text-decoration: none;
-      font-weight: 500;
+      display: inline-block;
+      transition: all 0.2s;
+      margin: 0 10px;
     }
-    a:hover {
-      text-decoration: underline;
+    
+    .restart-button:hover {
+      background: #ffff00;
+      color: #0000ff;
+      border-color: #ffff00;
     }
-    .dark-mode {
-      background-color: #121212;
-      color: #e0e0e0;
+    
+    .restart-button:active {
+      background: #0000ff;
+      color: #ffffff;
+      border-color: #ffffff;
     }
-    .dark-mode h1 {
-      color: #5eafff;
+    
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, 0.03) 2px,
+        rgba(255, 255, 255, 0.03) 4px
+      );
+      pointer-events: none;
     }
-    .dark-mode a {
-      color: #5eafff;
+    
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.02;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><defs><filter id="noise"><feTurbulence baseFrequency="0.9" numOctaves="1"/></filter></defs><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+      animation: noise 0.2s infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes noise {
+      0% { transform: translate(0, 0); }
+      10% { transform: translate(-5%, -5%); }
+      20% { transform: translate(-10%, 5%); }
+      30% { transform: translate(5%, -10%); }
+      40% { transform: translate(-5%, 15%); }
+      50% { transform: translate(-10%, 5%); }
+      60% { transform: translate(15%, 0); }
+      70% { transform: translate(0, 10%); }
+      80% { transform: translate(-15%, 0); }
+      90% { transform: translate(10%, 5%); }
+      100% { transform: translate(5%, 0); }
+    }
+    
+    .footer {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      opacity: 0.7;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>404</h1>
-    <p>頁面未找到，正在重定向回首頁...</p>
-    <p>如果沒有自動跳轉，請<a href="/">點擊這裡</a>返回主頁。</p>
+  <div class="scanlines"></div>
+  <div class="noise"></div>
+  
+  <div class="bsod-container">
+    <div class="header">
+      小羅の窩 - 系統發生錯誤
+    </div>
+    
+    <div class="error-code">
+      ERROR 404
+    </div>
+    
+    <div class="error-message">
+      系統遇到了一個問題，需要重新啟動。我們正在收集一些錯誤資訊，<br>
+      然後為您重新啟動系統。
+    </div>
+    
+    <div class="technical-info">
+      技術資訊：<br>
+      *** STOP: 0x00000404 (0x00000000, 0x00000000, 0x00000000, 0x00000000)<br>
+      PAGE_NOT_FOUND_IN_PAGED_AREA<br><br>
+      
+      錯誤位置：<span id="error-path"></span><br>
+      系統版本：小羅の窩 v2.0<br>
+      錯誤時間：<span id="error-time"></span>
+    </div>
+    
+    <div class="countdown">
+      系統將在 <span class="countdown-number" id="countdown">5</span> 秒後自動跳轉到 elvislo.tw...<br>
+      <small>正在收集錯誤資訊：<span id="progress">0</span>% 完成</small>
+    </div>
+    
+    <div class="actions">
+      <button class="restart-button" onclick="goHome()">立即重新啟動</button>
+      <button class="restart-button" onclick="goBack()">返回上一頁</button>
+    </div>
   </div>
+  
+  <div class="footer">
+    如果問題持續發生，請聯繫系統管理員
+  </div>
+
+  <script>
+    // 保存請求的 URL 路徑
+    const path = window.location.pathname;
+    if (path !== '/') {
+      sessionStorage.setItem('redirectPath', path);
+    }
+    
+    // 顯示錯誤路徑和時間
+    document.getElementById('error-path').textContent = path;
+    document.getElementById('error-time').textContent = new Date().toLocaleString('zh-TW');
+    
+    let countdown = 5;
+    let progress = 0;
+    let countdownInterval;
+    let progressInterval;
+    
+    function updateCountdown() {
+      document.getElementById('countdown').textContent = countdown;
+      countdown--;
+      
+      if (countdown < 0) {
+        clearInterval(countdownInterval);
+        clearInterval(progressInterval);
+        // 跳轉到你的域名
+        window.location.href = 'https://elvislo.tw';
+      }
+    }
+    
+    function updateProgress() {
+      progress += Math.random() * 20;
+      if (progress > 100) progress = 100;
+      document.getElementById('progress').textContent = Math.floor(progress);
+    }
+    
+    function clearCountdown() {
+      clearInterval(countdownInterval);
+      clearInterval(progressInterval);
+    }
+    
+    function goHome() {
+      clearCountdown();
+      window.location.href = 'https://elvislo.tw';
+    }
+    
+    function goBack() {
+      clearCountdown();
+      try {
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          window.location.href = 'https://elvislo.tw';
+        }
+      } catch (e) {
+        window.location.href = 'https://elvislo.tw';
+      }
+    }
+    
+    // 開始倒數計時
+    countdownInterval = setInterval(updateCountdown, 1000);
+    progressInterval = setInterval(updateProgress, 300);
+    
+    // 初始更新
+    updateCountdown();
+    updateProgress();
+    
+    // 添加鍵盤事件
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        goHome();
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        goBack();
+      }
+    });
+  </script>
 </body>
 </html>
