@@ -44,11 +44,11 @@ export default defineConfig({
   base: '/',
   // 開發伺服器配置
   server: {
-    fallback: '/404.html'
+    fallback: false
   },
   // 預覽伺服器配置
   preview: {
-    fallback: '/404.html'
+    fallback: false
   },
   ssg: {
     format: 'esm',

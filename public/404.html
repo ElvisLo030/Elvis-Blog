@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="6;url=https://elvislo.tw">
   <title>系統錯誤 - 小羅の窩</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
@@ -250,8 +249,8 @@
       if (countdown < 0) {
         clearInterval(countdownInterval);
         clearInterval(progressInterval);
-        // 簡單直接的跳轉
-        window.location.href = 'https://elvislo.tw';
+        // 使用 replace 避免瀏覽器歷史記錄造成的循環
+        window.location.replace('https://elvislo.tw');
       }
     }
     
@@ -268,8 +267,8 @@
     
     function goHome() {
       clearCountdown();
-      // 簡單直接的跳轉
-      window.location.href = 'https://elvislo.tw';
+      // 使用 replace 避免瀏覽器歷史記錄造成的循環
+      window.location.replace('https://elvislo.tw');
     }
     
     function goBack() {
@@ -278,10 +277,10 @@
         if (window.history.length > 1) {
           window.history.back();
         } else {
-          window.location.href = 'https://elvislo.tw';
+          window.location.replace('https://elvislo.tw');
         }
       } catch (e) {
-        window.location.href = 'https://elvislo.tw';
+        window.location.replace('https://elvislo.tw');
       }
     }
     
