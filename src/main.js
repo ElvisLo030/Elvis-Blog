@@ -2,7 +2,7 @@ import './assets/main.css'
 
 import { ViteSSG } from 'vite-ssg'
 import App from './App.vue'
-import routes from './router'
+import router from './router'
 import postService from './services/PostService'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -32,8 +32,11 @@ const preloadImages = () => {
 // 創建 SSG 應用
 export const createApp = ViteSSG(
   App,
-  { routes },
-  ({ app, router, isClient }) => {
+  { 
+    routes: router.options.routes,
+    base: router.options.history.base
+  },
+  ({ app, router: ssrRouter, isClient }) => {
     // 在客戶端才執行的代碼
     if (isClient) {
       document.addEventListener('DOMContentLoaded', preloadImages)
@@ -43,8 +46,8 @@ export const createApp = ViteSSG(
       if (redirectPath) {
         sessionStorage.removeItem('redirectPath');
         // 使用 nextTick 確保路由已經準備好
-        router.isReady().then(() => {
-          router.push(redirectPath);
+        ssrRouter.isReady().then(() => {
+          ssrRouter.push(redirectPath);
         });
       }
     }

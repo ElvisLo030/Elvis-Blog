@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite-ssg build",
+    "build": "vite-ssg build && node scripts/generate-post-routes.js",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist",
     "generate": "vite-ssg generate"
