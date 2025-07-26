@@ -30,6 +30,7 @@ summary: 比賽規則及說明！
 
 - [卡片對應功能](https://elvislo030.notion.site/0726-go)
 - [賽程表格](https://docs.google.com/spreadsheets/d/1r1_fHatgkyiJr1saRqfM-H5nawoj8ST4a94BfUGxLOk/edit?usp=sharing)
+- [賽後花絮照片](https://drive.google.com/drive/folders/1nI6pdm8Jrh6p0msRzrxBBChj2diW9VMc?usp=sharing)
 
 ## 注意事項：
 
