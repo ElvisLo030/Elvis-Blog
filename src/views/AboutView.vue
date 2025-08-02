@@ -87,7 +87,7 @@
           <div class="skill-category">
             <h3 class="skill-title"><font-awesome-icon :icon="['fas', 'code']" /> Skill </h3>
             <div class="skill-tags">
-              <span class="skill-tag" >C++</span>
+              <span class="skill-tag">C++</span>
               <span class="skill-tag">Python</span>
               <span class="skill-tag">Java</span>
               <span class="skill-tag">JavaScript</span>
@@ -127,6 +127,7 @@
               <span class="skill-tag">魔法少女小圓</span>
               <span class="skill-tag">我推的孩子</span>
               <span class="skill-tag">明日方舟</span>
+              <span class="skill-tag">全知讀者視角</span>
             </div>
           </div>
           <div class="skill-category">

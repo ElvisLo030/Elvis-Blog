@@ -23,11 +23,11 @@
         <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub" data-tooltip="Github">
           <font-awesome-icon :icon="['fab', 'github']" />
         </a>
+        <a href="https://www.linkedin.com/in/elvislo030/" class="social-link" aria-label="Linkedin" data-tooltip="Linkedin">
+          <font-awesome-icon :icon="['fab', 'linkedin']" />
+        </a>
         <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord" data-tooltip="Discord ID">
           <font-awesome-icon :icon="['fab', 'discord']" />
-        </a>
-        <a href="https://bumpnewzenly.com/p/pCcghkwJAh0iI" class="social-link" aria-label="Bump" data-tooltip="Bump !">
-          <font-awesome-icon :icon="['fas', 'location-dot']" />
         </a>
       </div>
     </section>
