@@ -22,7 +22,7 @@
       <!-- 沒有專案時顯示 -->
       <div v-if="projects.length === 0" class="no-projects">
         <p>未找到公開的 GitHub 專案。</p>
-        <p class="suggestion">你可以在 GitHub 上創建一些公開專案，它們將自動顯示在這裡。</p>
+        <p class="suggestion">目前尚未有公開的專案。</p>
       </div>
       
       <!-- 有專案時顯示 -->
@@ -126,7 +126,7 @@ async function loadGitHubProjects() {
     const repos = await fetchRepositories(githubUsername.value);
     
     if (repos.length === 0) {
-      loadingError.value = '未找到公開專案，或者獲取專案時發生錯誤。';
+      loadingError.value = '未找到公開專案，或者讀取專案時發生錯誤，請刷新網頁後再試一次。';
     } else {
       projects.value = repos;
       const notForkedCount = repos.filter(repo => !repo.fork).length;

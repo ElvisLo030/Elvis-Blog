@@ -17,17 +17,14 @@
         <a href="https://www.instagram.com/elvis._.lo/" class="social-link" aria-label="Instagram" data-tooltip="Instagram">
           <font-awesome-icon :icon="['fab', 'instagram']" />
         </a>
-        <a href="https://x.com/ElvisLo030" class="social-link" aria-label="Twitter" data-tooltip="Twitter(X)">
-          <font-awesome-icon :icon="['fab', 'twitter']" />
+        <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord" data-tooltip="Discord ID">
+          <font-awesome-icon :icon="['fab', 'discord']" />
         </a>
         <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub" data-tooltip="Github">
           <font-awesome-icon :icon="['fab', 'github']" />
         </a>
         <a href="https://www.linkedin.com/in/elvislo030/" class="social-link" aria-label="Linkedin" data-tooltip="Linkedin">
           <font-awesome-icon :icon="['fab', 'linkedin']" />
-        </a>
-        <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord" data-tooltip="Discord ID">
-          <font-awesome-icon :icon="['fab', 'discord']" />
         </a>
       </div>
     </section>
@@ -45,7 +42,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 
 // 打字機效果的文字陣列
 const typewriterTexts = [
-  '努力在這個世界留下足跡',
+  '努力在這個世界留下足跡...',
   '大學生一隻',
   'Rhythm Gamer',
   '喵喵喵喵貓🐱',
@@ -58,7 +55,7 @@ const currentTextIndex = ref(0);
 const currentCharIndex = ref(0);
 const isDeleting = ref(false);
 const showCursor = ref(true);
-const typewriterSpeed = ref(150); // 打字速度（毫秒）
+const typewriterSpeed = ref(100); // 打字速度（毫秒）
 let typewriterTimer = null;
 
 // 打字機效果邏輯

@@ -27,11 +27,7 @@
           </a>
           <a href="https://instagram.com/elvis._.lo" target="_blank" class="social-link" aria-label="Instagram">
             <font-awesome-icon :icon="['fab', 'instagram']" />
-            <span>@elvis._.lo</span>
-          </a>
-          <a href="https://t.me/elvislo030" target="_blank" class="social-link" aria-label="Telegram">
-            <font-awesome-icon :icon="['fab', 'telegram']" />
-            <span>@elvislo030</span>
+            <span>elvis._.lo</span>
           </a>
           <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord">
             <font-awesome-icon :icon="['fab', 'discord']" />
@@ -41,9 +37,13 @@
             <font-awesome-icon :icon="['fab', 'github']" />
             <span>ElvisLo030</span>
           </a>
-          <a href="https://x.com/ElvisLo030" target="_blank" class="social-link" aria-label="Twitter">
-            <font-awesome-icon :icon="['fab', 'twitter']" />
-            <span>@ElvisLo030</span>
+          <a href="https://www.linkedin.com/in/elvislo030/" target="_blank" class="social-link" aria-label="Linkedin">
+            <font-awesome-icon :icon="['fab', 'linkedin']" />
+            <span>Elvis Lo</span>
+          </a>
+          <a href="https://t.me/elvislo030" target="_blank" class="social-link" aria-label="Telegram">
+            <font-awesome-icon :icon="['fab', 'telegram']" />
+            <span>elvislo030</span>
           </a>
         </div>
       </div>

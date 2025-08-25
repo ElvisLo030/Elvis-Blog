@@ -25,7 +25,7 @@
         <h3>您可能在尋找：</h3>
         <ul>
           <li><router-link to="/about">關於我</router-link></li>
-          <li><router-link to="/projects">專案作品</router-link></li>
+          <li><router-link to="/projects">專案</router-link></li>
           <li><router-link to="/invite">邀請碼</router-link></li>
         </ul>
       </div>
