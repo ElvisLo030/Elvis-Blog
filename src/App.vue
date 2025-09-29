@@ -1,13 +1,42 @@
 <script setup>
-import { RouterView } from 'vue-router';
-import { ref, onMounted } from 'vue';
+import { RouterView, useRouter } from 'vue-router';
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
+
+const router = useRouter();
 
 // 控制行動裝置導航選單
 const isMenuOpen = ref(false);
 // 設置深色模式狀態（預設為深色模式）
 const isDarkMode = ref(true);
+// 控制回到頂端按鈕的顯示
+const showBackToTop = ref(false);
 
-// 在組件掛載時初始化主題
+// 監聽路由變化，確保每次切換頁面都滾動到頂端
+watch(() => router.currentRoute.value.path, async (newPath, oldPath) => {
+  if (newPath !== oldPath) {
+    // 等待 DOM 更新完成後再滾動
+    await nextTick();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+});
+
+// 處理滾動事件，控制回到頂端按鈕的顯示
+const handleScroll = () => {
+  showBackToTop.value = window.scrollY > 300;
+};
+
+// 回到頂端功能
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+};
+
+// 在組件掛載時初始化主題和滾動監聽
 onMounted(() => {
   // 從本地存儲讀取主題設置（如果有）
   const savedTheme = localStorage.getItem('theme');
@@ -22,6 +51,14 @@ onMounted(() => {
     document.body.classList.add('dark-mode');
     localStorage.setItem('theme', 'dark');
   }
+  
+  // 添加滾動監聽器
+  window.addEventListener('scroll', handleScroll);
+});
+
+// 在組件卸載時移除滾動監聽器
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
 });
 
 // 切換選單顯示狀態
@@ -119,6 +156,25 @@ const toggleTheme = () => {
     <footer class="app-footer">
       <p>&copy; {{ new Date().getFullYear() }} ElvisLo All Rights Reserved</p>
     </footer>
+    
+    <!-- 回到頂端按鈕 -->
+    <Transition name="back-to-top">
+      <button 
+        v-if="showBackToTop"
+        @click="scrollToTop"
+        class="back-to-top-btn"
+        aria-label="回到頂端"
+      >
+        <video 
+          src="/assets/firemeow.webm" 
+          autoplay 
+          loop 
+          muted 
+          playsinline
+          class="back-to-top-video"
+        ></video>
+      </button>
+    </Transition>
   </div>
 </template>
 
@@ -475,5 +531,83 @@ body {
   .main-nav ul li:first-child.home-nav-item {
     display: none !important;
   }
+}
+
+/* 回到頂端按鈕樣式 */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  background: transparent; /* 改為透明，讓視頻作為背景 */
+  border: none; /* 移除邊框 */
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* 確保視頻不會超出圓形邊界 */
+}
+
+.back-to-top-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px var(--shadow-color);
+}
+
+.back-to-top-btn:hover .back-to-top-video {
+  transform: scale(1.1); /* 視頻在 hover 時稍微放大 */
+}
+
+.back-to-top-btn:active {
+  transform: translateY(0);
+}
+
+/* 回到頂端按鈕內的視頻樣式 */
+.back-to-top-video {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  pointer-events: none; /* 確保點擊事件傳遞到按鈕 */
+}
+
+/* 回到頂端按鈕動畫 */
+.back-to-top-enter-active,
+.back-to-top-leave-active {
+  transition: all 0.3s ease;
+}
+
+.back-to-top-enter-from {
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+}
+
+.back-to-top-leave-to {
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+}
+
+/* 手機版適配 */
+@media (max-width: 768px) {
+  .back-to-top-btn {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* 深色模式下的按鈕樣式 */
+.dark-mode .back-to-top-btn {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode .back-to-top-btn:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.8);
 }
 </style>

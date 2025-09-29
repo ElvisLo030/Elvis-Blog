@@ -52,8 +52,8 @@ const router = createRouter({
     if (savedPosition) {
       return savedPosition
     }
-    // 否則滾動到頁面頂部
-    return { top: 0 }
+    // 對於所有路由切換，滾動到頁面頂部
+    return { top: 0, behavior: 'smooth' }
   }
 })
 
