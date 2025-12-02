@@ -34,6 +34,12 @@ const routes = [
     component: () => import('../views/InviteView.vue')
   },
   {
+    path: '/sm',
+    name: 'SimpleMessage',
+    component: () => import('../views/SimpleMessageView.vue'),
+    meta: { hideLayout: true }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('../views/NotFoundView.vue')

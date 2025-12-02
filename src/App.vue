@@ -1,8 +1,9 @@
 <script setup>
-import { RouterView, useRouter } from 'vue-router';
+import { RouterView, useRouter, useRoute } from 'vue-router';
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 
 const router = useRouter();
+const route = useRoute();
 
 // 控制行動裝置導航選單
 const isMenuOpen = ref(false);
@@ -94,7 +95,7 @@ const toggleTheme = () => {
 </script>
 
 <template>
-  <div class="app-container" :class="{ 'dark-mode': isDarkMode }">
+  <div v-if="!route.meta.hideLayout" class="app-container" :class="{ 'dark-mode': isDarkMode }">
     <header class="app-header">
       <div class="logo-container">
         <router-link to="/" class="logo-link">
@@ -169,6 +170,7 @@ const toggleTheme = () => {
       </button>
     </Transition>
   </div>
+  <RouterView v-else />
 </template>
 
 <style>
