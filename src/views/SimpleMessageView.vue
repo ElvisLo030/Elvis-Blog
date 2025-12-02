@@ -33,14 +33,13 @@ const message = ref('ʕ •ᴥ•ʔ');
   resize: none;
   background-color: #ffffff;
   color: #000000;
-  font-size: 3rem;
+  font-size: 15vmin;
   font-family: sans-serif;
   padding: 2rem;
   box-sizing: border-box;
   text-align: center;
   display: block;
-  /* 讓文字垂直置中有些困難，使用 padding-top 簡單模擬，或者讓使用者自由輸入 */
-  padding-top: 40vh;
+  padding-top: 35vh;
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -50,7 +49,6 @@ const message = ref('ʕ •ᴥ•ʔ');
 
 @media (max-width: 768px) {
   .sm-textarea {
-    font-size: 2rem;
     padding-top: 30vh;
   }
 }
