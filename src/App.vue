@@ -165,14 +165,7 @@ const toggleTheme = () => {
         class="back-to-top-btn"
         aria-label="回到頂端"
       >
-        <video 
-          src="/assets/firemeow.webm" 
-          autoplay 
-          loop 
-          muted 
-          playsinline
-          class="back-to-top-video"
-        ></video>
+        <font-awesome-icon :icon="['fas', 'arrow-up']" />
       </button>
     </Transition>
   </div>
@@ -540,8 +533,9 @@ body {
   right: 2rem;
   width: 3rem;
   height: 3rem;
-  background: transparent; /* 改為透明，讓視頻作為背景 */
-  border: none; /* 移除邊框 */
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 4px 12px var(--shadow-color);
@@ -550,29 +544,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden; /* 確保視頻不會超出圓形邊界 */
+  font-size: 1.2rem;
 }
 
 .back-to-top-btn:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 6px 16px var(--shadow-color);
-}
-
-.back-to-top-btn:hover .back-to-top-video {
-  transform: scale(1.1); /* 視頻在 hover 時稍微放大 */
+  background-color: var(--primary-color-dark);
 }
 
 .back-to-top-btn:active {
   transform: translateY(0);
-}
-
-/* 回到頂端按鈕內的視頻樣式 */
-.back-to-top-video {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  pointer-events: none; /* 確保點擊事件傳遞到按鈕 */
 }
 
 /* 回到頂端按鈕動畫 */

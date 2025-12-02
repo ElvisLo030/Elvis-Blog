@@ -11,8 +11,11 @@
           <li><font-awesome-icon :icon="['fas', 'map-marker-alt']" /> 出沒地：高雄</li>
           <li><font-awesome-icon :icon="['fas', 'book']" /> MBTI：INFJ-T</li>
           <li><font-awesome-icon :icon="['fas', 'graduation-cap']" /> 學校：CSU-MIS</li>
-          <li><font-awesome-icon :icon="['fas', 'scroll']" /> 23屆資管系學會活動長、24屆資管系學會會長</li>
-          <li><font-awesome-icon :icon="['fas', 'tags']" /> KPWC 高屏聯賽負責人、草衙B1傳閱本／機況管理人</li>
+          <li @click="openCSUMIS" class="clickable-list-item">
+            <span><font-awesome-icon :icon="['fas', 'scroll']" /> 23屆資管系學會活動長、24屆資管系學會會長</span>
+            <font-awesome-icon :icon="['fas', 'external-link-alt']" class="external-icon" />
+          </li>
+          <li><font-awesome-icon :icon="['fas', 'tags']" /> KPWC 高屏聯賽負責人、草衙B1傳閱本管理人</li>
         </ul>
       </div>
     </section>
@@ -199,6 +202,10 @@ const router = useRouter();
 const gameClick = () => {
   router.push('/post/game_id');
 }
+
+const openCSUMIS = () => {
+  window.open('https://www.instagram.com/csu._.mis/', '_blank');
+}
 </script>
 
 <style scoped>
@@ -308,6 +315,20 @@ const gameClick = () => {
 
 .info-list li:hover {
   background-color: rgba(var(--primary-rgb), 0.1);
+}
+
+.clickable-list-item {
+  cursor: pointer;
+}
+
+.clickable-list-item:hover {
+  background-color: rgba(var(--primary-rgb), 0.15) !important;
+}
+
+.external-icon {
+  margin-left: auto;
+  font-size: 0.9rem;
+  opacity: 0.6;
 }
 
 .social-links {
