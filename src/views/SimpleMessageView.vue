@@ -3,7 +3,7 @@
     <textarea 
       v-model="message" 
       class="sm-textarea" 
-      placeholder="在此輸入文字..."
+      placeholder=""
       spellcheck="false"
     ></textarea>
   </div>
@@ -12,7 +12,7 @@
 <script setup>
 import { ref } from 'vue';
 
-const message = ref('ʕ •ᴥ•ʔ');
+const message = ref('(´▽｀)');
 </script>
 
 <style scoped>
