@@ -1,5 +1,26 @@
 <template>
-  <div class="home-container">
+  <!-- Loading 動畫層 -->
+  <Transition name="fade-out">
+    <div v-if="isLoading" class="loading-overlay">
+        <div class="tech-loader">
+          <div class="glitch-wrapper">
+            <div class="glitch" data-text="Now Loading...">Now Loading...</div>
+          </div>
+          
+          <div class="loader-track">
+            <div class="pixel-cat-container">
+              <div class="pixel-cat"></div>
+            </div>
+            
+            <div class="progress-bar-container">
+              <div class="progress-bar"></div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </Transition>
+
+  <div class="home-container" v-show="!isLoading">
     <section class="profile-section">
       <div class="profile-image">
         <img src="/assets/profile.jpeg" alt="小羅的大頭照" class="profile-img" />
@@ -96,11 +117,40 @@ const startCursorBlink = () => {
 };
 
 // 組件掛載時啟動效果
-onMounted(() => {
+const isLoading = ref(true);
+
+onMounted(async () => {
+  // 1. 設定最小載入時間
+  const minTimePromise = new Promise(resolve => setTimeout(resolve, 1500));
+  
+  // 2. 等待頁面所有資源載入完成
+  const resourceLoadPromise = new Promise(resolve => {
+    if (document.readyState === 'complete') {
+      resolve();
+    } else {
+      window.addEventListener('load', resolve);
+    }
+  });
+
+  // 3. 額外確保當前頁面的圖片都已載入
+  const imagesLoadedPromise = Promise.all(
+    Array.from(document.images)
+      .filter(img => !img.complete)
+      .map(img => new Promise(resolve => {
+        img.onload = img.onerror = resolve;
+      }))
+  );
+
+  // 等待所有條件滿足：至少跑完 1.5 秒動畫，且資源都載入完畢
+  await Promise.all([minTimePromise, resourceLoadPromise, imagesLoadedPromise]);
+  
+  isLoading.value = false;
+  
+  // 載入完成後啟動打字機效果
   setTimeout(() => {
     typeWriter();
     startCursorBlink();
-  }, 1000); // 延遲1秒開始打字效果
+  }, 500);
 });
 
 // 組件卸載時清理定時器
@@ -393,5 +443,247 @@ const showCopyToast = () => {
 
 .copy-toast .svg-inline--fa {
   color: #4ade80;
+}
+
+/* Loading 動畫樣式 */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tech-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* 像素貓咪樣式 */
+.loader-track {
+  width: 200px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 貓咪跟進度條的距離 */
+}
+
+.pixel-cat-container {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  bottom: 6px; /* 調整到底部，貼近進度條 */
+  left: 0;
+  transform: translateX(-50%) scaleX(-1) scale(1.4); /* 水平翻轉 + 放大 */
+  transform-origin: bottom center; /* 確保放大時腳底位置不變 */
+  z-index: 10;
+  animation: cat-move 2s ease-in-out forwards;
+  
+  /* 讓貓咪元素位於容器底部 */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.pixel-cat {
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  
+  /* 貓咪配色變數 */
+  --c-o: #e08e3d; /* 身體橘色 */
+  --c-d: #8b4513; /* 深色細節 */
+  --c-l: #e08e3d; /* 亮色肚子 */
+  --c-b: #222222; /* 眼睛/鼻子 */
+  
+  animation: cat-run 0.4s infinite steps(2); /* 加快跑步頻率 */
+  
+  /* 初始幀 (Frame 1) */
+  box-shadow: 
+    /* Frame 1: 腳張開 */
+    /* 耳朵 */
+    -2px -14px 0 0 var(--c-d), 4px -14px 0 0 var(--c-d),
+    /* 頭部 */
+    -2px -12px 0 0 var(--c-o), 0px -12px 0 0 var(--c-o), 2px -12px 0 0 var(--c-o), 4px -12px 0 0 var(--c-o),
+    -4px -10px 0 0 var(--c-o), -2px -10px 0 0 var(--c-b), 0px -10px 0 0 var(--c-o), 2px -10px 0 0 var(--c-o), 4px -10px 0 0 var(--c-b), 6px -10px 0 0 var(--c-o),
+    -4px -8px 0 0 var(--c-o), -2px -8px 0 0 var(--c-o), 0px -8px 0 0 var(--c-b), 2px -8px 0 0 var(--c-o), 4px -8px 0 0 var(--c-o), 6px -8px 0 0 var(--c-o),
+    -2px -6px 0 0 var(--c-o), 0px -6px 0 0 var(--c-o), 2px -6px 0 0 var(--c-o), 4px -6px 0 0 var(--c-o),
+    /* 身體 & 尾巴 */
+    6px -6px 0 0 var(--c-o), 8px -6px 0 0 var(--c-o), 10px -6px 0 0 var(--c-o), 12px -6px 0 0 var(--c-d), 14px -8px 0 0 var(--c-d),
+    0px -4px 0 0 var(--c-o), 2px -4px 0 0 var(--c-o), 4px -4px 0 0 var(--c-o), 6px -4px 0 0 var(--c-o), 8px -4px 0 0 var(--c-o), 10px -4px 0 0 var(--c-o), 12px -4px 0 0 var(--c-o), 14px -6px 0 0 var(--c-o), 14px -10px 0 0 var(--c-o),
+    0px -2px 0 0 var(--c-o), 2px -2px 0 0 var(--c-l), 4px -2px 0 0 var(--c-l), 6px -2px 0 0 var(--c-l), 8px -2px 0 0 var(--c-o), 10px -2px 0 0 var(--c-o), 12px -2px 0 0 var(--c-o), 14px -12px 0 0 var(--c-d),
+    /* 腳 (Frame 1) */
+    0px 0px 0 0 var(--c-d), 2px 0px 0 0 var(--c-d), 10px 0px 0 0 var(--c-d), 12px 0px 0 0 var(--c-d);
+}
+
+@keyframes cat-move {
+  0% { left: 0%; }
+  30% { left: 40%; }
+  60% { left: 70%; }
+  80% { left: 85%; }
+  100% { left: 100%; }
+}
+
+@keyframes cat-run {
+  0% {
+    box-shadow: 
+      /* Frame 1: 腳張開 */
+      -2px -14px 0 0 var(--c-d), 4px -14px 0 0 var(--c-d),
+      -2px -12px 0 0 var(--c-o), 0px -12px 0 0 var(--c-o), 2px -12px 0 0 var(--c-o), 4px -12px 0 0 var(--c-o),
+      -4px -10px 0 0 var(--c-o), -2px -10px 0 0 var(--c-b), 0px -10px 0 0 var(--c-o), 2px -10px 0 0 var(--c-o), 4px -10px 0 0 var(--c-b), 6px -10px 0 0 var(--c-o),
+      -4px -8px 0 0 var(--c-o), -2px -8px 0 0 var(--c-o), 0px -8px 0 0 var(--c-b), 2px -8px 0 0 var(--c-o), 4px -8px 0 0 var(--c-o), 6px -8px 0 0 var(--c-o),
+      -2px -6px 0 0 var(--c-o), 0px -6px 0 0 var(--c-o), 2px -6px 0 0 var(--c-o), 4px -6px 0 0 var(--c-o),
+      6px -6px 0 0 var(--c-o), 8px -6px 0 0 var(--c-o), 10px -6px 0 0 var(--c-o), 12px -6px 0 0 var(--c-d), 14px -8px 0 0 var(--c-d),
+      0px -4px 0 0 var(--c-o), 2px -4px 0 0 var(--c-o), 4px -4px 0 0 var(--c-o), 6px -4px 0 0 var(--c-o), 8px -4px 0 0 var(--c-o), 10px -4px 0 0 var(--c-o), 12px -4px 0 0 var(--c-o), 14px -6px 0 0 var(--c-o), 14px -10px 0 0 var(--c-o),
+      0px -2px 0 0 var(--c-o), 2px -2px 0 0 var(--c-l), 4px -2px 0 0 var(--c-l), 6px -2px 0 0 var(--c-l), 8px -2px 0 0 var(--c-o), 10px -2px 0 0 var(--c-o), 12px -2px 0 0 var(--c-o), 14px -12px 0 0 var(--c-d),
+      0px 0px 0 0 var(--c-d), 2px 0px 0 0 var(--c-d), 10px 0px 0 0 var(--c-d), 12px 0px 0 0 var(--c-d);
+  }
+  50% {
+    /* 輕微上下跳動 */
+    transform: translateY(-2px);
+    box-shadow: 
+      /* Frame 2: 腳收攏 */
+      -2px -14px 0 0 var(--c-d), 4px -14px 0 0 var(--c-d),
+      -2px -12px 0 0 var(--c-o), 0px -12px 0 0 var(--c-o), 2px -12px 0 0 var(--c-o), 4px -12px 0 0 var(--c-o),
+      -4px -10px 0 0 var(--c-o), -2px -10px 0 0 var(--c-b), 0px -10px 0 0 var(--c-o), 2px -10px 0 0 var(--c-o), 4px -10px 0 0 var(--c-b), 6px -10px 0 0 var(--c-o),
+      -4px -8px 0 0 var(--c-o), -2px -8px 0 0 var(--c-o), 0px -8px 0 0 var(--c-b), 2px -8px 0 0 var(--c-o), 4px -8px 0 0 var(--c-o), 6px -8px 0 0 var(--c-o),
+      -2px -6px 0 0 var(--c-o), 0px -6px 0 0 var(--c-o), 2px -6px 0 0 var(--c-o), 4px -6px 0 0 var(--c-o),
+      6px -6px 0 0 var(--c-o), 8px -6px 0 0 var(--c-o), 10px -6px 0 0 var(--c-o), 12px -6px 0 0 var(--c-d), 14px -8px 0 0 var(--c-d),
+      0px -4px 0 0 var(--c-o), 2px -4px 0 0 var(--c-o), 4px -4px 0 0 var(--c-o), 6px -4px 0 0 var(--c-o), 8px -4px 0 0 var(--c-o), 10px -4px 0 0 var(--c-o), 12px -4px 0 0 var(--c-o), 14px -6px 0 0 var(--c-o), 14px -10px 0 0 var(--c-o),
+      0px -2px 0 0 var(--c-o), 2px -2px 0 0 var(--c-l), 4px -2px 0 0 var(--c-l), 6px -2px 0 0 var(--c-l), 8px -2px 0 0 var(--c-o), 10px -2px 0 0 var(--c-o), 12px -2px 0 0 var(--c-o), 14px -12px 0 0 var(--c-d),
+      /* Frame 2: 腳位置變化 */
+      2px 0px 0 0 var(--c-d), 4px 0px 0 0 var(--c-d), 8px 0px 0 0 var(--c-d), 10px 0px 0 0 var(--c-d);
+  }
+}
+
+/* 故障文字效果 */
+.glitch-wrapper {
+  position: relative;
+}
+
+.glitch {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+  letter-spacing: 2px;
+  position: relative;
+  font-family: 'Press Start 2P', 'Courier New', cursive; /* 更改為像素風格字體 */
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -1px 0 #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -1px 0 #00fff9;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(31px, 9999px, 98px, 0); }
+  5% { clip: rect(69px, 9999px, 86px, 0); }
+  10% { clip: rect(7px, 9999px, 20px, 0); }
+  15% { clip: rect(89px, 9999px, 16px, 0); }
+  20% { clip: rect(2px, 9999px, 92px, 0); }
+  25% { clip: rect(54px, 9999px, 7px, 0); }
+  30% { clip: rect(47px, 9999px, 30px, 0); }
+  35% { clip: rect(41px, 9999px, 79px, 0); }
+  40% { clip: rect(28px, 9999px, 16px, 0); }
+  45% { clip: rect(66px, 9999px, 43px, 0); }
+  50% { clip: rect(38px, 9999px, 91px, 0); }
+  55% { clip: rect(11px, 9999px, 64px, 0); }
+  60% { clip: rect(96px, 9999px, 3px, 0); }
+  65% { clip: rect(59px, 9999px, 73px, 0); }
+  70% { clip: rect(76px, 9999px, 55px, 0); }
+  75% { clip: rect(8px, 9999px, 49px, 0); }
+  80% { clip: rect(23px, 9999px, 14px, 0); }
+  85% { clip: rect(35px, 9999px, 83px, 0); }
+  90% { clip: rect(62px, 9999px, 26px, 0); }
+  95% { clip: rect(44px, 9999px, 97px, 0); }
+  100% { clip: rect(82px, 9999px, 10px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(65px, 9999px, 100px, 0); }
+  5% { clip: rect(52px, 9999px, 74px, 0); }
+  10% { clip: rect(79px, 9999px, 85px, 0); }
+  15% { clip: rect(75px, 9999px, 5px, 0); }
+  20% { clip: rect(67px, 9999px, 61px, 0); }
+  25% { clip: rect(14px, 9999px, 79px, 0); }
+  30% { clip: rect(1px, 9999px, 66px, 0); }
+  35% { clip: rect(86px, 9999px, 30px, 0); }
+  40% { clip: rect(23px, 9999px, 98px, 0); }
+  45% { clip: rect(85px, 9999px, 72px, 0); }
+  50% { clip: rect(71px, 9999px, 75px, 0); }
+  55% { clip: rect(2px, 9999px, 48px, 0); }
+  60% { clip: rect(30px, 9999px, 16px, 0); }
+  65% { clip: rect(59px, 9999px, 50px, 0); }
+  70% { clip: rect(41px, 9999px, 62px, 0); }
+  75% { clip: rect(2px, 9999px, 82px, 0); }
+  80% { clip: rect(47px, 9999px, 73px, 0); }
+  85% { clip: rect(3px, 9999px, 27px, 0); }
+  90% { clip: rect(26px, 9999px, 55px, 0); }
+  95% { clip: rect(42px, 9999px, 97px, 0); }
+  100% { clip: rect(38px, 9999px, 49px, 0); }
+}
+
+/* 進度條 */
+.progress-bar-container {
+  width: 100%; /* 讓進度條填滿 loader-track 容器 */
+  height: 4px;
+  background-color: rgba(128, 128, 128, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary-color);
+  width: 0%;
+  animation: progress-fill 2s ease-in-out forwards;
+  box-shadow: 0 0 10px var(--primary-color);
+}
+
+@keyframes progress-fill {
+  0% { width: 0%; }
+  30% { width: 40%; }
+  60% { width: 70%; }
+  80% { width: 85%; }
+  100% { width: 100%; }
+}
+
+/* 離開動畫 */
+.fade-out-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-out-leave-to {
+  opacity: 0;
 }
 </style>
