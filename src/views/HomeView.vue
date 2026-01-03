@@ -226,15 +226,15 @@ const showCopyToast = () => {
 .profile-title {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 0.2rem; /* 縮小間距 */
+  margin-bottom: 0.2rem; 
 }
 
 .profile-subtitle {
   font-size: 1.2rem;
   color: var(--text-color);
   max-width: 600px;
-  margin-bottom: 0.8rem; /* 縮小間距 */
-  min-height: 1.5em; /* 確保高度一致，避免跳動 */
+  margin-bottom: 0.8rem; 
+  min-height: 1.5em; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -271,24 +271,24 @@ const showCopyToast = () => {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 1.2rem; /* 縮減下方間距 */
-  margin-top: 0.3rem; /* 縮減上方間距 */
+  margin-bottom: 1.2rem;
+  margin-top: 0.3rem;
 }
 
 .social-link {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px; /* 縮小圖標尺寸 */
-  height: 50px; /* 縮小圖標尺寸 */
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: var(--card-bg);
   color: var(--text-color);
-  font-size: 1.1rem; /* 稍微縮小圖標 */
+  font-size: 1.1rem;
   text-decoration: none;
   transition: all 0.3s ease;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  margin: 0 6px; /* 縮減橫向間距 */
+  margin: 0 6px;
   position: relative;
   z-index: 1;
   border: 2px solid transparent;
@@ -499,9 +499,9 @@ const showCopyToast = () => {
   background: transparent;
   
   /* 貓咪配色變數 */
-  --c-o: #e08e3d; /* 身體橘色 */
+  --c-o: #eb8d30; /* 身體橘色 */
   --c-d: #8b4513; /* 深色細節 */
-  --c-l: #e08e3d; /* 亮色肚子 */
+  --c-l: #eb8d30; /* 亮色肚子 */
   --c-b: #222222; /* 眼睛/鼻子 */
   
   animation: cat-run 0.4s infinite steps(2); /* 加快跑步頻率 */

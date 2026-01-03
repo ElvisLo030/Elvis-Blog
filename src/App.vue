@@ -39,6 +39,18 @@ const scrollToTop = () => {
 
 // 在組件掛載時初始化主題和滾動監聽
 onMounted(() => {
+  const loader = document.getElementById('loading-screen');
+  if (loader) {
+    nextTick(() => {
+      setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.remove();
+        }, 500);
+      }, 500); 
+    });
+  }
+
   // 從本地存儲讀取主題設置（如果有）
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
@@ -545,6 +557,36 @@ body {
     font-size: 1.1rem;
     width: 1.2rem;
     text-align: center;
+  }
+
+  /* 手機版頁尾調整：縮小字體並確保不換行 */
+  .footer-content {
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .footer-content p {
+    font-size: 0.8rem;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .footer-links {
+    gap: 0.25rem;
+  }
+
+  .footer-link {
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+  
+  .divider {
+    font-size: 0.7rem;
+    margin: 0 0.1rem;
   }
 }
 

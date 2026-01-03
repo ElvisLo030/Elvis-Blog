@@ -7,7 +7,7 @@
       <h2 class="section-title"><font-awesome-icon :icon="['fas', 'id-card']" class="section-icon" /> About</h2>
       <div class="section-content">
         <ul class="info-list">
-          <li><font-awesome-icon :icon="['fas', 'user']" />你可以叫我：小羅</li>
+          <li><font-awesome-icon :icon="['fas', 'user']" />你可以叫我：小羅 / Elvis</li>
           <li><font-awesome-icon :icon="['fas', 'map-marker-alt']" /> 出沒地：高雄</li>
           <li><font-awesome-icon :icon="['fas', 'book']" /> MBTI：INFJ-T</li>
           <li><font-awesome-icon :icon="['fas', 'graduation-cap']" /> 學校：CSU-MIS</li>
@@ -63,7 +63,7 @@
               <span class="skill-tag" @click="OrangeCatClick">橘貓</span>
               <span class="skill-tag">虎斑貓</span>
               <span class="skill-tag">咖波</span>
-              <span class="skill-tag">貓貓怪</span>
+              <span class="skill-tag">喵喵怪</span>
               <span class="skill-tag">小八</span>
               <span class="skill-tag" @click="AnotherProfileClick">狗勾</span>
               <span class="skill-tag">鮭魚</span>
@@ -127,11 +127,13 @@
               <span class="skill-tag">MyGo!!!!!</span>
               <span class="skill-tag">Ave Mujica</span>
               <span class="skill-tag">Grils Band Cry</span>
+              <span class="skill-tag">孤獨搖滾</span>
               <span class="skill-tag">Re:Zero</span>
               <span class="skill-tag">魔法少女小圓</span>
               <span class="skill-tag">我推的孩子</span>
               <span class="skill-tag">明日方舟</span>
-              <span class="skill-tag">全知讀者視角</span>
+              <span class="skill-tag">我獨自升級</span>
+              <span class="skill-tag">葬送的芙莉蓮</span>
             </div>
           </div>
           <div class="skill-category">
@@ -154,12 +156,17 @@
         <ul class="info-list">
           <li @click="router.push('/changelog')" class="clickable-list-item">
             <font-awesome-icon :icon="['fas', 'history']" />
-            <span>網站更新日誌</span>
+            <span>網站更新紀錄</span>
             <font-awesome-icon :icon="['fas', 'chevron-right']" class="external-icon" />
           </li>
           <li @click="router.push('/cookie')" class="clickable-list-item">
             <font-awesome-icon :icon="['fas', 'cookie-bite']" />
             <span>Cookie 使用說明</span>
+            <font-awesome-icon :icon="['fas', 'chevron-right']" class="external-icon" />
+          </li>
+          <li @click="router.push('/sm')" class="clickable-list-item">
+            <font-awesome-icon :icon="['fas', 'message']" />
+            <span>螢幕訊息</span>
             <font-awesome-icon :icon="['fas', 'chevron-right']" class="external-icon" />
           </li>
         </ul>
