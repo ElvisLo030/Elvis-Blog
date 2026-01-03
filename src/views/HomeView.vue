@@ -2,12 +2,12 @@
   <!-- Loading 動畫層 -->
   <Transition name="fade-out">
     <div v-if="isLoading" class="loading-overlay">
-        <div class="tech-loader">
-          <div class="glitch-wrapper">
-            <div class="glitch" data-text="Now Loading...">Now Loading...</div>
-          </div>
-          
-          <div class="loader-track">
+          <div class="tech-loader">
+            <div class="glitch-wrapper">
+              <div class="glitch" :data-text="loadingText">{{ loadingText }}<span class="loading-cursor">_</span></div>
+            </div>
+            
+            <div class="loader-track">
             <div class="pixel-cat-container">
               <div class="pixel-cat"></div>
             </div>
@@ -118,12 +118,33 @@ const startCursorBlink = () => {
 
 // 組件掛載時啟動效果
 const isLoading = ref(true);
+const loadingText = ref('');
 
 onMounted(async () => {
-  // 1. 設定最小載入時間
+  const targetText = 'Loading...';
+  let charIndex = 0;
+  
+  const loadingTypeWriter = () => {
+    // 如果已經載入完成，就停止打字動畫
+    if (!isLoading.value) return;
+
+    if (charIndex <= targetText.length) {
+      loadingText.value = targetText.substring(0, charIndex);
+      charIndex++;
+      setTimeout(loadingTypeWriter, 100); 
+    } else {
+      setTimeout(() => {
+        if (!isLoading.value) return;
+        charIndex = 0;
+        loadingTypeWriter();
+      }, 800);
+    }
+  };
+  
+  loadingTypeWriter();
+
   const minTimePromise = new Promise(resolve => setTimeout(resolve, 1500));
   
-  // 2. 等待頁面所有資源載入完成
   const resourceLoadPromise = new Promise(resolve => {
     if (document.readyState === 'complete') {
       resolve();
@@ -132,7 +153,6 @@ onMounted(async () => {
     }
   });
 
-  // 3. 額外確保當前頁面的圖片都已載入
   const imagesLoadedPromise = Promise.all(
     Array.from(document.images)
       .filter(img => !img.complete)
@@ -141,7 +161,6 @@ onMounted(async () => {
       }))
   );
 
-  // 等待所有條件滿足：至少跑完 1.5 秒動畫，且資源都載入完畢
   await Promise.all([minTimePromise, resourceLoadPromise, imagesLoadedPromise]);
   
   isLoading.value = false;
@@ -578,6 +597,17 @@ const showCopyToast = () => {
   font-family: 'Press Start 2P', 'Courier New', cursive; /* 更改為像素風格字體 */
   text-transform: uppercase;
   line-height: 1.5;
+  display: inline-block; /* 確保 cursor 跟隨 */
+}
+
+.loading-cursor {
+  animation: blink 0.5s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .glitch::before,
