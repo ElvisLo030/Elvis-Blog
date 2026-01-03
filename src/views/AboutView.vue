@@ -12,7 +12,8 @@
           <li><font-awesome-icon :icon="['fas', 'book']" /> MBTI：INFJ-T</li>
           <li><font-awesome-icon :icon="['fas', 'graduation-cap']" /> 學校：CSU-MIS</li>
           <li @click="openCSUMIS" class="clickable-list-item">
-            <span><font-awesome-icon :icon="['fas', 'scroll']" /> 23屆資管系學會活動長、24屆資管系學會會長</span>
+            <font-awesome-icon :icon="['fas', 'scroll']" />
+            <span>23屆資管系學會活動長、24屆資管系學會會長</span>
             <font-awesome-icon :icon="['fas', 'external-link-alt']" class="external-icon" />
           </li>
           <li><font-awesome-icon :icon="['fas', 'tags']" /> KPWC 高屏聯賽負責人、草衙B1傳閱本管理人</li>
@@ -317,6 +318,12 @@ const openCSUMIS = () => {
   background-color: rgba(var(--primary-rgb), 0.1);
 }
 
+.info-list li .svg-inline--fa {
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
 .clickable-list-item {
   cursor: pointer;
 }
@@ -359,6 +366,9 @@ const openCSUMIS = () => {
 
 .social-link .svg-inline--fa {
   font-size: 1.5rem;
+  width: 1.5rem;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .skills-container {
@@ -387,6 +397,12 @@ const openCSUMIS = () => {
   margin-bottom: 1rem;
   color: var(--primary-color);
   font-size: 1.4rem;
+}
+
+.skill-title .svg-inline--fa {
+  width: 1.5rem;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .skill-tags {
