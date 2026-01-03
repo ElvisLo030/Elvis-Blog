@@ -326,12 +326,14 @@ function handleImageError(event, project) {
   flex-grow: 1;
 }
 
-/* 已移除標籤相關樣式 */
 
 .project-title {
   font-size: 1.4rem;
   margin: 0 0 1rem 0;
   color: var(--primary-color);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.4;
 }
 
 .project-description {

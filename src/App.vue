@@ -536,6 +536,7 @@ body {
     flex-direction: column;
     padding: 4rem 2rem 2rem;
     height: auto;
+    align-items: flex-start;
   }
   
   .main-nav li {
@@ -549,14 +550,16 @@ body {
     padding: 0.5rem 0;
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 1rem;
   }
   
   /* 手機版顯示導航圖示 */
   .nav-icon {
-    font-size: 1.1rem;
-    width: 1.2rem;
-    text-align: center;
+    font-size: 1.2rem;
+    width: 2rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
   }
 
   /* 手機版頁尾調整：縮小字體並確保不換行 */
