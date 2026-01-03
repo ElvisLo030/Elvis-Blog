@@ -22,7 +22,7 @@
     </section>
 
     <section class="about-section">
-      <h2 class="section-title"><font-awesome-icon :icon="['fas', 'share-alt']" class="section-icon" /> Soacial Media</h2>
+      <h2 class="section-title"><font-awesome-icon :icon="['fas', 'share-alt']" class="section-icon" /> Social Media</h2>
       <div class="section-content">
         <div class="social-links">
           <a href="mailto:me@elvislo.tw" class="social-link" aria-label="Email">
@@ -145,6 +145,24 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h2 class="section-title"><font-awesome-icon :icon="['fas', 'info-circle']" class="section-icon" /> Site Info</h2>
+      <div class="section-content">
+        <ul class="info-list">
+          <li @click="router.push('/changelog')" class="clickable-list-item">
+            <font-awesome-icon :icon="['fas', 'history']" />
+            <span>網站更新日誌</span>
+            <font-awesome-icon :icon="['fas', 'chevron-right']" class="external-icon" />
+          </li>
+          <li @click="router.push('/cookie')" class="clickable-list-item">
+            <font-awesome-icon :icon="['fas', 'cookie-bite']" />
+            <span>Cookie 使用說明</span>
+            <font-awesome-icon :icon="['fas', 'chevron-right']" class="external-icon" />
+          </li>
+        </ul>
       </div>
     </section>
   </div>
@@ -280,7 +298,7 @@ const openCSUMIS = () => {
   position: absolute;
   bottom: -8px;
   left: 0;
-  width: 60%;
+  width: 70px;
   height: 3px;
   background-color: var(--primary-color);
 }

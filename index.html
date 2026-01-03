@@ -16,6 +16,12 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CC385LNFSY"></script>
     <script>
+      // Check for opt-out
+      const GA_MEASUREMENT_ID = 'G-CC385LNFSY';
+      if (localStorage.getItem('ga_opt_out') === 'true') {
+        window['ga-disable-' + GA_MEASUREMENT_ID] = true;
+      }
+
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());

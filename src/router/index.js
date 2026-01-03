@@ -29,6 +29,11 @@ const routes = [
     component: () => import('../views/ProjectsView.vue')
   },
   {
+    path: '/timeline',
+    name: 'Timeline',
+    component: () => import('../views/TimelineView.vue')
+  },
+  {
     path: '/invite',
     name: 'Invite',
     component: () => import('../views/InviteView.vue')
@@ -38,6 +43,16 @@ const routes = [
     name: 'SimpleMessage',
     component: () => import('../views/SimpleMessageView.vue'),
     meta: { hideLayout: true }
+  },
+  {
+    path: '/changelog',
+    name: 'Changelog',
+    component: () => import('../views/ChangelogView.vue')
+  },
+  {
+    path: '/cookie',
+    name: 'Cookie',
+    component: () => import('../views/CookieView.vue')
   },
   {
     path: '/:pathMatch(.*)*',

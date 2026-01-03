@@ -121,6 +121,10 @@ const toggleTheme = () => {
               <font-awesome-icon :icon="['fas', 'folder-open']" class="nav-icon" />
               專案
             </router-link></li>
+            <li><router-link to="/timeline" @click="closeMenu">
+              <font-awesome-icon :icon="['fas', 'clock']" class="nav-icon" />
+              時間軸
+            </router-link></li>
             <li><router-link to="/invite" @click="closeMenu">
               <font-awesome-icon :icon="['fas', 'paper-plane']" class="nav-icon" />
               邀請碼
@@ -155,7 +159,13 @@ const toggleTheme = () => {
     </main>
 
     <footer class="app-footer">
-      <p>&copy; {{ new Date().getFullYear() }} ElvisLo All Rights Reserved</p>
+      <div class="footer-content">
+        <p>&copy; {{ new Date().getFullYear() }} ElvisLo All Rights Reserved</p>
+        <div class="footer-links">
+          <span class="divider">|</span>
+          <router-link to="/cookie" class="footer-link">Cookie 政策</router-link>
+        </div>
+      </div>
     </footer>
     
     <!-- 回到頂端按鈕 -->
@@ -394,6 +404,39 @@ body {
   box-shadow: 0 -2px 8px var(--shadow-color);
   margin-top: auto;
   transition: background-color var(--animation-speed), box-shadow var(--animation-speed);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0;
+}
+
+.divider {
+  color: var(--text-color-secondary);
+  opacity: 0.5;
+}
+
+.footer-link {
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
 }
 
 .mobile-menu-button {

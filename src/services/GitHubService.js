@@ -54,6 +54,40 @@ export async function fetchRepositories(username = DEFAULT_USERNAME) {
 }
 
 /**
+ * 獲取特定存儲庫的提交記錄
+ * @param {string} owner - 擁有者
+ * @param {string} repo - 存儲庫名稱
+ * @param {number} perPage - 每頁數量
+ * @returns {Promise<Array>} 提交記錄列表
+ */
+export async function fetchCommits(owner = DEFAULT_USERNAME, repo = 'Elvis-Blog', perPage = 10) {
+  try {
+    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits?per_page=${perPage}`);
+    if (!response.ok) {
+      throw new Error(`GitHub API 回應錯誤: ${response.status}`);
+    }
+    const data = await response.json();
+    
+    return data.map(item => ({
+      sha: item.sha,
+      shortSha: item.sha.substring(0, 7),
+      date: new Date(item.commit.author.date),
+      formattedDate: new Date(item.commit.author.date).toLocaleDateString('zh-TW', { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+      }).replace(/\//g, '-'),
+      message: item.commit.message,
+      author: item.commit.author.name,
+      url: item.html_url
+    }));
+  } catch (error) {
+    console.error('獲取提交記錄失敗:', error);
+    return [];
+  }
+}
+
+/**
  * 從存儲庫獲取預設技術標籤
  * @param {Object} repo - 存儲庫物件
  * @returns {Array} 技術標籤陣列
