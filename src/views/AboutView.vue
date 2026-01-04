@@ -146,6 +146,27 @@
               <span class="skill-tag" style="background-color: #ff0000;"><font-awesome-icon :icon="['fas', 'triangle-exclamation']"/> 超嚴重臉盲！</span>             
             </div>
           </div>
+          <div class="skill-category wide-category">
+            <h3 class="skill-title">
+              <span class="title-text"><font-awesome-icon :icon="['fas', 'headphones']" /> Recently Played 2025</span>
+              <button class="speed-toggle" @click="toggleSpeed" :class="{ 'active': isFastSpeed }" title="Toggle Animation Speed">
+                {{ isFastSpeed ? '2x' : '1x' }}
+              </button>
+            </h3>
+            <div class="marquee-container">
+              <div class="marquee-content" :style="{ animationDuration: isFastSpeed ? '15s' : '30s' }">
+                <span 
+                  v-for="(song, index) in [...recentSongs, ...recentSongs]" 
+                  :key="index" 
+                  class="song-tag" 
+                  @click="openSong(song.url)"
+                >
+                  <font-awesome-icon :icon="['fas', 'play']" class="play-icon" />
+                  {{ song.name }} - {{ song.artist }}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -232,6 +253,28 @@ const gameClick = () => {
 const openCSUMIS = () => {
   window.open('https://www.instagram.com/csu._.mis/', '_blank');
 }
+
+// 最近常聽的音樂
+const recentSongs = [
+  { name: '年少的我們永遠輕狂', artist: '脆樂團', url: 'https://music.apple.com/tw/album/%E5%B9%B4%E5%B0%91%E7%9A%84%E6%88%91%E5%80%91%E6%B0%B8%E9%81%A0%E8%BC%95%E7%8B%82/1843602591?i=1843602941' },
+  { name: '美好的事可不可以發生在我身上', artist: '康士坦的變化球', url: 'https://music.apple.com/tw/album/%E7%BE%8E%E5%A5%BD%E7%9A%84%E4%BA%8B%E5%8F%AF%E4%B8%8D%E5%8F%AF%E4%BB%A5%E7%99%BC%E7%94%9F%E5%9C%A8%E6%88%91%E8%BA%AB%E4%B8%8A/1801507621?i=1801507625' },
+  { name: '願你愛自己，像我愛你一樣', artist: '脆樂團', url: 'https://music.apple.com/tw/album/%E9%A1%98%E4%BD%A0%E6%84%9B%E8%87%AA%E5%B7%B1-%E5%83%8F%E6%88%91%E6%84%9B%E4%BD%A0%E4%B8%80%E6%A8%A3/1843602591?i=1843602594' },
+  { name: '相愛就是說了100次對不起', artist: '脆樂團', url: 'https://music.apple.com/tw/album/%E7%9B%B8%E6%84%9B%E5%B0%B1%E6%98%AF%E8%AA%AA%E4%BA%86100%E6%AC%A1%E5%B0%8D%E4%B8%8D%E8%B5%B7/1644823778?i=1644823849' },
+  { name: '物語', artist: '美秀集團', url: 'https://music.apple.com/tw/album/%E7%89%A9%E8%AA%9E/1656010829?i=1656010833' },
+  { name: '情歌', artist: '草東沒有派對', url: 'https://music.apple.com/tw/album/%E6%83%85%E6%AD%8C/1676735354?i=1676736227' },
+  { name: '將錯就對', artist: '告五人', url: 'https://music.apple.com/tw/album/%E5%B0%87%E9%8C%AF%E5%B0%B1%E5%B0%8D/1822757825?i=1822757828' },
+  { name: '擱淺的人', artist: '康士坦的變化球', url: 'https://music.apple.com/tw/album/%E6%93%B1%E6%B7%BA%E7%9A%84%E4%BA%BA/1800751034?i=1800751445' },
+  { name: '黑夜狂奔', artist: '告五人', url: 'https://music.apple.com/tw/album/%E9%BB%91%E5%A4%9C%E7%8B%82%E5%A5%94/1822757825?i=1822757837' },
+];
+
+const openSong = (url) => {
+  if (url) window.open(url, '_blank');
+};
+
+const isFastSpeed = ref(false);
+const toggleSpeed = () => {
+  isFastSpeed.value = !isFastSpeed.value;
+};
 </script>
 
 <style scoped>
@@ -527,6 +570,30 @@ const openCSUMIS = () => {
   color: #ff8d1b;
 }
 
+.title-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.speed-toggle {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: bold;
+}
+
+.speed-toggle:hover, .speed-toggle.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
 /* 動畫 */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -563,5 +630,74 @@ const openCSUMIS = () => {
   .social-link {
     padding: 0.8rem;
   }
+}
+
+/* Wide category for marquee */
+.wide-category {
+  grid-column: 1 / -1;
+  overflow: hidden;
+  background-color: rgba(var(--primary-rgb), 0.08);
+}
+
+@media (min-width: 1024px) {
+  .wide-category {
+    grid-column: span 3;
+  }
+}
+
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  padding: 0.5rem 0;
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+.marquee-content {
+  display: inline-flex;
+  gap: 2rem;
+  animation: scroll 30s linear infinite;
+  white-space: nowrap;
+  padding-left: 100%; /* Start from outside */
+  animation-delay: -30s; /* Start immediately */
+}
+
+/* Override animation for seamless loop with duplicated content */
+.marquee-content {
+  padding-left: 0;
+  animation: scroll 40s linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+
+.song-tag {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  background-color: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s, color 0.2s, background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.song-tag:hover {
+  transform: scale(1.05);
+  color: var(--primary-color);
+  background-color: rgba(var(--primary-rgb), 0.15);
+}
+
+.play-icon {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 </style>

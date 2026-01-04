@@ -108,7 +108,7 @@ const toggleTheme = () => {
 
 <template>
   <div v-if="!route.meta.hideLayout" class="app-container" :class="{ 'dark-mode': isDarkMode }">
-    <header class="app-header">
+    <header class="app-header" data-nosnippet>
       <div class="logo-container">
         <router-link to="/" class="logo-link">
           <img src="/assets/meow.png" alt="Logo" class="logo-image">

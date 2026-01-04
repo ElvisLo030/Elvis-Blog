@@ -52,7 +52,7 @@
   </div>
   
   <!-- 複製成功提示 -->
-  <div class="copy-toast" :class="{ 'show': isCopyToastVisible }">
+  <div class="copy-toast" :class="{ 'show': isCopyToastVisible }" data-nosnippet>
     <font-awesome-icon :icon="['fas', 'check-circle']" /> Discord ID 已複製
   </div>
 </template>
