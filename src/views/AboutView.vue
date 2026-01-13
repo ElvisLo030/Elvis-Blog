@@ -148,15 +148,20 @@
           </div>
           <div class="skill-category wide-category">
             <h3 class="skill-title">
-              <span class="title-text"><font-awesome-icon :icon="['fas', 'headphones']" /> Recently Played 2025</span>
-              <button class="speed-toggle" @click="toggleSpeed" :class="{ 'active': isFastSpeed }" title="Toggle Animation Speed">
-                {{ isFastSpeed ? '2x' : '1x' }}
-              </button>
+              <span class="title-text"><font-awesome-icon :icon="['fas', 'headphones']" /> Recently Played Music</span>
+              <div class="header-controls">
+                <button class="control-btn" @click="toggleShowAllSongs" :title="isShowAllSongs ? '恢復跑馬燈' : '顯示所有歌曲'">
+                  <font-awesome-icon :icon="isShowAllSongs ? ['fas', 'undo'] : ['fas', 'list']" />
+                </button>
+                <button v-if="!isShowAllSongs" class="control-btn" @click="toggleSpeed" :class="{ 'active': isFastSpeed }" title="Toggle Animation Speed">
+                  {{ isFastSpeed ? '2x' : '1x' }}
+                </button>
+              </div>
             </h3>
-            <div class="marquee-container">
-              <div class="marquee-content" :style="{ animationDuration: isFastSpeed ? '15s' : '30s' }">
+            <transition name="content-transition" mode="out-in">
+              <div v-if="isShowAllSongs" class="songs-grid" key="grid">
                 <span 
-                  v-for="(song, index) in [...recentSongs, ...recentSongs]" 
+                  v-for="(song, index) in recentSongs" 
                   :key="index" 
                   class="song-tag" 
                   @click="openSong(song.url)"
@@ -165,7 +170,20 @@
                   {{ song.name }} - {{ song.artist }}
                 </span>
               </div>
-            </div>
+              <div v-else class="marquee-container" key="marquee">
+                <div class="marquee-content" :style="{ animationDuration: isFastSpeed ? '15s' : '30s' }">
+                  <span 
+                    v-for="(song, index) in [...recentSongs, ...recentSongs]" 
+                    :key="index" 
+                    class="song-tag" 
+                    @click="openSong(song.url)"
+                  >
+                    <font-awesome-icon :icon="['fas', 'play']" class="play-icon" />
+                    {{ song.name }} - {{ song.artist }}
+                  </span>
+                </div>
+              </div>
+            </transition>
           </div>
         </div>
       </div>
@@ -202,7 +220,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import googleSheetService from '../services/GoogleSheetService';
 
 // Discord ID複製功能
 const copyDiscordId = () => {
@@ -254,18 +273,19 @@ const openCSUMIS = () => {
   window.open('https://www.instagram.com/csu._.mis/', '_blank');
 }
 
+const SONGS_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQWZgG_Bc2g1TtCIQWduP6UqwCefaxMtWGvTJs_v5YiADX4YTLNfk1SezrLhzAi0CTZJvSKAJciirvA/pub?gid=24220043&single=true&output=csv';
+
 // 最近常聽的音樂
-const recentSongs = [
-  { name: '年少的我們永遠輕狂', artist: '脆樂團', url: 'https://music.apple.com/tw/album/%E5%B9%B4%E5%B0%91%E7%9A%84%E6%88%91%E5%80%91%E6%B0%B8%E9%81%A0%E8%BC%95%E7%8B%82/1843602591?i=1843602941' },
-  { name: '美好的事可不可以發生在我身上', artist: '康士坦的變化球', url: 'https://music.apple.com/tw/album/%E7%BE%8E%E5%A5%BD%E7%9A%84%E4%BA%8B%E5%8F%AF%E4%B8%8D%E5%8F%AF%E4%BB%A5%E7%99%BC%E7%94%9F%E5%9C%A8%E6%88%91%E8%BA%AB%E4%B8%8A/1801507621?i=1801507625' },
-  { name: '願你愛自己，像我愛你一樣', artist: '脆樂團', url: 'https://music.apple.com/tw/album/%E9%A1%98%E4%BD%A0%E6%84%9B%E8%87%AA%E5%B7%B1-%E5%83%8F%E6%88%91%E6%84%9B%E4%BD%A0%E4%B8%80%E6%A8%A3/1843602591?i=1843602594' },
-  { name: '相愛就是說了100次對不起', artist: '脆樂團', url: 'https://music.apple.com/tw/album/%E7%9B%B8%E6%84%9B%E5%B0%B1%E6%98%AF%E8%AA%AA%E4%BA%86100%E6%AC%A1%E5%B0%8D%E4%B8%8D%E8%B5%B7/1644823778?i=1644823849' },
-  { name: '物語', artist: '美秀集團', url: 'https://music.apple.com/tw/album/%E7%89%A9%E8%AA%9E/1656010829?i=1656010833' },
-  { name: '情歌', artist: '草東沒有派對', url: 'https://music.apple.com/tw/album/%E6%83%85%E6%AD%8C/1676735354?i=1676736227' },
-  { name: '將錯就對', artist: '告五人', url: 'https://music.apple.com/tw/album/%E5%B0%87%E9%8C%AF%E5%B0%B1%E5%B0%8D/1822757825?i=1822757828' },
-  { name: '擱淺的人', artist: '康士坦的變化球', url: 'https://music.apple.com/tw/album/%E6%93%B1%E6%B7%BA%E7%9A%84%E4%BA%BA/1800751034?i=1800751445' },
-  { name: '黑夜狂奔', artist: '告五人', url: 'https://music.apple.com/tw/album/%E9%BB%91%E5%A4%9C%E7%8B%82%E5%A5%94/1822757825?i=1822757837' },
-];
+const recentSongs = ref([]);
+
+onMounted(async () => {
+  if (SONGS_SHEET_URL) {
+    const data = await googleSheetService.fetchData(SONGS_SHEET_URL);
+    if (data && data.length > 0) {
+      recentSongs.value = data;
+    }
+  }
+});
 
 const openSong = (url) => {
   if (url) window.open(url, '_blank');
@@ -274,6 +294,11 @@ const openSong = (url) => {
 const isFastSpeed = ref(false);
 const toggleSpeed = () => {
   isFastSpeed.value = !isFastSpeed.value;
+};
+
+const isShowAllSongs = ref(false);
+const toggleShowAllSongs = () => {
+  isShowAllSongs.value = !isShowAllSongs.value;
 };
 </script>
 
@@ -576,8 +601,14 @@ const toggleSpeed = () => {
   gap: 0.5rem;
 }
 
-.speed-toggle {
+.header-controls {
   margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.control-btn {
   background: transparent;
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
@@ -587,9 +618,14 @@ const toggleSpeed = () => {
   cursor: pointer;
   transition: all 0.2s;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  min-width: 24px;
 }
 
-.speed-toggle:hover, .speed-toggle.active {
+.control-btn:hover, .control-btn.active {
   background-color: var(--primary-color);
   color: white;
 }
@@ -651,6 +687,25 @@ const toggleSpeed = () => {
   padding: 0.5rem 0;
   mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+.songs-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  padding: 1rem 0;
+  justify-content: center;
+}
+
+.content-transition-enter-active,
+.content-transition-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.content-transition-enter-from,
+.content-transition-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 .marquee-content {

@@ -3,11 +3,97 @@
     <div class="timeline-header">
       <h1 class="page-title">Timeline</h1>
     </div>
-    <div class="timeline-content">
-      <p>準備中... 敬請期待</p>
+
+    <div class="timeline">
+      <!-- 載入中動畫 -->
+      <div v-if="isLoading" class="loader-container" style="padding: 4rem 0;">
+        <div class="pixel-loader"></div>
+        <div class="loading-text">LOADING...</div>
+      </div>
+
+      <!-- 垂直線 (僅在非載入中且有資料時顯示) -->
+      <div v-if="!isLoading && timelineItems.length > 0" class="timeline-line"></div>
+
+      <!-- 無資料時的提示 (僅在非載入中且無資料時顯示) -->
+      <div v-if="!isLoading && timelineItems.length === 0" class="no-data">
+        目前暫無資料
+      </div>
+
+      <!-- 時間軸項目 -->
+      <template v-if="!isLoading">
+        <div 
+          v-for="(item, index) in timelineItems" 
+          :key="index" 
+          class="timeline-item"
+          :class="{ 'left': index % 2 === 0, 'right': index % 2 !== 0 }"
+        >
+          <!-- 時間點圖標 -->
+          <div class="timeline-dot">
+            <font-awesome-icon :icon="item.icon" />
+          </div>
+
+          <!-- 內容卡片 -->
+          <component 
+            :is="item.url ? 'a' : 'div'" 
+            :href="item.url" 
+            :target="item.url ? '_blank' : null"
+            class="timeline-content"
+            :class="{ 'clickable': item.url }"
+          >
+            <div class="timeline-date">{{ item.date }}</div>
+            <h3 class="timeline-title">
+              {{ item.title }}
+              <font-awesome-icon v-if="item.url" :icon="['fas', 'external-link-alt']" class="external-link-icon" />
+            </h3>
+            <p class="timeline-desc">{{ item.description }}</p>
+            
+            <!-- 標籤 (如果有) -->
+            <div v-if="item.tags && item.tags.length" class="timeline-tags">
+              <span v-for="tag in item.tags" :key="tag" class="timeline-tag">
+                {{ tag }}
+              </span>
+            </div>
+          </component>
+        </div>
+      </template>
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import googleSheetService from '../services/GoogleSheetService';
+
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQWZgG_Bc2g1TtCIQWduP6UqwCefaxMtWGvTJs_v5YiADX4YTLNfk1SezrLhzAi0CTZJvSKAJciirvA/pub?gid=0&single=true&output=csv'; 
+
+// 時間軸內容
+const timelineItems = ref([]);
+const isLoading = ref(true);
+
+onMounted(async () => {
+  if (SHEET_URL) {
+    try {
+      const data = await googleSheetService.fetchData(SHEET_URL);
+      if (data && data.length > 0) {
+        timelineItems.value = data.map(item => ({
+          date: item.date,
+          title: item.title,
+          description: item.description,
+          icon: ['fas', item.iconName || 'circle'],
+          tags: item.tags ? item.tags.split(',').map(tag => tag.trim()) : [],
+          url: item.url
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to load timeline data:', error);
+    } finally {
+      isLoading.value = false;
+    }
+  } else {
+    isLoading.value = false;
+  }
+});
+</script>
 
 <style scoped>
 .timeline-container {
@@ -56,6 +142,7 @@
   position: relative;
   width: 100%;
   margin: 0 auto;
+  min-height: 200px; /* 避免載入時高度塌陷 */
 }
 
 /* 中央垂直線 */
@@ -68,6 +155,23 @@
   background-color: var(--border-color); /* 使用變數 */
   transform: translateX(-50%);
   border-radius: 2px;
+}
+
+/* 載入中與無資料提示 */
+.loading-container,
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-color-secondary);
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loading-icon {
+  color: var(--primary-color);
 }
 
 /* 時間軸項目容器 */
@@ -146,6 +250,13 @@
   box-shadow: 0 4px 12px var(--shadow-color);
   position: relative;
   transition: transform 0.3s, box-shadow 0.3s;
+  display: block; 
+  text-decoration: none; 
+  color: inherit; 
+}
+
+.timeline-content.clickable {
+  cursor: pointer;
 }
 
 .timeline-content:hover {
@@ -190,6 +301,22 @@
   margin: 0.5rem 0;
   font-size: 1.4rem;
   color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timeline-item.left .timeline-title {
+  justify-content: flex-end;
+}
+
+.timeline-item.right .timeline-title {
+  justify-content: flex-start;
+}
+
+.external-link-icon {
+  font-size: 1rem;
+  opacity: 0.7;
 }
 
 .timeline-desc {
@@ -280,9 +407,12 @@
     justify-content: flex-start;
   }
 
+  .timeline-item.left .timeline-title {
+    justify-content: flex-start;
+  }
+
   .page-title {
     font-size: 2rem;
   }
 }
 </style>
-

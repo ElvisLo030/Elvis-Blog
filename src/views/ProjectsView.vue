@@ -3,11 +3,9 @@
     <h1 class="page-title">Projects</h1>
     
     <!-- 載入狀態 -->
-    <div v-if="isLoading" class="loading-container">
-      <div class="loading-spinner">
-        <font-awesome-icon :icon="['fas', 'spinner']" spin size="2x" />
-      </div>
-      <p>正在從 GitHub 載入專案...</p>
+    <div v-if="isLoading" class="loader-container" style="padding: 3rem;">
+      <div class="pixel-loader"></div>
+      <div class="loading-text">LOADING...</div>
     </div>
     
     <!-- 載入錯誤 -->
