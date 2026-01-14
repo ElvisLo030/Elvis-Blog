@@ -44,8 +44,8 @@
         <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub" data-tooltip="Github">
           <font-awesome-icon :icon="['fab', 'github']" />
         </a>
-        <a href="https://www.linkedin.com/in/elvislo030/" class="social-link" aria-label="Linkedin" data-tooltip="Linkedin">
-          <font-awesome-icon :icon="['fab', 'linkedin']" />
+        <a href="https://t.me/elvislo030" class="social-link" aria-label="Telegram" data-tooltip="Telegram">
+          <font-awesome-icon :icon="['fab', 'telegram']" />
         </a>
       </div>
     </section>
@@ -66,8 +66,8 @@ const typewriterTexts = [
   '努力在這個世界留下足跡...',
   '大學生一隻',
   'Rhythm Gamer',
-  '喵喵喵喵貓🐱',
-  '橘貓最可愛ㄌ!'
+  '汪嗚',
+  '橘貓最可愛ㄌ！'
 ];
 
 // 打字機效果相關狀態
@@ -262,6 +262,9 @@ const showCopyToast = () => {
 /* 打字機效果樣式 */
 .typewriter-text {
   display: inline-block;
+  font-family:"LXGW WenKai TC", "Noto Sans TC", sans-serif;
+  font-weight: 500;
+  font-style: normal;
 }
 
 .typing-cursor {
