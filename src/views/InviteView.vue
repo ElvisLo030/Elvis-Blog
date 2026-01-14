@@ -2,79 +2,98 @@
   <div class="invite-container">
     <h1 class="page-title">Invite Code</h1>
     
-    <div class="filter-section">
-      <div class="search-box">
-        <font-awesome-icon :icon="['fas', 'search']" class="search-icon" />
-        <input 
-          type="text" 
-          v-model="searchQuery" 
-          placeholder="搜尋優惠..." 
-          class="search-input"
-        />
+    <!-- 載入中動畫 -->
+    <div v-if="isLoading" class="loader-container" style="padding: 4rem 0;">
+      <div class="pixel-loader"></div>
+      <div class="loading-text">LOADING...</div>
+    </div>
+
+    <template v-else>
+      <!-- 無資料時的提示 -->
+      <div v-if="inviteItems.length === 0" class="no-data" style="padding: 4rem 0;">
+        目前暫無資料
+      </div>
+
+      <template v-else>
+        <div class="filter-section">
+        <div class="search-box">
+          <font-awesome-icon :icon="['fas', 'search']" class="search-icon" />
+          <input 
+            type="text" 
+            v-model="searchQuery" 
+            placeholder="搜尋優惠..." 
+            class="search-input"
+          />
+        </div>
+        
+        <div class="tags-filter">
+          <button 
+            v-for="tag in allTags" 
+            :key="tag"
+            @click="toggleTag(tag)"
+            class="filter-tag"
+            :class="{ active: currentTag === tag }"
+          >
+            {{ tag }}
+          </button>
+        </div>
       </div>
       
-      <div class="tags-filter">
-        <button 
-          v-for="tag in allTags" 
-          :key="tag"
-          @click="toggleTag(tag)"
-          class="filter-tag"
-          :class="{ active: currentTag === tag }"
+      <div class="invite-grid">
+        <div 
+          v-for="item in filteredItems" 
+          :key="item.id"
+          class="invite-card"
+          @click="handleItemClick(item)"
         >
-          {{ tag }}
-        </button>
-      </div>
-    </div>
-    
-    <div class="invite-grid">
-      <div 
-        v-for="item in filteredItems" 
-        :key="item.id"
-        class="invite-card"
-        @click="handleItemClick(item)"
-      >
-        <div class="invite-content">
-          <h2 class="invite-title">{{ item.title }}</h2>
-          <div class="invite-info">
-            <font-awesome-icon :icon="['fas', 'calendar']" />
-            <span>活動日期：{{ item.period }}</span>
-          </div>
-          <div class="invite-benefits">
-            <div class="benefit-item" v-for="benefit in item.benefits" :key="benefit">
-              <span v-if="!isUrl(benefit)" class="benefit-text">{{ benefit }}</span>
-              <a 
-                v-else 
-                :href="getUrl(benefit)"
-                target="_blank"
-                class="benefit-link"
-                @click.stop
-              >
-                <font-awesome-icon :icon="['fas', 'external-link-alt']" />
-                查看官方網站
-              </a>
+          <div class="invite-content">
+            <h2 class="invite-title">{{ item.title }}</h2>
+            <div class="invite-info">
+              <font-awesome-icon :icon="['fas', 'calendar']" />
+              <span>活動日期：{{ item.period }}</span>
             </div>
-          </div>
-          <div class="invite-footer">
-            <div class="invite-tags">
-              <span 
-                v-for="tag in item.tags" 
-                :key="tag"
-                class="item-tag"
-                @click.stop="toggleTag(tag)"
-              >
-                {{ tag }}
-              </span>
+            <div v-if="isExpired(item.period)" class="expired-notice">
+              <font-awesome-icon :icon="['fas', 'exclamation-circle']" />
+              活動時間已到期，待更新
             </div>
-            <button v-if="item.type === 'code'" class="action-button" @click.stop="copyCode(item.code)">
-              複製邀請碼
-            </button>
-            <button v-else class="action-button" @click.stop="openLink(item.link)">
-              立即申辦
-            </button>
+            <div class="invite-benefits">
+              <div class="benefit-item" v-for="benefit in item.benefits" :key="benefit">
+                <span v-if="!isUrl(benefit)" class="benefit-text">{{ benefit }}</span>
+                <a 
+                  v-else 
+                  :href="getUrl(benefit)"
+                  target="_blank"
+                  class="benefit-link"
+                  @click.stop
+                >
+                  <font-awesome-icon :icon="['fas', 'external-link-alt']" />
+                  查看官方網站
+                </a>
+              </div>
+            </div>
+            <div class="invite-footer">
+              <div class="invite-tags">
+                <span 
+                  v-for="tag in item.tags" 
+                  :key="tag"
+                  class="item-tag"
+                  @click.stop="toggleTag(tag)"
+                >
+                  {{ tag }}
+                </span>
+              </div>
+              <button v-if="item.type === 'code'" class="action-button" @click.stop="copyCode(item.code)">
+                複製邀請碼
+              </button>
+              <button v-else class="action-button" @click.stop="openLink(item.link)">
+                立即申辦
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      </template>
+    </template>
     
     <!-- 說明框框 -->
     <div class="invite-modal" v-if="selectedItem" @click="closeModal">
@@ -88,6 +107,9 @@
           <h3 class="info-section">
             <font-awesome-icon :icon="['fas', 'calendar']" />
             活動日期：{{ selectedItem.period }}
+            <span v-if="isExpired(selectedItem.period)" class="expired-warning">
+              (活動時間已到期，待更新)
+            </span>
           </h3>
           <h3 class="info-section" v-if="selectedItem.type === 'code'">
             <font-awesome-icon :icon="['fas', 'ticket']" />
@@ -135,183 +157,59 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import googleSheetService from '@/services/GoogleSheetService';
 
 // 搜尋和篩選
 const searchQuery = ref('');
 const currentTag = ref('全部'); // 改為單選模式
 
+// 檢查是否過期
+const isExpired = (period) => {
+  if (!period) return false;
+  const parts = period.split('~');
+  if (parts.length < 2) return false;
+  
+  const endDateStr = parts[1].trim();
+  const endDate = new Date(endDateStr);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  if (isNaN(endDate.getTime())) return false;
+  
+  return today > endDate;
+};
+
 // 優惠資訊資料
-const inviteItems = ref([
-  {
-    id: 1,
-    type: 'link',
-    title: '國泰世華 CUBE 信用卡',
-    period: '2025/07/01 ~ 2025/09/30',
-    link: 'https://cathaybk.tw/24L4S86T3',
-    description: '六大方案最高3.3%回饋無上限',
-    tags: ['信用卡'],
-    benefits: [
-      '受邀者：200點小樹點',
-      '邀請者：200點小樹點',
-      'https://www.cathaybk.com.tw/cathaybk/personal/product/credit-card/cards/cube/'
-    ]
-  },
-  {
-    id: 2,
-    type: 'link',
-    title: '玉山銀行 Unicard 信用卡',
-    period: '2025/07/01 ~ 2025/12/31',
-    link: 'https://card.esunbank.com.tw/EsunCreditweb/txnservice/identify?PRJCD=APYCRD0070&param=631747708936836#b',
-    description: '百大特店最高5%回饋',
-    tags: ['信用卡'],
-    benefits: [
-      '受邀者：好像沒有🥲',
-      '邀請者：500點玉山e point',
-      'https://www.esunbank.com.tw/zh-tw/personal/credit-card/intro/bank-card/unicard'
-    ]
-  },
-  {
-    id: 3,
-    type: 'link',
-    title: '玉山銀行 Pi錢包 信用卡',
-    period: '2025/03/01 ~ 2026/02/28',
-    link: 'https://card.esunbank.com.tw/EsunCreditweb/txnproc/selApplyCard?PRJCD=APYCRD0049&param=241747708001763',
-    description: '指定通路最高5%P幣回饋',
-    tags: ['信用卡'],
-    benefits: [
-      '受邀者：好像沒有🥲',
-      '邀請者：500點P幣',
-      'https://www.esunbank.com/zh-tw/personal/credit-card/intro/co-branded-card/pi-card'
-    ]
-  },
-  {
-    id: 4,
-    type: 'link',
-    title: '王道銀行',
-    period: '2025/07/01 ~ 2025/09/30',
-    link: 'https://obank.tw/e/FU6vRq',
-    description: '開戶指定行動支付6%現金回饋+10%高利率活儲',
-    tags: ['銀行開戶'],
-    benefits: [
-      '受邀者：100塊現金',
-      '邀請者：100塊現金',
-      'https://www.o-bank.com/web/Event/CM_108022801/index.html'
-    ]
-  }, 
-  {
-    id: 5,
-    type: 'link',
-    title: 'LINE Bank',
-    period: '2025/01/01 ~ 2025/12/31',
-    link: 'https://www.linebank.com.tw/R/mgm-portal?campaignId=2&uid=bfYj94',
-    description: 'LINE Point 即時回饋',
-    tags: ['銀行開戶'],
-    benefits: [
-      '受邀者：好像沒有🥲',
-      '邀請者：100塊現金',
-      'https://www.linebank.com.tw/'
-    ]
-  },
-  {
-    id: 6,
-    type: 'link',
-    title: 'Next Bank 將來銀行',
-    period: '2025/07/01 ~ 2025/09/30',
-    link: 'https://ebank.nextbank.com.tw/open-account?mgmcode=Y6JU5&channel=APPMGM&utm_source=app&utm_medium=link',
-    description: '可自定帳號',
-    tags: ['銀行開戶'],
-    benefits: [
-      '受邀者：10%優利活存',
-      '邀請者：200N點',
-      'https://www.nextbank.com.tw/'
-    ]
-  },
-  {
-    id: 7,
-    type: 'link',
-    title: '台新 Richart 數位帳戶',
-    period: '2025/08/07 ~ 2025/08/31',
-    link: 'https://richart.tw/TSDIB_RichartWeb/RC07/RC070100?sn=LUD3K&utm_source=richart&utm_medium=app&utm_campaign=richart_mgm_20230701',
-    description: '新戶海外消費最高5%現金回饋',
-    tags: ['銀行開戶'],
-    benefits: [
-      '受邀者：100塊現金',
-      '邀請者：300塊現金',
-      'https://richart.tw/tsdib-openaccount/open-account/validate-channel-data'
-    ]
-  },
-  {
-    id: 30,
-    type: 'code',
-    title: '全支付',
-    period: '2025/07/01 ~ 2025/12/31',
-    code: '4958R23F',
-    description: '綁定指定帳戶享高回饋',
-    tags: ['行動支付'],
-    benefits: [
-      '受邀者：50全點',
-      '邀請者：50全點',
-      'https://pxpayplus.page.link/2n3T'
-    ]
-  },
-  {
-    id: 40,
-    type: 'code',
-    title: 'Klook',
-    period: '2025/01/01 ~ 2025/12/31',
-    code: '29JUFX',
-    description: '訂票、訂房網站',
-    tags: ['旅遊'],
-    benefits: [
-      '受邀者：100塊優惠回饋',
-      '邀請者：100塊優惠回饋',
-      'https://s.klook.com/c/mwYZae2QX2'
-    ]
-  },
-  {
-    id: 41,
-    type: 'code',
-    title: 'Airalo eSIM',
-    period: '2025/01/01 ~ 2025/12/31',
-    code: 'LUIFEJ6003',
-    description: '首次申辦享免費試用eSIM',
-    tags: ['旅遊'],
-    benefits: [
-      '受邀者：首購享USD$3.00優惠',
-      '邀請者：USD$3.00 Airmoney',
-      'https://airalo.go.link/7P8MX'
-    ]
-  },
-  {
-    id: 51,
-    type: 'code',
-    title: 'ShopBack',
-    period: '2025/06/01 ~ 2025/06/30',
-    code: 'mzpihA',
-    description: '購物賺現金回饋',
-    tags: ['購物'],
-    benefits: [
-      '受邀者：400塊獎勵金',
-      '邀請者：400塊獎勵金',
-      'https://app.shopback.com/CR1q2RdDRTb'
-    ]
-  },
-  {
-    id: 52,
-    type: 'code',
-    title: 'HappyGo',
-    period: '2025/01/01 ~ 2025/12/31',
-    code: '25G3YU',
-    description: '購物賺點數回饋',
-    tags: ['購物'],
-    benefits: [
-      '受邀者：好像沒有🥲',
-      '邀請者：200點HappyGo點數',
-      'https://www.happygocard.com.tw/official/index.do'
-    ]
+const inviteItems = ref([]);
+const isLoading = ref(true);
+
+onMounted(async () => {
+  try {
+    isLoading.value = true;
+    const data = await googleSheetService.fetchData('https://docs.google.com/spreadsheets/d/e/2PACX-1vQWZgG_Bc2g1TtCIQWduP6UqwCefaxMtWGvTJs_v5YiADX4YTLNfk1SezrLhzAi0CTZJvSKAJciirvA/pub?gid=225713290&single=true&output=csv');
+    
+    inviteItems.value = data.map((row, index) => ({
+      id: index + 1,
+      type: row.type,
+      title: row.title,
+      period: row.date,
+      link: row.invite_link,
+      code: row.invite_code,
+      description: row.description,
+      tags: row.tags ? row.tags.split(',').map(t => t.trim()) : [],
+      benefits: [
+        row.Invitees ? `受邀者：${row.Invitees}` : '受邀者：好像沒有🥲',
+        row.Inviter ? `邀請者：${row.Inviter}` : '',
+        row.official_link
+      ].filter(Boolean)
+    }));
+  } catch (error) {
+    console.error('Failed to load invite items', error);
+  } finally {
+    isLoading.value = false;
   }
-]);
+});
 
 // 獲取所有標籤
 const allTags = computed(() => {
@@ -392,6 +290,8 @@ const getUrl = (text) => {
 </script>
 
 <style scoped>
+@import '@/assets/loading.css';
+
 .invite-container {
   max-width: 900px;
   margin: 0 auto;
@@ -746,6 +646,33 @@ const getUrl = (text) => {
 .benefit-link:hover {
   color: var(--primary-color-dark);
   text-decoration: underline;
+}
+
+.expired-notice {
+  color: #ff4d4f;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.expired-warning {
+  color: #ff4d4f;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-color-secondary);
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 @media (max-width: 768px) {
