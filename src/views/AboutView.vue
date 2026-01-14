@@ -150,10 +150,10 @@
             <h3 class="skill-title">
               <span class="title-text"><font-awesome-icon :icon="['fas', 'headphones']" /> Recently Played Music</span>
               <div class="header-controls">
-                <button class="control-btn" @click="toggleShowAllSongs" :title="isShowAllSongs ? '恢復跑馬燈' : '顯示所有歌曲'">
+                <button class="control-btn" @click="toggleShowAllSongs" :title="isShowAllSongs ? '恢復跑馬燈顯示' : '顯示所有歌曲'">
                   <font-awesome-icon :icon="isShowAllSongs ? ['fas', 'undo'] : ['fas', 'list']" />
                 </button>
-                <button v-if="!isShowAllSongs" class="control-btn" @click="toggleSpeed" :class="{ 'active': isFastSpeed }" title="Toggle Animation Speed">
+                <button v-if="!isShowAllSongs" class="control-btn" @click="toggleSpeed" :class="{ 'active': isFastSpeed }" title="切換顯示速度">
                   {{ isFastSpeed ? '2x' : '1x' }}
                 </button>
               </div>
@@ -695,6 +695,15 @@ const toggleShowAllSongs = () => {
   gap: 0.8rem;
   padding: 1rem 0;
   justify-content: center;
+  width: 100%;
+  max-height: 50vh;
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  .songs-grid {
+    justify-content: flex-start;
+  }
 }
 
 .content-transition-enter-active,
@@ -738,6 +747,7 @@ const toggleShowAllSongs = () => {
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .song-tag:hover {

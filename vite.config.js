@@ -16,8 +16,14 @@ export default defineConfig({
           dest: ''
         }
       ]
-    })
+    }),
   ],
+  server: {
+      allowedHosts: [
+        'elvislo.tw',
+        'test.elvislo.tw',
+      ],
+    },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
