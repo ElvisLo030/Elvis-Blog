@@ -38,11 +38,11 @@
         <a href="https://www.instagram.com/elvis._.lo/" class="social-link" aria-label="Instagram" data-tooltip="Instagram">
           <font-awesome-icon :icon="['fab', 'instagram']" />
         </a>
-        <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord" data-tooltip="Discord ID">
-          <font-awesome-icon :icon="['fab', 'discord']" />
-        </a>
         <a href="https://github.com/ElvisLo030" class="social-link" aria-label="GitHub" data-tooltip="Github">
           <font-awesome-icon :icon="['fab', 'github']" />
+        </a>
+        <a href="https://discord.com/users/491249566750998529" class="social-link" aria-label="Discord" data-tooltip="Discord">
+          <font-awesome-icon :icon="['fab', 'discord']" />
         </a>
         <a href="https://t.me/elvislo030" class="social-link" aria-label="Telegram" data-tooltip="Telegram">
           <font-awesome-icon :icon="['fab', 'telegram']" />
@@ -51,10 +51,6 @@
     </section>
   </div>
   
-  <!-- 複製成功提示 -->
-  <div class="copy-toast" :class="{ 'show': isCopyToastVisible }" data-nosnippet>
-    <font-awesome-icon :icon="['fas', 'check-circle']" /> Discord ID 已複製
-  </div>
 </template>
 
 <script setup>
@@ -436,35 +432,6 @@ const showCopyToast = () => {
 /* Discord 相關樣式 */
 .discord-link {
   cursor: pointer;
-}
-
-/* 複製成功提示樣式 */
-.copy-toast {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background-color: rgba(47, 47, 47, 0.9);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 500;
-  z-index: 1000;
-  opacity: 0;
-  transition: transform 0.3s, opacity 0.3s;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.copy-toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
-.copy-toast .svg-inline--fa {
-  color: #4ade80;
 }
 
 /* Loading 動畫樣式 */

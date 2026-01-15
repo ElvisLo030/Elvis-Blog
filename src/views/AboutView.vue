@@ -33,7 +33,7 @@
             <font-awesome-icon :icon="['fab', 'instagram']" />
             <span>elvis._.lo</span>
           </a>
-          <a @click="copyDiscordId" class="social-link discord-link" aria-label="Discord">
+          <a href="https://discord.com/users/491249566750998529" class="social-link" aria-label="Discord">
             <font-awesome-icon :icon="['fab', 'discord']" />
             <span>elvislo_030</span>
           </a>
@@ -213,10 +213,6 @@
     </section>
   </div>
   
-  <!-- 複製成功提示 -->
-  <div class="copy-toast" :class="{ 'show': isCopyToastVisible }">
-    <font-awesome-icon :icon="['fas', 'check-circle']" /> Discord ID 已複製
-  </div>
 </template>
 
 <script setup>
@@ -542,35 +538,6 @@ const toggleShowAllSongs = () => {
 /* Discord 連結樣式 */
 .discord-link {
   cursor: pointer;
-}
-
-/* 複製成功提示樣式 */
-.copy-toast {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background-color: rgba(47, 47, 47, 0.9);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 500;
-  z-index: 1000;
-  opacity: 0;
-  transition: transform 0.3s, opacity 0.3s;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.copy-toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
-.copy-toast .svg-inline--fa {
-  color: #4ade80;
 }
 
 /* 自訂各項技能的圖標顏色 */
